@@ -5,3 +5,4 @@ For GT CS Junior Design Spring/Fall 2022
 * Russell Newton
 * Jackson Dike
 * Wenjun Wang
+* Deborah Cho

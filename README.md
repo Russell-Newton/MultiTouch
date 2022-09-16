@@ -1,9 +1,15 @@
-# Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays
-For GT CS Junior Design Spring/Fall 2022
+# MultiTouch (name WIP)
+A lightweight, robust touch gesture recognition library created in C for use within aircraft.
 
-### Test commits created by:
-* Russell Newton
-* Jackson Dike
-* Wenjun Wang
-* Deborah Cho
-* Iftekherul Karim
+# Release Notes
+## Version 0.1.0
+### New Features
+* Sprint 1 limited to research, no features created
+* Project is buildable
+### Bug Fixes
+N/A
+### Known Issues
+N/A
+### Research Done
+* Specified input/output format for data
+* Specified library and architecture structure

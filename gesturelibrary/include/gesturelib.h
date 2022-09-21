@@ -9,7 +9,7 @@
 #define MAX_TOUCHES 5
 #endif
 #ifndef MAX_GESTURES
-#define MAX_GESTURES 5
+#define MAX_GESTURES 100
 #endif
 
 /// @brief
@@ -25,6 +25,14 @@ typedef struct touch_event {
 typedef struct gesture_event {
     // TODO: stuff
 } gesture_event_t;
+
+typedef struct gesture_recognizer {
+    char enabled;
+    void (*recognize)(touch_event_t*);
+} gesture_recognizer_t;
+
+/// @brief
+void init_gesturelib();
 
 /// @brief
 /// @param touch_event

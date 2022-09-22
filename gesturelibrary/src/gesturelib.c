@@ -5,6 +5,10 @@
 gesture_recognizer_t recognizers[MAX_GESTURES];
 
 void init_gesturelib() {
+    for (uint32_t index = 0; index < MAX_GESTURES; index++) {
+        recognizers[index].enabled = 0;
+    }
+
     recognizers[0].enabled   = 1;
     recognizers[0].recognize = recognize_tap;
 }

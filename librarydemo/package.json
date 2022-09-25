@@ -4,13 +4,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview --port 4173"
+    "preview": "vite preview --port 4173",
+    "build:run": "npm run build && live-server --open=dist"
   },
   "dependencies": {
     "vue": "^3.2.38"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.3",
-    "vite": "^3.0.9"
+    "vite": "^3.0.9",
+    "live-server": "^1.2.2"
   }
 }

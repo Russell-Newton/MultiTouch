@@ -27,10 +27,19 @@
  @licend  The above is the entire license notice for the JavaScript code in this
  file
 */
-var NAVTREE = [ [
-  "Gesture Library", "index.html",
-  [ [ "Files", "files.html", [ [ "File List", "files.html", "files_dup" ] ] ] ]
-] ];
+var NAVTREE =
+[
+  [ "Gesture Library", "index.html", [
+    [ "Files", "files.html", [
+      [ "File List", "files.html", "files_dup" ],
+      [ "Globals", "globals.html", [
+        [ "All", "globals.html", null ],
+        [ "Functions", "globals_func.html", null ],
+        [ "Variables", "globals_vars.html", null ]
+      ] ]
+    ] ]
+  ] ]
+];
 
 var NAVTREEINDEX = [ "dir_04e69b1bd6de39226447b36d278f8800.html" ];
 

@@ -92,35 +92,39 @@ $(document).ready(function(){initNavTree('gesturelib_8c_source.html',''); initRe
   <div class="headertitle"><div class="title">gesturelib.c</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;gesturelib.h&quot;</span></div>
+<a href="gesturelib_8c.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;gesturelib.h&quot;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;tap.h&quot;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>gesture_recognizer_t recognizers[MAX_GESTURES];</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="gesturelib_8c.html#a1a483f2978a75f467e3f19ebdddbe034">    5</a></span>gesture_recognizer_t <a class="code hl_variable" href="gesturelib_8c.html#a1a483f2978a75f467e3f19ebdddbe034">recognizers</a>[MAX_GESTURES];</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keywordtype">void</span> init_gesturelib() {</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="gesturelib_8c.html#a8b773d90632ab4085218d15f0e79927a">    7</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="gesturelib_8c.html#a8b773d90632ab4085218d15f0e79927a">init_gesturelib</a>() {</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keywordflow">for</span> (uint32_t index = 0; index &lt; MAX_GESTURES; index++) {</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>        recognizers[index].enabled = 0;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>        <a class="code hl_variable" href="gesturelib_8c.html#a1a483f2978a75f467e3f19ebdddbe034">recognizers</a>[index].enabled = 0;</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    }</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    recognizers[0].enabled   = 1;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    recognizers[0].recognize = recognize_tap;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <a class="code hl_variable" href="gesturelib_8c.html#a1a483f2978a75f467e3f19ebdddbe034">recognizers</a>[0].enabled   = 1;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <a class="code hl_variable" href="gesturelib_8c.html#a1a483f2978a75f467e3f19ebdddbe034">recognizers</a>[0].recognize = <a class="code hl_function" href="tap_8c.html#acb93ff7ec425c58f78092f2a875d59ef">recognize_tap</a>;</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>}</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keywordtype">int</span> process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, <span class="keywordtype">int</span> max_gestures) {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="gesturelib_8c.html#a2886343581f33c0090130b9fe59a178a">   16</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="gesturelib_8c.html#a2886343581f33c0090130b9fe59a178a">process_touch_event</a>(touch_event_t* touch_event, gesture_event_t* gestures, <span class="keywordtype">int</span> max_gestures) {</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordflow">for</span> (uint32_t index = 0; index &lt; MAX_GESTURES; index++) {</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <span class="keywordflow">if</span> (recognizers[index].enabled) {</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            recognizers[index].recognize(touch_event);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="gesturelib_8c.html#a1a483f2978a75f467e3f19ebdddbe034">recognizers</a>[index].enabled) {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            <a class="code hl_variable" href="gesturelib_8c.html#a1a483f2978a75f467e3f19ebdddbe034">recognizers</a>[index].recognize(touch_event);</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        }</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    }</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordflow">return</span> 0;</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>}</div>
+<div class="ttc" id="agesturelib_8c_html_a1a483f2978a75f467e3f19ebdddbe034"><div class="ttname"><a href="gesturelib_8c.html#a1a483f2978a75f467e3f19ebdddbe034">recognizers</a></div><div class="ttdeci">gesture_recognizer_t recognizers[MAX_GESTURES]</div><div class="ttdef"><b>Definition:</b> <a href="gesturelib_8c_source.html#l00005">gesturelib.c:5</a></div></div>
+<div class="ttc" id="agesturelib_8c_html_a2886343581f33c0090130b9fe59a178a"><div class="ttname"><a href="gesturelib_8c.html#a2886343581f33c0090130b9fe59a178a">process_touch_event</a></div><div class="ttdeci">int process_touch_event(touch_event_t *touch_event, gesture_event_t *gestures, int max_gestures)</div><div class="ttdef"><b>Definition:</b> <a href="gesturelib_8c_source.html#l00016">gesturelib.c:16</a></div></div>
+<div class="ttc" id="agesturelib_8c_html_a8b773d90632ab4085218d15f0e79927a"><div class="ttname"><a href="gesturelib_8c.html#a8b773d90632ab4085218d15f0e79927a">init_gesturelib</a></div><div class="ttdeci">void init_gesturelib()</div><div class="ttdef"><b>Definition:</b> <a href="gesturelib_8c_source.html#l00007">gesturelib.c:7</a></div></div>
+<div class="ttc" id="atap_8c_html_acb93ff7ec425c58f78092f2a875d59ef"><div class="ttname"><a href="tap_8c.html#acb93ff7ec425c58f78092f2a875d59ef">recognize_tap</a></div><div class="ttdeci">void recognize_tap(touch_event_t *event)</div><div class="ttdef"><b>Definition:</b> <a href="tap_8c_source.html#l00005">tap.c:5</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_04e69b1bd6de39226447b36d278f8800.html">gesturelibrary</a></li><li class="navelem"><a class="el" href="dir_8e7a1383e410397b79f8953c349b9ea6.html">src</a></li><li class="navelem"><b>gesturelib.c</b></li>
+    <li class="navelem"><a class="el" href="dir_04e69b1bd6de39226447b36d278f8800.html">gesturelibrary</a></li><li class="navelem"><a class="el" href="dir_8e7a1383e410397b79f8953c349b9ea6.html">src</a></li><li class="navelem"><a class="el" href="gesturelib_8c.html">gesturelib.c</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

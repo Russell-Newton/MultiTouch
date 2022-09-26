@@ -5,6 +5,8 @@ extern "C" {
 }
 
 TEST(GestureLibraryTest, TestGestureLib) {
+    init_gesturelib();
+
     touch_event_t event;
     event.position_x = 100;
     event.position_y = 200;

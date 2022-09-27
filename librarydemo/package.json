@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "prebuild": "cd c_bindings && emscripten build",
     "preview": "vite preview --port 4173",
     "build:run": "npm run build && live-server --open=dist"
   },
@@ -12,7 +13,11 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.3",
+    "emscripten-build": "^1.0.2",
+    "emscripten-sdk-npm": "git@github.com:Russell-Newton/emscripten-sdk-npm.git",
+    "live-server": "^1.2.2",
+    "make": "^0.8.1",
     "vite": "^3.0.9",
-    "live-server": "^1.2.2"
+    "vite-plugin-wasm": "^3.0.0"
   }
 }

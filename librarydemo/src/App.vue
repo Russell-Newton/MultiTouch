@@ -10,6 +10,7 @@ import TheWelcome from './components/TheWelcome.vue'
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
     </div>
+    <button @click="test()">Test</button>
   </header>
 
   <main>
@@ -45,3 +46,14 @@ header {
   }
 }
 </style>
+
+<script>
+  export default {
+    methods: {
+      test: function() {
+        let square = Module.cwrap('square', 'number', ['number']);
+        console.log(square(3));
+      }
+    }
+  }
+</script>

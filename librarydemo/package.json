@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
+    "predev": "cd c_bindings && emscripten build",
     "build": "vite build",
     "prebuild": "cd c_bindings && emscripten build",
     "preview": "vite preview --port 4173",

@@ -1,6 +1,6 @@
 #include "gesturelib.h"
 
-#include "tap.h"
+#include "single.h"
 
 gesture_recognizer_t recognizers[MAX_GESTURES];
 

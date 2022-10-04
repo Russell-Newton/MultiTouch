@@ -17,3 +17,7 @@ To fix that, you can either add it to your PATH or run `~/.local/bin/pre-commit 
 To add it to your path, follow these steps:
 1. Add the following line to the end of your `~/.bashrc` file: `export PATH="${HOME}/.local/bin/:${PATH}"`
 2. Run `. ~/.bashrc`
+
+## Architecture Points
+1. Touch data is sent to the length 5 array, each spots corresponds to a group (id).
+2. 

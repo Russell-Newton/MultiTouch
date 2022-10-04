@@ -12,6 +12,10 @@ typedef struct touch_data {
     uint32_t last_time;
 } touch_data_t;
 
+#ifndef HOLD_LENGTH
+#define HOLD_LENGTH 5
+#endif
+
 /// @brief
 /// @param
 void recognize_two_tap(touch_event_t* event);

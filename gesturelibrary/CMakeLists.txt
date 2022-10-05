@@ -34,3 +34,7 @@ target_link_libraries(${TARGET_TEST} PUBLIC GTest::gtest_main ${TARGET_LIBRARY})
 
 include(GoogleTest)
 gtest_discover_tests(${TARGET_TEST})
+
+add_custom_target(COPY_RESOURCE_FILES ALL
+    ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/test/res/ res/
+)

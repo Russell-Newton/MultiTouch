@@ -10,11 +10,11 @@ import TheWelcome from './components/TheWelcome.vue'
     <div class="wrapper">
       <HelloWorld msg="GT Team 2135 x L3Harris Gesture Library" />
     </div>
-    <button @click="test()">Test</button>
   </header>
 
   <main>
     <TheWelcome />
+    <button @click="test()">Square 3 in C! (Check console output)</button>
   </main>
 </template>
 

@@ -17,3 +17,10 @@ To fix that, you can either add it to your PATH or run `~/.local/bin/pre-commit 
 To add it to your path, follow these steps:
 1. Add the following line to the end of your `~/.bashrc` file: `export PATH="${HOME}/.local/bin/:${PATH}"`
 2. Run `. ~/.bashrc`
+
+## Testing
+To generate test data:
+1. Visit this [website](https://dartpad.dev/?id=dd735da036a2b0a468f94d5f6566b3f1)
+2. Open the console
+3. Perform gestures on the blue rectangle
+4. Copy the console output into a csv file `test/res/<gesture>/<device>_<number>.csv` where `<number>` differentiates data of the same gesture on the same device.

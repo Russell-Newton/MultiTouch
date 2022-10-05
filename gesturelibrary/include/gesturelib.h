@@ -14,9 +14,9 @@
 
 /// @brief
 typedef struct touch_event {
-    uint32_t position_x;
-    uint32_t position_y;
-    uint32_t timestamp;
+    float position_x;
+    float position_y;
+    float timestamp;
     // TODO: touch ID (which finger)
     // TODO: event type (down, hold, up, etc)
 } touch_event_t;

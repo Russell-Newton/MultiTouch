@@ -11,6 +11,8 @@ typedef struct tap_data {
     uint32_t last_time;
 } tap_data_t;
 
+tap_data_t* data[MAX_TOUCHES];
+
 /// @brief
 /// @param event
 void recognize_single_tap(touch_event_t* event);

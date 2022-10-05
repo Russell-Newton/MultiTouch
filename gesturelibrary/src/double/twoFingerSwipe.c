@@ -1,7 +1,5 @@
 
-#include "double.h"
-
-tap_data_t data[MAX_TOUCHES];
+#include "twoFingerSwipe.h"
 
 //Same as drag except this time we don't want a hold. We want moving taps basically.
 
@@ -9,6 +7,6 @@ tap_data_t data[MAX_TOUCHES];
  * @brief 
  * 
  */
-void recognize_two_swipe(touch_event_t*) {
+void recognize_two_swipe(touch_event_t* event) {
     
 }

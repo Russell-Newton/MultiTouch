@@ -1,7 +1,5 @@
 
-#include "double.h"
-
-tap_data_t data[MAX_TOUCHES];
+#include "twoFingerHold.h"
 
 //INITIAL IDEA: this looks at n previous events and, if they're all continuous touch events within a time range of each other, this is currently a hold
 //if it was a hold before, this stays a hold
@@ -13,13 +11,6 @@ tap_data_t data[MAX_TOUCHES];
 //get a break, tap wipes the array singalling to this class that this can't be a hold anymore, at least not the current sequence of touches. Will this work with multiple 
 //gestures happening at the same time?
 
-int backlog[HOLD_LENGTH];
-
-static int index = 0;
-
-static touch_event_t* group_1_touch_event;
-static touch_event_t* group_2_touch_event; //make into struct?
-
 /**
  * @brief Adds a 1 to the backlog signalling that a touch input was just recieved (touch_2 does this with every possible tap)
  * 
@@ -27,7 +18,7 @@ static touch_event_t* group_2_touch_event; //make into struct?
  * @param event_2 if the location of this event is far from the static variables', this is another gesture happening in a new spot
  */
 void add_to_backlog(touch_event) {
-    if (false) {
+    if (0) { //false
         //if location is too far away, ignore this call (we don't need to wipe it because we could have multiple gestures on the screen)
     } else {
         backlog[index] = 1;
@@ -47,6 +38,6 @@ void wipe_backlog() {
  * @brief 
  * 
  */
-void recognize_two_hold(touch_event_t*) {
+void recognize_two_hold(touch_event_t* event) {
     
 }

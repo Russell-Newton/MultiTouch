@@ -12,9 +12,7 @@ typedef struct touch_data {
     uint32_t last_time;
 } touch_data_t;
 
-#ifndef HOLD_LENGTH
-#define HOLD_LENGTH 5
-#endif
+tap_data_t data[MAX_TOUCHES];
 
 /// @brief
 /// @param
@@ -47,3 +45,12 @@ void recognize_two_zoom(touch_event_t*);
 /// @brief
 /// @param
 void recognize_two_pinch(touch_event_t*);
+
+/**
+ * @brief Get the tap data object
+ * 
+ * @return tap_data_t* 
+ */
+tap_data_t* get_tap_data() {
+    return data;
+}

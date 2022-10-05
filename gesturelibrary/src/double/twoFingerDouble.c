@@ -1,9 +1,4 @@
-#include "double.h"
-
-tap_data_t data[MAX_TOUCHES];
-
-static touch_event_t* group_1_touch_event;
-static touch_event_t* group_2_touch_event;
+#include "twoFingerDouble.h"
 
 /**
  * @brief Update group_1 and group_2 touch events

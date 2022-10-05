@@ -1,8 +1,6 @@
-#include "single.h"
+#include "singleFingerSwipe.h"
 
 //this class takes care of the single finger cases
-
-tap_data_t data[MAX_TOUCHES];
 
 void recognize_swipe(touch_event_t* event) {
     //TODO: the first input is gonna be a possible tap, if tap's state is possible and we see the very next input is in a different location, swipe is possible

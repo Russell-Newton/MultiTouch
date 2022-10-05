@@ -1,8 +1,6 @@
-#include "single.h"
+#include "singleFingerDrag.h"
 
 //this class takes care of the single finger cases
-
-tap_data_t data[MAX_TOUCHES];
 
 void recognize_single_drag(touch_event_t* event) {
     //TODO: if we had a hold over the last few touches (or started a drag because hold will now be updated to false meaning this recognizer needs to run first) and we see a new location within a certain time difference, we can say it is a drag now 

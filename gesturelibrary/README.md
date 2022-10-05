@@ -18,6 +18,9 @@ To add it to your path, follow these steps:
 1. Add the following line to the end of your `~/.bashrc` file: `export PATH="${HOME}/.local/bin/:${PATH}"`
 2. Run `. ~/.bashrc`
 
-## Architecture Points
-1. Touch data is sent to the length 5 array, each spots corresponds to a group (id).
-2. 
+## Testing
+To generate test data:
+1. Visit this [website](https://dartpad.dev/?id=dd735da036a2b0a468f94d5f6566b3f1)
+2. Open the console
+3. Perform gestures on the blue rectangle
+4. Copy the console output into a csv file `test/res/<gesture>/<device>_<number>.csv` where `<number>` differentiates data of the same gesture on the same device.

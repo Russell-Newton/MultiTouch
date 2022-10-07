@@ -4,14 +4,14 @@
 #include "recognizer.h"
 
 /// @brief
-typedef struct tap_data {
+typedef struct touch_data {
     state_t state;
     uint32_t last_x;
     uint32_t last_y;
     uint32_t last_time;
-} tap_data_t;
+} touch_data_t;
 
-tap_data_t* data[MAX_TOUCHES];
+touch_data_t* data[MAX_TOUCHES];
 
 /// @brief
 /// @param event

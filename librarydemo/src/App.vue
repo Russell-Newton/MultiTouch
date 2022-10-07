@@ -14,6 +14,7 @@ import TheWelcome from './components/TheWelcome.vue'
 
   <main>
     <TheWelcome />
+    <button @click="test()">Square 3 in C! (Check console output)</button>
   </main>
 </template>
 
@@ -45,3 +46,14 @@ header {
   }
 }
 </style>
+
+<script>
+  export default {
+    methods: {
+      test: function() {
+        let square = Module.cwrap('square', 'number', ['number']);
+        console.log(square(3));
+      }
+    }
+  }
+</script>

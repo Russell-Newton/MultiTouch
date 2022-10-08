@@ -22,3 +22,8 @@ In order to see a built version of the page, run
 npm run build:run
 ```
 This will run a build of the website, creating HTML, JS, and CSS from the Vue project, and will serve it with live-server.
+
+
+**Both of these commands also build the C code living in `c_bindings`. The build code is put into `public/scripts`.**
+
+You may need to specify a path to install emsdk (the emscripten SDK). If this is the case, it should suggest some commands to fix the problem.

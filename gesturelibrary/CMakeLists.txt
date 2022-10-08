@@ -12,9 +12,10 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/include/single)
 
 set(TARGET_LIBRARY GestureLibrary)
-file(GLOB LIBRARY_SOURCES ${PROJECT_SOURCE_DIR}/src/*.c)
+file(GLOB_RECURSE LIBRARY_SOURCES ${PROJECT_SOURCE_DIR}/src/*.c)
 
 add_library(${TARGET_LIBRARY} SHARED ${LIBRARY_SOURCES})
 
@@ -26,7 +27,7 @@ set_target_properties(${TARGET_LIBRARY} PROPERTIES
 enable_testing()
 
 set(TARGET_TEST testGestureLibrary)
-file(GLOB TEST_SOURCES ${PROJECT_SOURCE_DIR}/test/*.cpp)
+file(GLOB_RECURSE TEST_SOURCES ${PROJECT_SOURCE_DIR}/test/*.cpp)
 
 add_executable(${TARGET_TEST} ${TEST_SOURCES})
 

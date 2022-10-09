@@ -1,6 +1,9 @@
 # MultiTouch (name WIP)
 A lightweight, robust touch gesture recognition library created in C for use within aircraft.
 
+# Documentation
+Documentation automatically created by workflow on [GitHub Pages](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/)"
+
 # Release Notes
 
 ## Version 0.2.0

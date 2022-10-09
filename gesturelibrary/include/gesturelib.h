@@ -13,6 +13,13 @@
 #endif
 
 /// @brief
+typedef enum type {
+    down,
+    move,
+    up
+} type_t;
+
+/// @brief
 typedef struct touch_event {
     float position_x;
     float position_y;

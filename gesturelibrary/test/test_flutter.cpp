@@ -1,6 +1,5 @@
-#include <gtest/gtest.h>
-
 #include <fstream>
+#include <gtest/gtest.h>
 #include <sstream>
 
 extern "C" {
@@ -21,9 +20,9 @@ protected:
         string header;
         file >> header;
         vector<string> columns = split(header);
-        size_t indexX = string::npos;
-        size_t indexY = string::npos;
-        size_t indexT = string::npos;
+        size_t indexX          = string::npos;
+        size_t indexY          = string::npos;
+        size_t indexT          = string::npos;
         for (size_t index = 0; index < columns.size(); index++) {
             if (columns[index] == "position.dx") {
                 indexX = index;
@@ -47,12 +46,12 @@ protected:
             touch_event_t touchEvent;
             touchEvent.position_x = stof(data[indexX]);
             touchEvent.position_y = stof(data[indexY]);
-            size_t index1 = data[indexT].find(':');
-            size_t index2 = data[indexT].rfind(':');
-            int hours = stoi(data[indexT].substr(0, index1));
-            int minutes = stoi(data[indexT].substr(index1 + 1, index2));
-            float seconds = stof(data[indexT].substr(index2 + 1));
-            touchEvent.timestamp = 60 * 60 * hours + 60 * minutes + seconds;
+            size_t index1         = data[indexT].find(':');
+            size_t index2         = data[indexT].rfind(':');
+            int hours             = stoi(data[indexT].substr(0, index1));
+            int minutes           = stoi(data[indexT].substr(index1 + 1, index2));
+            float seconds         = stof(data[indexT].substr(index2 + 1));
+            touchEvent.timestamp  = 60 * 60 * hours + 60 * minutes + seconds;
             touchEvents.push_back(touchEvent);
         } while (!file.eof());
     }

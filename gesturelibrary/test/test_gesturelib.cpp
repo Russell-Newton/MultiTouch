@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
 extern "C" {
-    #include "singleFingerTap.h"
-    #include "singleFingerHold.h"
-    #include "singleFingerSwipe.h"
-    #include "singleFingerDouble.h"
+#include "singleFingerDouble.h"
+#include "singleFingerHold.h"
+#include "singleFingerSwipe.h"
+#include "singleFingerTap.h"
 }
 
 TEST(GestureLibraryTest, TestGestureLib) {

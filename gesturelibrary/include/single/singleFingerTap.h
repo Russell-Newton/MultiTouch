@@ -9,12 +9,12 @@ typedef struct sFingerTap {
     uint32_t last_x;
     uint32_t last_y;
     uint32_t last_time;
-} sFingerTap_t; //single finger double tap data
+} sFingerTap_t;  // single finger double tap data
 
 /// @brief
 /// @param event
 void recognize_single_tap(touch_event_t* event);
 
-/// @brief 
-/// @return 
+/// @brief
+/// @return
 sFingerTap_t* get_sFingerTap();

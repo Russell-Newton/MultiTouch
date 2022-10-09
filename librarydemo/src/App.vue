@@ -1,6 +1,7 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
+import { MDBBtn } from "mdb-vue-ui-kit";
 </script>
 
 <template>
@@ -14,7 +15,7 @@ import TheWelcome from './components/TheWelcome.vue'
 
   <main>
     <TheWelcome />
-    <button @click="test()">Square 3 in C! (Check console output)</button>
+    <MDBBtn @click="test()" color="light" size="sm" rounded>Square 3 in C! (Check console output)</MDBBtn>
   </main>
 </template>
 

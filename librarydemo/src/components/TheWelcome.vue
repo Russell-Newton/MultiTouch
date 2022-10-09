@@ -40,8 +40,8 @@ import { MDBBtn } from "mdb-vue-ui-kit";
       <EcosystemIcon />
     </template>
     <template #heading>Gestures</template>
-
-   Test out different gestures here.
+    <MDBBtn color="light" size="sm" rounded>Gestures</MDBBtn>
+   Test out different gestures.
   </WelcomeItem>
 
   <WelcomeItem>
@@ -49,6 +49,7 @@ import { MDBBtn } from "mdb-vue-ui-kit";
       <CommunityIcon />
     </template>
     <template #heading>Mockpit</template>
+    <MDBBtn color="light" size="sm" rounded>Mockpit</MDBBtn>
     Play with a potential application of our gesture library.
     
   </WelcomeItem>

@@ -1,6 +1,7 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
+import { MDBBtn } from "mdb-vue-ui-kit";
 </script>
 
 <template>
@@ -11,7 +12,6 @@ import TheWelcome from './components/TheWelcome.vue'
       <HelloWorld msg="GT Team 2135 x L3Harris Gesture Library" />
     </div>
   </header>
-
   <main>
     <TheWelcome />
     <button @click="test()">Square 3 in C! (Check console output)</button>
@@ -44,6 +44,10 @@ header {
     place-items: flex-start;
     flex-wrap: wrap;
   }
+}
+
+#app {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 </style>
 

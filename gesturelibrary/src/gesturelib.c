@@ -4,6 +4,7 @@
 
 gesture_recognizer_t recognizers[MAX_GESTURES];
 
+/** This is a documentation test. **/
 void init_gesturelib() {
     for (uint32_t index = 0; index < MAX_GESTURES; index++) {
         recognizers[index].enabled = 0;

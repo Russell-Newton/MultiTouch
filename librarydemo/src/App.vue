@@ -5,15 +5,16 @@ import TheWelcome from './components/TheWelcome.vue'
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <img alt="Vue logo" class="logo" src="./assets/gesture.png" width="125" height="125" />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <HelloWorld msg="GT Team 2135 x L3Harris Gesture Library" />
     </div>
   </header>
 
   <main>
     <TheWelcome />
+    <button @click="test()">Square 3 in C! (Check console output)</button>
   </main>
 </template>
 
@@ -45,3 +46,14 @@ header {
   }
 }
 </style>
+
+<script>
+  export default {
+    methods: {
+      test: function() {
+        let square = Module.cwrap('square', 'number', ['number']);
+        console.log(square(3));
+      }
+    }
+  }
+</script>

@@ -5,6 +5,7 @@ import ToolingIcon from './icons/IconTooling.vue'
 import EcosystemIcon from './icons/IconEcosystem.vue'
 import CommunityIcon from './icons/IconCommunity.vue'
 import SupportIcon from './icons/IconSupport.vue'
+import { MDBBtn } from "mdb-vue-ui-kit";
 </script>
 
 <template>
@@ -39,8 +40,9 @@ import SupportIcon from './icons/IconSupport.vue'
       <EcosystemIcon />
     </template>
     <template #heading>Gestures</template>
-
-   Test out different gestures here.
+    <MDBBtn color="light" size="sm" rounded>Gestures</MDBBtn>
+   Test out different gestures.
+   
   </WelcomeItem>
 
   <WelcomeItem>
@@ -48,6 +50,7 @@ import SupportIcon from './icons/IconSupport.vue'
       <CommunityIcon />
     </template>
     <template #heading>Mockpit</template>
+    <MDBBtn color="light" size="sm" rounded>Mockpit</MDBBtn>
     Play with a potential application of our gesture library.
     
   </WelcomeItem>

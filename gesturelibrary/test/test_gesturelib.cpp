@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
 extern "C" {
-    #include "singleFingerTap.h"
-    #include "singleFingerHold.h"
-    #include "singleFingerSwipe.h"
-    #include "singleFingerDouble.h"
+#include "singleFingerDouble.h"
+#include "singleFingerHold.h"
+#include "singleFingerSwipe.h"
+#include "singleFingerTap.h"
 }
 
 TEST(GestureLibraryTest, TestGestureLib) {
@@ -34,4 +34,17 @@ TEST(GestureLibraryGetDataTest, TestGestureLibGetters) {
     ASSERT_TRUE(get_sFingerSwipe() != NULL);
     ASSERT_TRUE(get_sFingerHold() != NULL);
     ASSERT_TRUE(get_sFingerDTap() != NULL);
+}
+
+TEST(GestureLibraryGetDataTest, TestGestureLibGetters) {
+    init_gesturelib();
+
+    touch_event_t event;
+    event.position_x = 100;
+    event.position_y = 200;
+    event.timestamp  = 42;
+
+    gesture_event_t gestures[1];
+
+    ASSERT_TRUE(get_sFingerTap() != NULL);
 }

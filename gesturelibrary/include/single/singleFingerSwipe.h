@@ -9,12 +9,12 @@ typedef struct sFingerSwipe {
     uint32_t last_x;
     uint32_t last_y;
     uint32_t last_time;
-} sFingerSwipe_t; //single finger double tap data
+} sFingerSwipe_t;  // single finger double tap data
 
 /// @brief
 /// @param event
 void recognize_swipe(touch_event_t* event);
 
-/// @brief 
-/// @return 
+/// @brief
+/// @return
 sFingerSwipe_t* get_sFingerSwipe();

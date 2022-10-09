@@ -10,6 +10,7 @@
     "build:run": "npm run build && live-server --open=dist"
   },
   "dependencies": {
+    "mdb-vue-ui-kit": "^3.0.0",
     "vue": "^3.2.38"
   },
   "devDependencies": {

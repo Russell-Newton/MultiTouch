@@ -9,7 +9,11 @@ typedef struct sFingerHold {
     uint32_t last_x;
     uint32_t last_y;
     uint32_t last_time;
-} sFingerHold_t;  // single finger double tap data
+} sFingerHold_t;
+
+#ifndef HOLD_LENGTH
+#define HOLD_LENGTH 10
+#endif
 
 /// @brief
 /// @param event

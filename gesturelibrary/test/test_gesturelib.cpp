@@ -53,7 +53,7 @@ TEST(GestureLibraryHoldTest, TestGestureHoldTester) {
     process_touch_event(&event1, gestures, 4);
     process_touch_event(&event2, gestures, 4);
 
-    EXPECT_EQ(get_sFingerHold()[0].state, possible);
+    EXPECT_EQ(get_sFingerHold()[0].state, RECOGNIZER_STATE_POSSIBLE);
 }
 
 TEST(GestureLibrarySFingerDoubleTest, TestGestureSingleDouble) {
@@ -74,5 +74,5 @@ TEST(GestureLibrarySFingerDoubleTest, TestGestureSingleDouble) {
     process_touch_event(&event1, gestures, 4);
     process_touch_event(&event2, gestures, 4);
 
-    EXPECT_EQ(get_sFingerDTap()[0].state, possible);
+    EXPECT_EQ(get_sFingerDTap()[0].state, RECOGNIZER_STATE_POSSIBLE);
 }

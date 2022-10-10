@@ -17,7 +17,7 @@ typedef struct sFingerDTap {
 
 /// @brief
 /// @param event
-void recognize_double_tap(touch_event_t* event);
+gesture_event_t* recognize_double_tap(touch_event_t* event);
 
 /// @brief
 /// @return

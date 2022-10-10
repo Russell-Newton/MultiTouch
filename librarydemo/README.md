@@ -10,6 +10,21 @@
 npm install
 ```
 
+## Emscripten:
+In order for emscripten to work (required for `dev` and `build` scripts), you may have to follow some additional setup steps:
+
+1. Install python
+2. Provide a location for the EMSDK (emscripten software development kit):
+
+On Windows
+```sh
+npm config set emsdk %UserProfile%\.emsdk
+```
+On Linux
+```sh
+npm config set emsdk /usr/local/emsdk
+```
+
 ## Development:
 
 In order to see changes made live, run

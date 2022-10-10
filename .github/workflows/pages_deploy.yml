@@ -44,17 +44,18 @@ jobs:
         run: mv ./librarydemo/dist ./deploy
         
       # Flutter build
+      - run: cd data-collection
       - name: Flutter Setup
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
       - name: Flutter Build
-        working-directory: data-collection
         run: flutter build web --base-href "/data-collection/"
       - name: Move build to deploy
-        run: mv ./data-collection/build/web ./deploy/data-collection
+        run: mv ./build/web ../deploy/data-collection
         
       # Doxygen build
+      - run: cd ..
       - name: Doxygen Setup
         run: sudo apt-get install doxygen -y
       - name: Doxygen Build

@@ -52,7 +52,7 @@ jobs:
         working-directory: data_collection
         run: flutter build web --base-href "/data-collection/"
       - name: Move build to deploy
-        run: mv ./data_collection/build/web ../deploy/data-collection
+        run: mv ./data_collection/build/web ./deploy/data-collection
         
       # Doxygen build
       - run: cd ..

@@ -13,12 +13,20 @@
 #endif
 
 /// @brief
+typedef enum event_type {
+    down,
+    move,
+    up
+} event_type_t;
+
+/// @brief
 typedef struct touch_event {
+    event_type_t event_type;
+    bool down;
     float position_x;
     float position_y;
     float timestamp;
     // TODO: touch ID (which finger)
-    // TODO: event type (down, hold, up, etc)
 } touch_event_t;
 
 /// @brief

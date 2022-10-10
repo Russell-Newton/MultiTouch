@@ -13,6 +13,10 @@ void recognize_single_tap(touch_event_t* event) {
 
     if (!(event->down)) {
         sFingerTap_d[0].state = (sFingerTap_d[0].state == possible) ? complete : failed;
+    } else {
+        if (event->timestamp - prev_event->timestamp > TAP_LENGTH) {
+            sFingerTap_d[0].state = failed;
+        }
     }
 }
 

@@ -11,6 +11,10 @@ typedef struct sFingerDTap {
     uint32_t last_time;
 } sFingerDTap_t;  // single finger double tap data
 
+#ifndef DIFF
+#define DIFF 5
+#endif
+
 /// @brief
 /// @param event
 void recognize_double_tap(touch_event_t* event);

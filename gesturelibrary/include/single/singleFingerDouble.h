@@ -12,7 +12,7 @@ typedef struct sFingerDTap {
 } sFingerDTap_t;  // single finger double tap data
 
 #ifndef DIFF
-#define DEFF 5
+#define DIFF 5
 #endif
 
 /// @brief

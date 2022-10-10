@@ -1,4 +1,4 @@
-name: Build Doxygen and Deploy to GitHub Pages
+name: Deploy Artifacts to GitHub Pages
 
 on:
   push:

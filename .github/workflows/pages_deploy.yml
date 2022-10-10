@@ -29,32 +29,32 @@ jobs:
         uses: actions/configure-pages@v2
         
       # Demo app build
-      - run: cd librarydemo
       - name: Node Setup
         uses: actions/setup-node@v1
         with:
           node-version: 16.x
-          cache-dependency-path: ./package-lock.json
+          cache-dependency-path: ./librarydemo/package-lock.json
       - name: Install Node dependencies
+        working-directory: librarydemo
         run: npm install
       - name: Demo app build
+        working-directory: librarydemo
         run: npm run build
       - name: Move build to new directory, deploy
-        run: mv ./dist ../deploy
+        run: mv ./librarydemo/dist ./deploy
         
       # Flutter build
-      - run: cd ../data-collection
       - name: Flutter Setup
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
       - name: Flutter Build
+        working-directory: data-collection
         run: flutter build web --base-href "/data-collection/"
       - name: Move build to deploy
-        run: mv ./build/web ../deploy/data-collection
+        run: mv ./data-collection/build/web ./deploy/data-collection
         
       # Doxygen build
-      - run: cd ..
       - name: Doxygen Setup
         run: sudo apt-get install doxygen -y
       - name: Doxygen Build

@@ -27,14 +27,44 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v2
-      - name: Install Doxygen
+        
+      # Demo app build
+      - run: cd librarydemo
+      - name: Node Setup
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - name: Install Node dependencies
+        run: npm install
+      - name: Demo app build
+        run: npm run build
+      - name: Move build to new directory, deploy
+        run: mv ./dist ../deploy
+        
+      # Flutter build
+      - run: cd ../data-collection
+      - name: Flutter Setup
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Flutter Build
+        run: flutter build web --base-href "/data-collection/"
+      - name: Move build to deploy
+        run: mv ./build/web ../deploy/data-collection
+        
+      # Doxygen build
+      - run: cd ..
+      - name: Doxygen Setup
         run: sudo apt-get install doxygen -y
-      - name: Build with Doxygen
+      - name: Doxygen Build
         run: doxygen doxygen-config
+      - name: Move build to deploy
+        run: mv ./docs/html ./deploy/docs
+        
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: docs/html
+          path: ./deploy
 
   # Deployment job
   deploy:

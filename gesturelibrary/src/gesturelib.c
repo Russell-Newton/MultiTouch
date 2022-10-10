@@ -26,7 +26,7 @@ void init_gesturelib() {
     recognizers[3].recognize = recognize_swipe;
 }
 
-int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, int max_gestures) {
+int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures) {
     for (uint32_t index = 0; index < MAX_GESTURES; index++) {
         if (recognizers[index].enabled) {
             recognizers[index].recognize(touch_event);

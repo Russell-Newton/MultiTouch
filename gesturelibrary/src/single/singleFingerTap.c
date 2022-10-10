@@ -12,8 +12,13 @@ gesture_event_t* recognize_single_tap(touch_event_t* event) {
     // possible
 
     if (!(event->event_type == TOUCH_EVENT_DOWN)) {
+<<<<<<< HEAD
         sFingerTap_d[0].state =
             (sFingerTap_d[0].state == RECOGNIZER_STATE_POSSIBLE) ? RECOGNIZER_STATE_COMPLETED : RECOGNIZER_STATE_FAILED;
+=======
+        sFingerTap_d[0].state =
+            (sFingerTap_d[0].state == RECOGNIZER_STATE_POSSIBLE) ? RECOGNIZER_STATE_COMPLETED : RECOGNIZER_STATE_FAILED;
+>>>>>>> c033b7bc68f7d23773d77739860ad9e152d6a5ec
     } else {
         if (event->timestamp - prev_event->timestamp > TAP_LENGTH) {
             sFingerTap_d[0].state = RECOGNIZER_STATE_FAILED;

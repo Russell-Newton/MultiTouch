@@ -37,10 +37,10 @@ jobs:
       - name: Install Node dependencies
         working-directory: librarydemo
         run: npm install
-      - run: cd librarydemo
       - name: Demo app build
-        run: npm run build
-      - run: cd ..
+        run: |
+          cd librarydemo
+          npm run build
       - name: Move build to new directory, deploy
         run: mv ./librarydemo/dist ./deploy
         
@@ -56,7 +56,6 @@ jobs:
         run: mv ./data_collection/build/web ./deploy/data-collection
         
       # Doxygen build
-      - run: cd ..
       - name: Doxygen Setup
         run: sudo apt-get install doxygen -y
       - name: Doxygen Build

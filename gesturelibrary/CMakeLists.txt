@@ -17,11 +17,11 @@ include_directories(${PROJECT_SOURCE_DIR}/include/single)
 set(TARGET_LIBRARY GestureLibrary)
 file(GLOB_RECURSE LIBRARY_SOURCES ${PROJECT_SOURCE_DIR}/src/*.c)
 
-add_library(${TARGET_LIBRARY} SHARED ${LIBRARY_SOURCES})
+add_library(${TARGET_LIBRARY} STATIC ${LIBRARY_SOURCES})
 
-set_target_properties(${TARGET_LIBRARY} PROPERTIES
-                      POSITION_INDEPENDENT_CODE True
-                      )
+# set_target_properties(${TARGET_LIBRARY} PROPERTIES
+#                       POSITION_INDEPENDENT_CODE True
+#                       )
 
 
 enable_testing()

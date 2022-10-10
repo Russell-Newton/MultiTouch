@@ -5,11 +5,11 @@
 #include "singleFingerSwipe.h"
 #include "singleFingerTap.h"
 
-gesture_recognizer_t recognizers[MAX_GESTURES];
+gesture_recognizer_t recognizers[MAX_RECOGNIZERS];
 
 /** This is a documentation test. **/
 void init_gesturelib() {
-    for (uint32_t index = 0; index < MAX_GESTURES; index++) {
+    for (uint32_t index = 0; index < MAX_RECOGNIZERS; index++) {
         recognizers[index].enabled = 0;
     }
 
@@ -26,11 +26,15 @@ void init_gesturelib() {
     recognizers[3].recognize = recognize_swipe;
 }
 
-int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures) {
-    for (uint32_t index = 0; index < MAX_GESTURES; index++) {
+int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, int max_gestures) {
+    uint32_t size = 0;
+    for (uint32_t index = 0; index < MAX_RECOGNIZERS; index++) {
         if (recognizers[index].enabled) {
-            recognizers[index].recognize(touch_event);
+            gesture_event_t* gesture = recognizers[index].recognize(touch_event);
+            if (gesture && size < max_gestures) {
+                gestures[size++] = *gesture;
+            }
         }
     }
-    return 0;
+    return size;
 }

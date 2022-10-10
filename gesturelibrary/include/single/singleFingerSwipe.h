@@ -13,7 +13,7 @@ typedef struct sFingerSwipe {
 
 /// @brief
 /// @param event
-void recognize_swipe(touch_event_t* event);
+gesture_event_t* recognize_swipe(touch_event_t* event);
 
 /// @brief
 /// @return

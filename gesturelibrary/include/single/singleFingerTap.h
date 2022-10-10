@@ -21,7 +21,7 @@ typedef struct sFingerTap {
 
 /// @brief
 /// @param event
-void recognize_single_tap(touch_event_t* event);
+gesture_event_t* recognize_single_tap(touch_event_t* event);
 
 /// @brief
 /// @return

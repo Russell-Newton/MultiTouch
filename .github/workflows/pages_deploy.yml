@@ -44,15 +44,15 @@ jobs:
         run: mv ./librarydemo/dist ./deploy
         
       # Flutter build
-      - run: cd data-collection
       - name: Flutter Setup
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
       - name: Flutter Build
+        working-directory: data_collection
         run: flutter build web --base-href "/data-collection/"
       - name: Move build to deploy
-        run: mv ./build/web ../deploy/data-collection
+        run: mv ./data_collection/build/web ../deploy/data-collection
         
       # Doxygen build
       - run: cd ..
@@ -62,6 +62,10 @@ jobs:
         run: doxygen doxygen-config
       - name: Move build to deploy
         run: mv ./docs/html ./deploy/docs
+      
+      - run: sudo apt-get install tree
+      - name: Show tree
+        run: tree ./deploy
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1

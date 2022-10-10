@@ -37,9 +37,10 @@ jobs:
       - name: Install Node dependencies
         working-directory: librarydemo
         run: npm install
+      - run: cd librarydemo
       - name: Demo app build
-        working-directory: librarydemo
         run: npm run build
+      - run: cd ..
       - name: Move build to new directory, deploy
         run: mv ./librarydemo/dist ./deploy
         
@@ -50,7 +51,7 @@ jobs:
           channel: 'stable'
       - name: Flutter Build
         working-directory: data_collection
-        run: flutter build web --base-href "/data-collection/"
+        run: flutter build web --base-href /${{ github.event.repository.name }}/data-collection/
       - name: Move build to deploy
         run: mv ./data_collection/build/web ./deploy/data-collection
         

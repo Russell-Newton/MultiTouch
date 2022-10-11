@@ -1,4 +1,4 @@
-name: Run pre-commit checks
+name: "Checks: pre-commit"
 
 # Run on any PR and pushes to main
 on:

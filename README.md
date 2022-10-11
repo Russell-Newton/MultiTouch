@@ -1,15 +1,33 @@
 # MultiTouch (name WIP)
+[![Deploy Artifacts to GitHub Pages](https://github.com/Russell-Newton/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/actions/workflows/pages_deploy.yml/badge.svg)](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/)
+[![Run pre-commit checks](https://github.com/Russell-Newton/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/Russell-Newton/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/actions/workflows/pre-commit.yml)
+
 A lightweight, robust touch gesture recognition library created in C for use within aircraft.
 
-# Documentation
-Documentation automatically created by workflow on [GitHub Pages](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/)
+# Demo and Documentation
+Demo web app automatically deployed to [GitHub Pages](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/).
+
+Documentation automatically deployed to [GitHub Pages](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/docs).
+
+Data collection web app automatically deployed to [GitHub Pages](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/data-collection)
 
 # Release Notes
+
+## Version 0.2.1
+### New Features
+* Included Flutter project to collect example gesture `.csv` data.
+* Pages deploy workflow modified to deploy web artifacts
+  * Demo app: deployed to [root endpoint](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/)
+  * Documentation: deployed to [/docs endpoint](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/docs)
+  * Data collection: deployed to [/data-collection endpoint](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/data-collection)
+### Known Issues
+* Some unit tests SEGFAULT
 
 ## Version 0.2.0
 ### New Features
 * Framework for recognizer files (header and c files) created
-* File organization updated* Doxygen document generator linked to library
+* File organization updated
+* Doxygen document generator linked to library
 * Vue project environment set up
 * Demo webapp front landing page created
 * GitHub Actions workflow created to generate and deploy Doxygen documentation from [doxygen-config](doxygen-config)

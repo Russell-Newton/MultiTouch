@@ -1,0 +1,85 @@
+name: Deploy Artifacts to GitHub Pages
+
+on:
+  push:
+    branches: [ $default-branch ]
+
+  workflow_dispatch:
+  
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  # Build job
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v2
+        
+      # Demo app build
+      - name: Node Setup
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+          cache-dependency-path: ./librarydemo/package-lock.json
+      - name: Install Node dependencies
+        working-directory: librarydemo
+        run: npm install
+      - name: Demo app build
+        run: |
+          cd librarydemo
+          npm run build
+      - name: Move build to new directory, deploy
+        run: mv ./librarydemo/dist ./deploy
+        
+      # Flutter build
+      - name: Flutter Setup
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Flutter Build
+        working-directory: data_collection
+        run: flutter build web --base-href /${{ github.event.repository.name }}/data-collection/
+      - name: Move build to deploy
+        run: mv ./data_collection/build/web ./deploy/data-collection
+        
+      # Doxygen build
+      - name: Doxygen Setup
+        run: sudo apt-get install doxygen -y
+      - name: Doxygen Build
+        run: doxygen doxygen-config
+      - name: Move build to deploy
+        run: mv ./docs/html ./deploy/docs
+      
+      - run: sudo apt-get install tree
+      - name: Show tree
+        run: tree ./deploy
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./deploy
+
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1

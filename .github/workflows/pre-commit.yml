@@ -4,7 +4,8 @@ name: "Checks: pre-commit"
 on:
   pull_request:
   push:
-    branches: [ $default-branch ]
+    branches:
+    - "main"
 
 jobs:
   pre-commit:

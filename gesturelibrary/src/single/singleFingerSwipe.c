@@ -9,8 +9,6 @@ gesture_event_t* recognize_swipe(touch_event_t* event) {
     // a different location, swipe is possible if swipe is possible and see a new location, status stays possible if we
     // get a null, stop distance recognition?? if the swipe went x millimeters far, we perform the action or its an
     // incomplete swipe
-
-    return 0;
 }
 
 sFingerSwipe_t* get_sFingerSwipe() {

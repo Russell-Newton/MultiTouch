@@ -11,6 +11,7 @@
 #ifndef MAX_RECOGNIZERS
 #define MAX_RECOGNIZERS 100
 #endif
+#define TOUCH_ID_UNDEFINED (MAX_TOUCHES + 1)
 
 /// @brief
 typedef enum event_type {
@@ -57,3 +58,12 @@ void init_gesturelib();
 /// @param max_gestures
 /// @return
 int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, int max_gestures);
+
+/// @brief assign a group ID to this touch_event. Update group_heads to reflect this. If this is not a DOWN event
+///        and there are no groups being tracked, do not assign an ID. If this is a DOWN event but MAX_TOUCHES groups
+///        are already being tracked, do not assign an ID.
+/// @param touch_event
+/// @return
+void assign_group(touch_event_t* touch_event);
+
+float squared_distance(touch_event_t* a, touch_event_t* b);

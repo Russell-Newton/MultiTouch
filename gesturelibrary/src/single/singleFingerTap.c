@@ -39,6 +39,7 @@ void clear_data() {
 }
 
 static void process_tap_down(touch_event_t* event) {
+    start         = event;
     updated_state = RECOGNIZER_STATE_START;
 }
 

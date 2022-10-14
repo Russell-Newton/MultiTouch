@@ -1,9 +1,12 @@
 #include <fstream>
 #include <gtest/gtest.h>
+#include <iostream>
 #include <sstream>
 
 extern "C" {
 #include "gesturelib.h"
+#include "recognizer.h"
+#include "singleFingerDrag.h"
 }
 
 using namespace std;
@@ -13,6 +16,8 @@ protected:
     vector<touch_event_t> touchEvents;
 
     void readTouchEvents(string fileName) {
+        touchEvents.clear();
+
         ifstream file;
         file.open(fileName);
         EXPECT_TRUE(file.is_open());
@@ -20,11 +25,14 @@ protected:
         string header;
         file >> header;
         vector<string> columns = split(header);
+        size_t indexType       = string::npos;
         size_t indexX          = string::npos;
         size_t indexY          = string::npos;
         size_t indexT          = string::npos;
         for (size_t index = 0; index < columns.size(); index++) {
-            if (columns[index] == "position.dx") {
+            if (columns[index] == "type") {
+                indexType = index;
+            } else if (columns[index] == "position.dx") {
                 indexX = index;
             } else if (columns[index] == "position.dy") {
                 indexY = index;
@@ -32,6 +40,7 @@ protected:
                 indexT = index;
             }
         }
+        EXPECT_NE(indexType, string::npos);
         EXPECT_NE(indexX, string::npos);
         EXPECT_NE(indexY, string::npos);
         EXPECT_NE(indexT, string::npos);
@@ -44,6 +53,13 @@ protected:
             }
             vector<string> data = split(event);
             touch_event_t touchEvent;
+            if (data[indexType] == "down") {
+                touchEvent.event_type = TOUCH_EVENT_DOWN;
+            } else if (data[indexType] == "move") {
+                touchEvent.event_type = TOUCH_EVENT_MOVE;
+            } else if (data[indexType] == "up") {
+                touchEvent.event_type = TOUCH_EVENT_UP;
+            }
             touchEvent.position_x = stof(data[indexX]);
             touchEvent.position_y = stof(data[indexY]);
             size_t index1         = data[indexT].find(':');
@@ -52,6 +68,7 @@ protected:
             int minutes           = stoi(data[indexT].substr(index1 + 1, index2));
             float seconds         = stof(data[indexT].substr(index2 + 1));
             touchEvent.timestamp  = 60 * 60 * hours + 60 * minutes + seconds;
+            touchEvent.id         = -1;
             touchEvents.push_back(touchEvent);
         } while (!file.eof());
     }
@@ -80,3 +97,67 @@ TEST_F(TestFlutter, TapPhone1) {
         process_touch_event(&event, nullptr, 0);
     }
 }
+
+class TestDrag : public TestFlutter, public testing::WithParamInterface<int> {
+protected:
+    void testDrag1() {
+        state_t s = RECOGNIZER_STATE_START;
+        for (touch_event_t event : touchEvents) {
+            gesture_event_t* gestures = new gesture_event_t[MAX_RECOGNIZERS];
+            process_touch_event(&event, gestures, MAX_RECOGNIZERS);
+            for (size_t i = 0; i < MAX_RECOGNIZERS; i++) {
+                if (gestures[i].type == GESTURE_TYPE_DRAG && gestures[i].num_touches == 1) {
+                    sFingerDrag_t* drags = ((sFingerDrag_t * (*)(void)) gestures[i].get_data)();
+                    bool found           = false;
+                    switch (s) {
+                    case RECOGNIZER_STATE_START:
+                        for (size_t j = 0; j < MAX_TOUCHES; j++) {
+                            if (drags[j].state == RECOGNIZER_STATE_POSSIBLE) {
+                                s     = drags[j].state;
+                                found = true;
+                                break;
+                            }
+                        }
+                        EXPECT_TRUE(found);
+                        break;
+                    case RECOGNIZER_STATE_POSSIBLE:
+                        for (size_t j = 0; j < MAX_TOUCHES; j++) {
+                            if (drags[j].state == RECOGNIZER_STATE_POSSIBLE ||
+                                drags[j].state == RECOGNIZER_STATE_IN_PROGRESS) {
+                                s     = drags[j].state;
+                                found = true;
+                                break;
+                            }
+                        }
+                        EXPECT_TRUE(found);
+                        break;
+                    case RECOGNIZER_STATE_IN_PROGRESS:
+                        for (size_t j = 0; j < MAX_TOUCHES; j++) {
+                            if (drags[j].state == RECOGNIZER_STATE_IN_PROGRESS ||
+                                drags[j].state == RECOGNIZER_STATE_COMPLETED) {
+                                s     = drags[j].state;
+                                found = true;
+                                break;
+                            }
+                        }
+                        EXPECT_TRUE(found);
+                        break;
+                    default:
+                        EXPECT_EQ("", "incorrect drag state found");
+                        break;
+                    }
+                    break;
+                }
+                EXPECT_EQ("", "failed to return drag gesture");
+            }
+            delete[] gestures;
+        }
+    }
+};
+
+TEST_P(TestDrag, DragPhone) {
+    readTouchEvents("res/drag/phone_" + to_string(GetParam()) + ".csv");
+    testDrag1();
+}
+
+INSTANTIATE_TEST_SUITE_P(DragPhoneTests, TestDrag, testing::Values(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));

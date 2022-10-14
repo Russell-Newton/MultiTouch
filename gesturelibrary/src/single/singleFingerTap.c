@@ -51,6 +51,14 @@ static void process_tap_move(touch_event_t* event) {
     }
 }
 
+static void process_tap_up(touch_event_t* event) {
+    process_tap_move(event);
+    if (updated_state == RECOGNIZER_STATE_FAILED) {
+        return;
+    }
+    updated_state = RECOGNIZER_STATE_COMPLETED;
+}
+
 sFingerTap_t* get_sFingerTap() {
     return sFingerTap_d;
 }

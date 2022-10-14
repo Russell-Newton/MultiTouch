@@ -32,6 +32,12 @@ gesture_event_t* recognize_single_tap(touch_event_t* event) {
     return 0;
 }
 
+void clear_data() {
+    for (int index = 0; index < MAX_TOUCHES; index++) {
+        sFingerTap_d[index] = 0;
+    }
+}
+
 sFingerTap_t* get_sFingerTap() {
     return sFingerTap_d;
 }

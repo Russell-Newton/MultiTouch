@@ -28,7 +28,6 @@ gesture_event_t* recognize_single_drag(touch_event_t* event) {
         break;
     }
 
-
     drag_gesture.type        = GESTURE_TYPE_DRAG;
     drag_gesture.num_touches = 1;
     drag_gesture.get_data    = (void* (*)(void))get_sFingerDrag;
@@ -46,6 +45,8 @@ static void process_drag_down(touch_event_t* event) {
         if (sFingerDrag_d[index].state == RECOGNIZER_STATE_START ||
             sFingerDrag_d[index].state == RECOGNIZER_STATE_FAILED ||
             sFingerDrag_d[index].state == RECOGNIZER_STATE_COMPLETED) {
+            sFingerDrag_d[index].x0          = event->position_x;
+            sFingerDrag_d[index].y0          = event->position_y;
             sFingerDrag_d[index].state       = RECOGNIZER_STATE_POSSIBLE;
             sFingerDrag_d[index].cache_start = 0;
             sFingerDrag_d[index].cache[0]    = *event;
@@ -100,12 +101,17 @@ static void calculate_velocity(sFingerDrag_t* data) {
     if (data->cache_size < DRAG_CACHED_TOUCH_EVENTS) {
         return;
     } else {
-        if (data->state == RECOGNIZER_STATE_POSSIBLE) {
-            data->state = RECOGNIZER_STATE_IN_PROGRESS;
-        }
         int end_index = (data->cache_start + data->cache_size - 1) % DRAG_CACHED_TOUCH_EVENTS;
         float vx      = 0;
         float vy      = 0;
+        if (data->state == RECOGNIZER_STATE_POSSIBLE) {
+            float dx       = data->cache[end_index].position_x - data->x0;
+            float dy       = data->cache[end_index].position_y - data->y0;
+            float distance = dx * dx + dy * dy;
+            if (distance > DRAG_MIN_DIST * DRAG_MIN_DIST) {
+                data->state = RECOGNIZER_STATE_IN_PROGRESS;
+            }
+        }
         for (int index = data->cache_start; index != end_index; index = (index + 1) % DRAG_CACHED_TOUCH_EVENTS) {
             vx += data->cache[(index + 1) % DRAG_CACHED_TOUCH_EVENTS].position_x - data->cache[index].position_x;
             vy += data->cache[(index + 1) % DRAG_CACHED_TOUCH_EVENTS].position_y - data->cache[index].position_y;

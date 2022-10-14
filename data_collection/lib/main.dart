@@ -36,10 +36,6 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final List<String> _details = List.empty(growable: true);
 
-  _MyStatefulWidgetState() {
-    _details.add("type,down,position.dx,position.dy,timeStamp");
-  }
-
   void _processPointerDown(PointerEvent details) {
     _printDetails(details, "down");
   }
@@ -57,12 +53,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   void _downloadDetails() {
+    _details.insert(0, "type,down,position.dx,position.dy,timeStamp");
     String contents = "${_details.join("\n")}\n";
     List<int> bytes = utf8.encode(contents);
     String encoded = base64Encode(bytes);
     AnchorElement anchor = AnchorElement(href: "data:application/octet-stream;charset=utf-8;base64,$encoded");
     anchor.setAttribute("download", "gesture_${DateTime.now().toIso8601String()}.csv");
     anchor.click();
+    _details.clear();
   }
 
   @override

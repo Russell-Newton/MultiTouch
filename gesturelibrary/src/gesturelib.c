@@ -1,6 +1,7 @@
 #include "gesturelib.h"
 
 #include "singleFingerDouble.h"
+#include "singleFingerDrag.h"
 #include "singleFingerHold.h"
 #include "singleFingerSwipe.h"
 #include "singleFingerTap.h"
@@ -24,6 +25,9 @@ void init_gesturelib() {
 
     recognizers[3].enabled   = 1;
     recognizers[3].recognize = recognize_swipe;
+
+    recognizers[4].enabled   = 1;
+    recognizers[4].recognize = recognize_single_drag;
 }
 
 int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, int max_gestures) {

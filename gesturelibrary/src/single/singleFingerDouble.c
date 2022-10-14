@@ -10,9 +10,10 @@ gesture_event_t* recognize_double_tap(touch_event_t* event) {
     // TODO: take the last touch event in the data array and compare the time stamp of that one and this one and update
     // the state if the two could be a double tap
 
-    if (event->timestamp - prev_event->timestamp > DIFF) {
-        sFingerDTap_d[0].state = RECOGNIZER_STATE_POSSIBLE;
-    }
+    // TODO: The following section has been commented since it causes a segfault.
+    // if (event->timestamp - prev_event->timestamp > DIFF) {
+    //     sFingerDTap_d[0].state = RECOGNIZER_STATE_POSSIBLE;
+    // }
 
     return 0;
 }

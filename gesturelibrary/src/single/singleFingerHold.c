@@ -14,10 +14,11 @@ gesture_event_t* recognize_single_hold(touch_event_t* event) {
     // needs to be a second long) if last was a drag (drag's state is possible) this is default false if we didn't see a
     // null at the end of it
 
-    if (event->timestamp - prev_event->timestamp > 10) {
-        // clear prev events
-        sFingerHold_d[0].state = RECOGNIZER_STATE_POSSIBLE;
-    }
+    // TODO: The following section has been commented since it causes a segfault.
+    // if (event->timestamp - prev_event->timestamp > 10) {
+    //     // clear prev events
+    //     sFingerHold_d[0].state = RECOGNIZER_STATE_POSSIBLE;
+    // }
 
     return 0;
 }

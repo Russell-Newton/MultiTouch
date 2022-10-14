@@ -4,7 +4,14 @@
 
 sFingerTap_t sFingerTap_d[MAX_TOUCHES];
 
-static touch_event_t* prev_event;
+gesture_event_t tap_gesture;
+
+static state_t updated_state;
+static touch_event_t* start;
+
+static void process_tap_down(touch_event_t* event);
+static void process_tap_move(touch_event_t* event);
+static void process_tap_up(touch_event_t* event);
 
 gesture_event_t* recognize_single_tap(touch_event_t* event) {
     // TODO: update state based on event (complete in sprint 3)

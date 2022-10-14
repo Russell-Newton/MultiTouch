@@ -38,6 +38,9 @@ void clear_data() {
     }
 }
 
+static void process_tap_down(touch_event_t* event) {
+}
+
 static void process_tap_move(touch_event_t* event) {
     if (updated_state == RECOGNIZER_STATE_FAILED) {
         return;

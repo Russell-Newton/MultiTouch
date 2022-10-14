@@ -11,6 +11,10 @@
 #define TAP_DISTANCE 100
 #endif
 
+#ifndef TAP_TIME
+#define TAP_TIME 7
+#endif
+
 /// @brief
 typedef struct sFingerTap {
     state_t state;

@@ -38,6 +38,15 @@ void clear_data() {
     }
 }
 
+sFingerTap_t create_tap_data(state_t state, touch_event_t* event) {
+    sFingerTap_t tap_data;
+    tap_data.state     = state;
+    tap_data.last_x    = event->position_x;
+    tap_data.last_y    = event->position_y;
+    tap_data.last_time = event->timestamp;
+    return tap_data;
+}
+
 static void process_tap_down(touch_event_t* event) {
     start         = event;
     updated_state = RECOGNIZER_STATE_START;

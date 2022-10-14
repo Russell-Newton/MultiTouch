@@ -14,22 +14,25 @@ static void process_tap_move(touch_event_t* event);
 static void process_tap_up(touch_event_t* event);
 
 gesture_event_t* recognize_single_tap(touch_event_t* event) {
-    // TODO: update state based on event (complete in sprint 3)
-    // NOTE: if the timestamp of the new event is too far from the timestamp of the last one, this can no longer be
-    // possible
+    switch (event->event_type) {
+    case TOUCH_EVENT_DOWN:
+        process_tap_down(event);
+        break;
+    case TOUCH_EVENT_MOVE:
+        process_tap_move(event);
+        break;
+    case TOUCH_EVENT_UP:
+        process_tap_up(event);
+        break;
+    default:
+        break;
+    }
+    sFingerTap_d[0] = create_tap_data(updated_state, event);
 
-    // TODO: The following section has been commented since it causes a segfault.
-    // if (!(event->event_type == TOUCH_EVENT_DOWN)) {
-    //     sFingerTap_d[0].state =
-    //         (sFingerTap_d[0].state == RECOGNIZER_STATE_POSSIBLE) ? RECOGNIZER_STATE_COMPLETED :
-    //         RECOGNIZER_STATE_FAILED;
-    // } else {
-    //     if (event->timestamp - prev_event->timestamp > TAP_LENGTH) {
-    //         sFingerTap_d[0].state = RECOGNIZER_STATE_FAILED;
-    //     }
-    // }
-
-    return 0;
+    tap_gesture.type        = GESTURE_TYPE_TAP;
+    tap_gesture.num_touches = 1;
+    tap_gesture.get_data    = (void* (*)(void))get_sFingerTap;
+    return &tap_gesture;
 }
 
 void clear_data() {

@@ -108,7 +108,7 @@ static void calculate_velocity(sFingerDrag_t* data) {
             float dx       = data->cache[end_index].position_x - data->x0;
             float dy       = data->cache[end_index].position_y - data->y0;
             float distance = dx * dx + dy * dy;
-            if (distance > DRAG_MIN_DIST * DRAG_MIN_DIST) {
+            if (distance > DRAG_DIST_MIN * DRAG_DIST_MIN) {
                 data->state = RECOGNIZER_STATE_IN_PROGRESS;
             }
         }

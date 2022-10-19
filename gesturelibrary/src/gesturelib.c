@@ -47,7 +47,7 @@ int add_recognizer(gesture_event_t* (*recognize)(touch_event_t*)) {
 gesture_recognizer_t remove_recognizer(int recognizer) {
     if (recognizer < 0 || recognizer >= num_recognizers) {
         gesture_recognizer_t null_recognizer = {.recognize = 0, .enabled = 0};
-        return null_recognizer
+        return null_recognizer;
     }
     gesture_recognizer_t out = recognizers[recognizer];
     for (unsigned int i = recognizer; i < num_recognizers - 1; i++) {

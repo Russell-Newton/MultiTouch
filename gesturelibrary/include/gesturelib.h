@@ -58,3 +58,21 @@ void init_gesturelib();
 /// @param max_gestures
 /// @return
 int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, int max_gestures);
+
+///
+/// @param recognize the recognition function to add
+/// @return which index the recognizer is saved to
+int add_recognizer(gesture_event_t* (*recognizer)(touch_event_t*));
+
+///
+/// @param recognizer which recognizer to remove
+/// @return the removed recognizer
+gesture_recognizer_t remove_recognizer(int recognizer);
+
+///
+/// @param recognizer which recognizer to enable
+void enable_recognizer(int recognizer);
+
+///
+/// @param recognizer which recognizer to disable
+void disable_recognizer(int recognizer);

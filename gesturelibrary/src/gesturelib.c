@@ -36,12 +36,19 @@ int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, i
 }
 
 int add_recognizer(gesture_event_t* (*recognize)(touch_event_t*)) {
+    if (num_recognizers == MAX_RECOGNIZERS) {
+        return -1;
+    }
     gesture_recognizer_t recognizer = { .recognize = recognize, .enabled = 1 };
     recognizers[num_recognizers++] = recognizer;
     return num_recognizers - 1;
 }
 
 gesture_recognizer_t remove_recognizer(int recognizer) {
+    if (recognizer < 0 || recognizer >= num_recognizers) {
+        gesture_recognizer_t null_recognizer = { .recognize = 0, .enabled = 0 };
+        return null_recognizer
+    }
     gesture_recognizer_t out = recognizers[recognizer];
     for (unsigned int i = recognizer; i < num_recognizers - 1; i++) {
         recognizers[i] = recognizers[i + 1];
@@ -51,10 +58,22 @@ gesture_recognizer_t remove_recognizer(int recognizer) {
     return out;
 }
 
-void enable_recognizer(int recognizer) {
+int enable_recognizer(int recognizer) {
+    if (recognizer < 0 || recognizer >= num_recognizers) {
+        return 0;
+    }
     recognizers[recognizer].enabled = 1;
+    return 1;
 }
 
-void disable_recognizer(int recognizer) {
+int disable_recognizer(int recognizer) {
+    if (recognizer < 0 || recognizer >= num_recognizers) {
+        return 0;
+    }
     recognizers[recognizer].enabled = 0;
+    return 1;
+}
+
+int get_num_recognizers() {
+    return num_recognizers;
 }

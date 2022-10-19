@@ -61,18 +61,24 @@ int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, i
 
 ///
 /// @param recognize the recognition function to add
-/// @return which index the recognizer is saved to
+/// @return which index the recognizer is saved to. -1 if the recognizer couldn't be saved
 int add_recognizer(gesture_event_t* (*recognizer)(touch_event_t*));
 
 ///
 /// @param recognizer which recognizer to remove
-/// @return the removed recognizer
+/// @return the removed recognizer. A "null" recognizer if an invalid index is provided
 gesture_recognizer_t remove_recognizer(int recognizer);
 
-///
+/// @brief
 /// @param recognizer which recognizer to enable
-void enable_recognizer(int recognizer);
+/// @return 0 if an invalid index is provided, 1 otherwise
+int enable_recognizer(int recognizer);
 
-///
+/// @brief
 /// @param recognizer which recognizer to disable
-void disable_recognizer(int recognizer);
+/// @return 0 if an invalid index is provided, 1 otherwise
+int disable_recognizer(int recognizer);
+
+/// @brief
+/// @return the number of registered recognizers
+int get_num_recognizers();

@@ -11,14 +11,16 @@ gesture_event_t* recognize_single_tap(touch_event_t* event) {
     // NOTE: if the timestamp of the new event is too far from the timestamp of the last one, this can no longer be
     // possible
 
-    if (!(event->event_type == TOUCH_EVENT_DOWN)) {
-        sFingerTap_d[0].state =
-            (sFingerTap_d[0].state == RECOGNIZER_STATE_POSSIBLE) ? RECOGNIZER_STATE_COMPLETED : RECOGNIZER_STATE_FAILED;
-    } else {
-        if (event->timestamp - prev_event->timestamp > TAP_LENGTH) {
-            sFingerTap_d[0].state = RECOGNIZER_STATE_FAILED;
-        }
-    }
+    // TODO: The following section has been commented since it causes a segfault.
+    // if (!(event->event_type == TOUCH_EVENT_DOWN)) {
+    //     sFingerTap_d[0].state =
+    //         (sFingerTap_d[0].state == RECOGNIZER_STATE_POSSIBLE) ? RECOGNIZER_STATE_COMPLETED :
+    //         RECOGNIZER_STATE_FAILED;
+    // } else {
+    //     if (event->timestamp - prev_event->timestamp > TAP_LENGTH) {
+    //         sFingerTap_d[0].state = RECOGNIZER_STATE_FAILED;
+    //     }
+    // }
 
     return 0;
 }

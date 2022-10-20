@@ -22,7 +22,7 @@ Data collection web app automatically deployed to [GitHub Pages](https://russell
   * Documentation: deployed to [/docs endpoint](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/docs)
   * Data collection: deployed to [/data-collection endpoint](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/data-collection)
 ### Known Issues
-* Some unit tests SEGFAULT
+* Some unit tests SEGFAULT. These have been commented so the unit test workflow passes.
 
 ## Version 0.2.0
 ### New Features

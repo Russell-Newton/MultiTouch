@@ -46,11 +46,11 @@ int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, i
     return size;
 }
 
-void assign_group(touch_event_t* touch_event) {
+unsigned int assign_group(touch_event_t* touch_event) {
     if (touch_event->event_type == TOUCH_EVENT_DOWN) {
         unsigned int free_group = MAX_TOUCHES;
         // Find the first untracked group to assign this touch to
-        for (unsigned int i = 1; i < MAX_TOUCHES; i++) {
+        for (unsigned int i = 0; i < MAX_TOUCHES; i++) {
             if (groups_heads[i]->event_type == TOUCH_EVENT_UP) {
                 free_group = i;
                 break;
@@ -59,12 +59,12 @@ void assign_group(touch_event_t* touch_event) {
 
         // return early if no free groups
         if (free_group == MAX_TOUCHES) {
-            return;
+            return TOUCH_ID_UNDEFINED;
         }
 
         touch_event->id          = free_group;
         groups_heads[free_group] = touch_event;
-        return;
+        return free_group;
     }
 
     // Find the closest tracked group
@@ -72,7 +72,7 @@ void assign_group(touch_event_t* touch_event) {
     float closest_dist         = -1;
     for (unsigned int i = 0; i < MAX_TOUCHES; i++) {
         // skip untracked groups
-        if (groups_heads[i]->id == TOUCH_EVENT_UP) {
+        if (groups_heads[i]->event_type == TOUCH_EVENT_UP) {
             continue;
         }
 
@@ -85,11 +85,13 @@ void assign_group(touch_event_t* touch_event) {
 
     // return if all groups are untracked
     if (closest_group == TOUCH_ID_UNDEFINED) {
-        return;
+        return TOUCH_ID_UNDEFINED;
     }
 
     touch_event->id             = closest_group;
     groups_heads[closest_group] = touch_event;
+
+    return closest_group;
 }
 
 float squared_distance(touch_event_t* a, touch_event_t* b) {
@@ -135,8 +137,4 @@ int disable_recognizer(int recognizer) {
     }
     recognizers[recognizer].enabled = 0;
     return 1;
-}
-
-int get_num_recognizers() {
-    return num_recognizers;
 }

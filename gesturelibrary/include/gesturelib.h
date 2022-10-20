@@ -13,6 +13,8 @@
 #endif
 #define TOUCH_ID_UNDEFINED (MAX_TOUCHES + 1)
 
+extern int num_recognizers;
+
 /// @brief
 typedef enum event_type {
     TOUCH_EVENT_DOWN,
@@ -65,7 +67,7 @@ int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, i
 ///        are already being tracked, do not assign an ID.
 /// @param touch_event
 /// @return
-void assign_group(touch_event_t* touch_event);
+unsigned int assign_group(touch_event_t* touch_event);
 
 float squared_distance(touch_event_t* a, touch_event_t* b);
 
@@ -88,7 +90,3 @@ int enable_recognizer(int recognizer);
 /// @param recognizer which recognizer to disable
 /// @return 0 if an invalid index is provided, 1 otherwise
 int disable_recognizer(int recognizer);
-
-/// @brief
-/// @return the number of registered recognizers
-int get_num_recognizers();

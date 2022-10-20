@@ -7,16 +7,12 @@
 #include "singleFingerTap.h"
 
 gesture_recognizer_t recognizers[MAX_RECOGNIZERS];
+int num_recognizers = 0;
 
 /// @brief set containing most recent touch within finger group
 touch_event_t* groups_heads[MAX_TOUCHES];
 touch_event_t empty_touch_event = {
-    .event_type = TOUCH_EVENT_UP,
-    .position_x = 0,
-    .position_y = 0,
-    .timestamp = 0,
-    .id = TOUCH_ID_UNDEFINED
-};
+    .event_type = TOUCH_EVENT_UP, .position_x = 0, .position_y = 0, .timestamp = 0, .id = TOUCH_ID_UNDEFINED};
 
 /** This is a documentation test. **/
 void init_gesturelib() {
@@ -27,20 +23,11 @@ void init_gesturelib() {
         groups_heads[i] = &empty_touch_event;
     }
 
-    recognizers[0].enabled   = 1;
-    recognizers[0].recognize = recognize_single_tap;
-
-    recognizers[1].enabled   = 1;
-    recognizers[1].recognize = recognize_double_tap;
-
-    recognizers[2].enabled   = 1;
-    recognizers[2].recognize = recognize_single_hold;
-
-    recognizers[3].enabled   = 1;
-    recognizers[3].recognize = recognize_swipe;
-
-    recognizers[4].enabled   = 1;
-    recognizers[4].recognize = recognize_single_drag;
+    add_recognizer(recognize_single_tap);
+    add_recognizer(recognize_double_tap);
+    add_recognizer(recognize_single_hold);
+    add_recognizer(recognize_swipe);
+    add_recognizer(recognize_single_drag);
 }
 
 int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, int max_gestures) {
@@ -75,7 +62,7 @@ void assign_group(touch_event_t* touch_event) {
             return;
         }
 
-        touch_event->id = free_group;
+        touch_event->id          = free_group;
         groups_heads[free_group] = touch_event;
         return;
     }
@@ -101,12 +88,55 @@ void assign_group(touch_event_t* touch_event) {
         return;
     }
 
-    touch_event->id = closest_group;
+    touch_event->id             = closest_group;
     groups_heads[closest_group] = touch_event;
 }
 
 float squared_distance(touch_event_t* a, touch_event_t* b) {
     float dx = a->position_x - b->position_x;
     float dy = a->position_y - b->position_y;
-    return dx * dx + dy * dy
+    return dx * dx + dy * dy;
+}
+
+int add_recognizer(gesture_event_t* (*recognize)(touch_event_t*)) {
+    if (num_recognizers == MAX_RECOGNIZERS) {
+        return -1;
+    }
+    gesture_recognizer_t recognizer = {.recognize = recognize, .enabled = 1};
+    recognizers[num_recognizers++]  = recognizer;
+    return num_recognizers - 1;
+}
+
+gesture_recognizer_t remove_recognizer(int recognizer) {
+    if (recognizer < 0 || recognizer >= num_recognizers) {
+        gesture_recognizer_t null_recognizer = {.recognize = 0, .enabled = 0};
+        return null_recognizer;
+    }
+    gesture_recognizer_t out = recognizers[recognizer];
+    for (unsigned int i = recognizer; i < num_recognizers - 1; i++) {
+        recognizers[i] = recognizers[i + 1];
+    }
+    num_recognizers--;
+
+    return out;
+}
+
+int enable_recognizer(int recognizer) {
+    if (recognizer < 0 || recognizer >= num_recognizers) {
+        return 0;
+    }
+    recognizers[recognizer].enabled = 1;
+    return 1;
+}
+
+int disable_recognizer(int recognizer) {
+    if (recognizer < 0 || recognizer >= num_recognizers) {
+        return 0;
+    }
+    recognizers[recognizer].enabled = 0;
+    return 1;
+}
+
+int get_num_recognizers() {
+    return num_recognizers;
 }

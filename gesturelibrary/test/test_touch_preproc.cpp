@@ -13,15 +13,8 @@ using namespace std;
 
 class TestPreprocessing : public testing::Test {
 protected:
-    void DisableRecognizers() {
-        for (int i = 0; i < num_recognizers; i++) {
-            disable_recognizer(i);
-        }
-    }
-
     void SetUp() override {
         init_gesturelib();
-        this->DisableRecognizers();
     }
 };
 

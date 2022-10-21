@@ -69,8 +69,6 @@ int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, i
 /// @return
 unsigned int assign_group(touch_event_t* touch_event);
 
-float squared_distance(touch_event_t* a, touch_event_t* b);
-
 /// @brief register a recognizer via a recognition function
 /// @param recognize the recognition function to add
 /// @return which index the recognizer is saved to. -1 if the recognizer couldn't be saved

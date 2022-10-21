@@ -14,6 +14,8 @@ touch_event_t* groups_heads[MAX_TOUCHES];
 touch_event_t empty_touch_event = {
     .event_type = TOUCH_EVENT_UP, .position_x = 0, .position_y = 0, .timestamp = 0, .id = TOUCH_ID_UNDEFINED};
 
+float squared_distance(touch_event_t* a, touch_event_t* b);
+
 /** This is a documentation test. **/
 void init_gesturelib() {
     for (uint32_t index = 0; index < MAX_RECOGNIZERS; index++) {

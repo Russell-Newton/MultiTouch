@@ -14,7 +14,7 @@ touch_event_t* groups_heads[MAX_TOUCHES];
 touch_event_t empty_touch_event = {
     .event_type = TOUCH_EVENT_UP, .position_x = 0, .position_y = 0, .timestamp = 0, .id = TOUCH_ID_UNDEFINED};
 
-float squared_distance(touch_event_t* a, touch_event_t* b);
+static float squared_distance(touch_event_t* a, touch_event_t* b);
 
 /** This is a documentation test. **/
 void init_gesturelib() {
@@ -79,7 +79,8 @@ unsigned int assign_group(touch_event_t* touch_event) {
         }
 
         float dist = squared_distance(groups_heads[i], touch_event);
-        if (closest_group == TOUCH_ID_UNDEFINED || dist < closest_dist) {
+        if (dist <= EVENT_GROUPING_DIST_MAX * EVENT_GROUPING_DIST_MAX &&
+            (closest_group == TOUCH_ID_UNDEFINED || dist < closest_dist)) {
             closest_group = i;
             closest_dist  = dist;
         }
@@ -96,7 +97,7 @@ unsigned int assign_group(touch_event_t* touch_event) {
     return closest_group;
 }
 
-float squared_distance(touch_event_t* a, touch_event_t* b) {
+static float squared_distance(touch_event_t* a, touch_event_t* b) {
     float dx = a->position_x - b->position_x;
     float dy = a->position_y - b->position_y;
     return dx * dx + dy * dy;

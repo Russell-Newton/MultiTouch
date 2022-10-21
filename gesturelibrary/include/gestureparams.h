@@ -1,5 +1,7 @@
 #pragma once
 
+#define EVENT_GROUPING_DIST_MAX 150
+
 // float time in seconds for longest tap and shortest hold/drag
 #define TAP_TIME_MAX  1
 #define HOLD_TIME_MIN TAP_TIME_MAX

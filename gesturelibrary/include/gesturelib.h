@@ -1,5 +1,6 @@
 #pragma once
 
+#include "gestureparams.h"
 #include "stdint.h"
 
 #ifndef SAVED_EVENTS

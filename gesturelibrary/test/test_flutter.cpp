@@ -101,7 +101,8 @@ TEST_F(TestFlutter, TapPhone1) {
 class TestDrag : public TestFlutter, public testing::WithParamInterface<int> {
 protected:
     void testDrag1() {
-        state_t s = RECOGNIZER_STATE_START;
+        state_t s       = RECOGNIZER_STATE_START;
+        bool drag_found = false;
         for (touch_event_t event : touchEvents) {
             gesture_event_t* gestures = new gesture_event_t[MAX_RECOGNIZERS];
             process_touch_event(&event, gestures, MAX_RECOGNIZERS);
@@ -146,9 +147,12 @@ protected:
                         EXPECT_EQ("", "incorrect drag state found");
                         break;
                     }
+                    drag_found = true;
                     break;
                 }
-                EXPECT_EQ("", "failed to return drag gesture");
+            }
+            if (!drag_found) {
+                EXPECT_EQ("", "incorrect drag state found");
             }
             delete[] gestures;
         }

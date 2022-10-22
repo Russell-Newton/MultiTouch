@@ -1,19 +1,8 @@
 #pragma once
 
 #include "gesturelib.h"
+#include "gestureparams.h"
 #include "recognizer.h"
-
-#ifndef TAP_LENGTH
-#define TAP_LENGTH 10
-#endif
-
-#ifndef TAP_DISTANCE
-#define TAP_DISTANCE 100
-#endif
-
-#ifndef TAP_TIME
-#define TAP_TIME 7
-#endif
 
 /// @brief
 typedef struct sFingerTap {

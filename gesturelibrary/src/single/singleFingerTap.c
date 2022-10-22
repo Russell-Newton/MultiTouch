@@ -68,9 +68,10 @@ static void process_tap_move(touch_event_t* event) {
     if (updated_state == RECOGNIZER_STATE_FAILED) {
         return;
     }
-    float deltaX = event->position_x - start->position_x;
-    float deltaY = event->position_y - start->position_y;
-    if (deltaX * deltaX + deltaY * deltaY > TAP_DISTANCE || event->timestamp - start->timestamp > TAP_TIME) {
+    float deltaX   = event->position_x - start->position_x;
+    float deltaY   = event->position_y - start->position_y;
+    float distance = deltaX * deltaX + deltaY * deltaY;
+    if (distance > TAP_DIST_MAX || event->timestamp - start->timestamp > TAP_TIME_MAX) {
         updated_state = RECOGNIZER_STATE_FAILED;
     } else {
         updated_state = RECOGNIZER_STATE_POSSIBLE;

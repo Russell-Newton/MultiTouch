@@ -69,7 +69,7 @@ protected:
             int minutes           = stoi(data[indexT].substr(index1 + 1, index2));
             float seconds         = stof(data[indexT].substr(index2 + 1));
             touchEvent.timestamp  = 60 * 60 * hours + 60 * minutes + seconds;
-            touchEvent.id         = -1;
+            touchEvent.id         = TOUCH_ID_UNDEFINED;
             touchEvents.push_back(touchEvent);
         } while (!file.eof());
     }

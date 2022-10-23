@@ -35,7 +35,8 @@ typedef enum gesture_type {
     GESTURE_TYPE_SWIPE,
     GESTURE_TYPE_HOLD,
     GESTURE_TYPE_DOUBLE_TAP,
-    GESTURE_TYPE_DRAG
+    GESTURE_TYPE_DRAG,
+    GESTURE_TYPE_ZOOM_AND_ROTATE
 } gesture_type_t;
 
 /// @brief

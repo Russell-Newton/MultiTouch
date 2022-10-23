@@ -1,13 +1,15 @@
+#include <cmath>
 #include <fstream>
 #include <gtest/gtest.h>
 #include <iostream>
 #include <sstream>
 
 extern "C" {
+#include "drag.h"
 #include "gesturelib.h"
 #include "recognizer.h"
-#include "singleFingerDrag.h"
 #include "singleFingerTap.h"
+#include "zoom_and_rotate.h"
 }
 
 using namespace std;
@@ -92,73 +94,107 @@ private:
     }
 };
 
-TEST_F(TestFlutter, TapPhone1) {
-    readTouchEvents("res/tap/phone_1.csv");
-    for (touch_event_t event : touchEvents) {
-        process_touch_event(&event, nullptr, 0);
+struct DragTestParams {
+    string path;
+    size_t num;
+
+    DragTestParams(const string& path, size_t num) {
+        this->path = path;
+        this->num  = num;
     }
+};
+
+ostream& operator<<(ostream& stream, const DragTestParams& params) {
+    stream << params.path;
+    return stream;
 }
 
-class TestDrag : public TestFlutter, public testing::WithParamInterface<int> {
+class TestDrag : public TestFlutter, public testing::WithParamInterface<DragTestParams> {
 protected:
-    void testDrag1() {
-        state_t s = RECOGNIZER_STATE_START;
+    void testStates(size_t num) {
+        state_t* s = new state_t[num];
+        for (size_t index = 0; index < num; index++) {
+            s[index] = RECOGNIZER_STATE_START;
+        }
         for (touch_event_t event : touchEvents) {
-            bool drag_found           = false;
+            bool found                = false;
             gesture_event_t* gestures = new gesture_event_t[MAX_RECOGNIZERS];
             process_touch_event(&event, gestures, MAX_RECOGNIZERS);
             for (size_t i = 0; i < MAX_RECOGNIZERS; i++) {
                 if (gestures[i].type == GESTURE_TYPE_DRAG && gestures[i].num_touches == 1) {
-                    sFingerDrag_t* drags = ((sFingerDrag_t * (*)(void)) gestures[i].get_data)();
-                    bool found           = false;
-                    switch (s) {
-                    case RECOGNIZER_STATE_START:
-                        for (size_t j = 0; j < MAX_TOUCHES; j++) {
-                            if (drags[j].state == RECOGNIZER_STATE_POSSIBLE) {
-                                s     = drags[j].state;
-                                found = true;
-                                break;
-                            }
+                    drag_t* drags = ((drag_t * (*)(void)) gestures[i].get_data)();
+                    for (size_t index = 0; index < num; index++) {
+                        cout << "vx_" << index << ": " << drags[index].vx << ", "
+                             << "vy_" << index << ": " << drags[index].vy << ", "
+                             << "m_" << index << ": " << sqrt(pow(drags[index].vx, 2) + pow(drags[index].vy, 2)) << ", "
+                             << "a_" << index << ": " << atan2(drags[index].vy, drags[index].vx) << endl;
+                        switch (s[index]) {
+                        case RECOGNIZER_STATE_START:
+                            EXPECT_TRUE(drags[index].state == RECOGNIZER_STATE_START ||
+                                        drags[index].state == RECOGNIZER_STATE_POSSIBLE);
+                            s[index] = drags[index].state;
+                            break;
+                        case RECOGNIZER_STATE_POSSIBLE:
+                            EXPECT_TRUE(drags[index].state == RECOGNIZER_STATE_POSSIBLE ||
+                                        drags[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                            s[index] = drags[index].state;
+                            break;
+                        case RECOGNIZER_STATE_IN_PROGRESS:
+                            EXPECT_TRUE(drags[index].state == RECOGNIZER_STATE_IN_PROGRESS ||
+                                        drags[index].state == RECOGNIZER_STATE_COMPLETED);
+                            s[index] = drags[index].state;
+                            break;
+                        default:
+                            EXPECT_EQ(s[index], RECOGNIZER_STATE_COMPLETED);
+                            break;
                         }
-                        EXPECT_TRUE(found);
-                        break;
-                    case RECOGNIZER_STATE_POSSIBLE:
-                        for (size_t j = 0; j < MAX_TOUCHES; j++) {
-                            if (drags[j].state == RECOGNIZER_STATE_POSSIBLE ||
-                                drags[j].state == RECOGNIZER_STATE_IN_PROGRESS) {
-                                s     = drags[j].state;
-                                found = true;
-                                break;
-                            }
-                        }
-                        EXPECT_TRUE(found);
-                        break;
-                    case RECOGNIZER_STATE_IN_PROGRESS:
-                        for (size_t j = 0; j < MAX_TOUCHES; j++) {
-                            if (drags[j].state == RECOGNIZER_STATE_IN_PROGRESS ||
-                                drags[j].state == RECOGNIZER_STATE_COMPLETED) {
-                                s     = drags[j].state;
-                                found = true;
-                                break;
-                            }
-                        }
-                        EXPECT_TRUE(found);
-                        break;
-                    default:
-                        EXPECT_EQ("", "incorrect drag state found");
-                        break;
                     }
-                    drag_found = true;
+                    for (size_t index = num; index < MAX_TOUCHES; index++) {
+                        EXPECT_EQ(drags[index].state, RECOGNIZER_STATE_START);
+                    }
+                    found = true;
                     break;
                 }
             }
-            if (!drag_found) {
-                EXPECT_EQ("", "failed to return drag gesture");
-            }
+            EXPECT_TRUE(found);
             delete[] gestures;
         }
+        delete[] s;
     }
 };
+
+TEST_P(TestDrag, States) {
+    readTouchEvents("res/" + GetParam().path + ".csv");
+    testStates(GetParam().num);
+}
+
+INSTANTIATE_TEST_SUITE_P(DragTests,
+                         TestDrag,
+                         testing::Values(
+                             // 1 finger drags
+                             DragTestParams{"drag/phone_1", 1},
+                             DragTestParams{"drag/phone_2", 1},
+                             DragTestParams{"drag/phone_3", 1},
+                             DragTestParams{"drag/phone_4", 1},
+                             DragTestParams{"drag/phone_5", 1},
+                             DragTestParams{"drag/phone_6", 1},
+                             DragTestParams{"drag/phone_7", 1},
+                             DragTestParams{"drag/phone_8", 1},
+                             DragTestParams{"drag/phone_9", 1},
+                             DragTestParams{"drag/phone_10", 1},
+                             // 2 finger drags
+                             DragTestParams{"drag/phone_11", 2},
+                             DragTestParams{"drag/phone_12", 2},
+                             DragTestParams{"drag/phone_13", 2},
+                             DragTestParams{"drag/phone_14", 2},
+                             // rotates
+                             DragTestParams{"rotate/phone_1", 2},
+                             DragTestParams{"rotate/phone_2", 2},
+                             // zooms
+                             DragTestParams{"zoom/phone_1", 2},
+                             DragTestParams{"zoom/phone_2", 2},
+                             DragTestParams{"zoom/phone_3", 2},
+                             DragTestParams{"zoom/phone_4", 2}));
 
 class TestTap : public TestFlutter, public testing::WithParamInterface<int> {
 protected:
@@ -199,16 +235,89 @@ protected:
     }
 };
 
-TEST_P(TestDrag, DragPhone) {
-    readTouchEvents("res/drag/phone_" + to_string(GetParam()) + ".csv");
-    testDrag1();
-}
-
 TEST_P(TestTap, TapPhone) {
     readTouchEvents("res/tap/phone_" + to_string(GetParam()) + ".csv");
     testTap1();
 }
 
-INSTANTIATE_TEST_SUITE_P(DragPhoneTests, TestDrag, testing::Values(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
-
 INSTANTIATE_TEST_SUITE_P(TapPhoneTests, TestTap, testing::Values(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+
+struct ZoomAndRotateTestParams {
+    string path;
+    size_t num;
+
+    ZoomAndRotateTestParams(const string& path, size_t num) {
+        this->path = path;
+        this->num  = num;
+    }
+};
+
+ostream& operator<<(ostream& stream, const ZoomAndRotateTestParams& params) {
+    stream << params.path;
+    return stream;
+}
+
+class TestZoomAndRotate : public TestFlutter, public testing::WithParamInterface<ZoomAndRotateTestParams> {
+protected:
+    void testStates(size_t num) {
+        state_t* s = new state_t[num];
+        for (size_t index = 0; index < num; index++) {
+            s[index] = RECOGNIZER_STATE_START;
+        }
+        for (touch_event_t event : touchEvents) {
+            bool found                = false;
+            gesture_event_t* gestures = new gesture_event_t[MAX_RECOGNIZERS];
+            process_touch_event(&event, gestures, MAX_RECOGNIZERS);
+            for (size_t i = 0; i < MAX_RECOGNIZERS; i++) {
+                if (gestures[i].type == GESTURE_TYPE_ZOOM_AND_ROTATE && gestures[i].num_touches == 2) {
+                    zoom_and_rotate_t* zoom_and_rotates = ((zoom_and_rotate_t * (*)(void)) gestures[i].get_data)();
+                    for (size_t index = 0; index < num; index++) {
+                        cout << "z_" << index << ": " << zoom_and_rotates[index].zoom << ", "
+                             << "r_" << index << ": " << zoom_and_rotates[index].rotate << ", "
+                             << "state_" << index << ": " << zoom_and_rotates[index].state << endl;
+                        switch (s[index]) {
+                        case RECOGNIZER_STATE_START:
+                            EXPECT_TRUE(zoom_and_rotates[index].state == RECOGNIZER_STATE_START ||
+                                        zoom_and_rotates[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                            s[index] = zoom_and_rotates[index].state;
+                            break;
+                        case RECOGNIZER_STATE_IN_PROGRESS:
+                            EXPECT_TRUE(zoom_and_rotates[index].state == RECOGNIZER_STATE_IN_PROGRESS ||
+                                        zoom_and_rotates[index].state == RECOGNIZER_STATE_COMPLETED);
+                            s[index] = zoom_and_rotates[index].state;
+                            break;
+                        default:
+                            EXPECT_EQ(s[index], RECOGNIZER_STATE_COMPLETED);
+                            break;
+                        }
+                    }
+                    for (size_t index = num; index < MAX_TOUCHES; index++) {
+                        EXPECT_EQ(zoom_and_rotates[index].state, RECOGNIZER_STATE_START);
+                    }
+                    found = true;
+                    break;
+                }
+            }
+            EXPECT_TRUE(found);
+            delete[] gestures;
+        }
+        delete[] s;
+    }
+};
+
+TEST_P(TestZoomAndRotate, States) {
+    readTouchEvents("res/" + GetParam().path + ".csv");
+    testStates(GetParam().num);
+}
+
+INSTANTIATE_TEST_SUITE_P(ZoomAndRotateTests,
+                         TestZoomAndRotate,
+                         testing::Values(
+                             // rotates
+                             ZoomAndRotateTestParams{"rotate/phone_1", 1},
+                             ZoomAndRotateTestParams{"rotate/phone_2", 1},
+                             // zooms
+                             ZoomAndRotateTestParams{"zoom/phone_1", 1},
+                             ZoomAndRotateTestParams{"zoom/phone_2", 1},
+                             ZoomAndRotateTestParams{"zoom/phone_3", 1},
+                             ZoomAndRotateTestParams{"zoom/phone_4", 1}));

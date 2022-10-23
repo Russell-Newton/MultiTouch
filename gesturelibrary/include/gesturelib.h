@@ -12,6 +12,9 @@
 #ifndef MAX_RECOGNIZERS
 #define MAX_RECOGNIZERS 100
 #endif
+#define TOUCH_ID_UNDEFINED (MAX_TOUCHES + 1)
+
+extern int num_recognizers;
 
 /// @brief
 typedef enum event_type {
@@ -60,6 +63,13 @@ void init_gesturelib();
 /// @return
 int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, int max_gestures);
 
+/// @brief assign a group ID to this touch_event. Update group_heads to reflect this. If this is not a DOWN event
+///        and there are no groups being tracked, do not assign an ID. If this is a DOWN event but MAX_TOUCHES groups
+///        are already being tracked, do not assign an ID.
+/// @param touch_event
+/// @return
+unsigned int assign_group(touch_event_t* touch_event);
+
 /// @brief register a recognizer via a recognition function
 /// @param recognize the recognition function to add
 /// @return which index the recognizer is saved to. -1 if the recognizer couldn't be saved
@@ -79,7 +89,3 @@ int enable_recognizer(int recognizer);
 /// @param recognizer which recognizer to disable
 /// @return 0 if an invalid index is provided, 1 otherwise
 int disable_recognizer(int recognizer);
-
-/// @brief
-/// @return the number of registered recognizers
-int get_num_recognizers();

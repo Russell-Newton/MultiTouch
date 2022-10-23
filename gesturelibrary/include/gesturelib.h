@@ -14,8 +14,6 @@
 #endif
 #define TOUCH_ID_UNDEFINED (MAX_TOUCHES + 1)
 
-extern int num_recognizers;
-
 /// @brief
 typedef enum event_type {
     TOUCH_EVENT_DOWN,
@@ -53,6 +51,9 @@ typedef struct gesture_recognizer {
     gesture_event_t* (*recognize)(touch_event_t*);
 } gesture_recognizer_t;
 
+extern int num_recognizers;
+extern touch_event_t latest_touch_events[];
+
 /// @brief
 void init_gesturelib();
 
@@ -62,13 +63,6 @@ void init_gesturelib();
 /// @param max_gestures
 /// @return
 int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, int max_gestures);
-
-/// @brief assign a group ID to this touch_event. Update group_heads to reflect this. If this is not a DOWN event
-///        and there are no groups being tracked, do not assign an ID. If this is a DOWN event but MAX_TOUCHES groups
-///        are already being tracked, do not assign an ID.
-/// @param touch_event
-/// @return
-unsigned int assign_group(touch_event_t* touch_event);
 
 /// @brief register a recognizer via a recognition function
 /// @param recognize the recognition function to add

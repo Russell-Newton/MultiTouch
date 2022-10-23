@@ -13,8 +13,15 @@ using namespace std;
 
 class TestPreprocessing : public testing::Test {
 protected:
+    static void DisableRecognizers() {
+        for (int i = 0; i < num_recognizers; i++) {
+            disable_recognizer(i);
+        }
+    }
+
     void SetUp() override {
         init_gesturelib();
+        DisableRecognizers();
     }
 };
 
@@ -25,8 +32,10 @@ TEST_F(TestPreprocessing, TestStationaryDownUp) {
     for (int i = 0; i < 5; i++) {
         down.timestamp = i * 2;
         up.timestamp   = i * 2 + 1;
-        EXPECT_EQ(assign_group(&down), 0);
-        EXPECT_EQ(assign_group(&up), 0);
+        process_touch_event(&down, nullptr, 0);
+        process_touch_event(&up, nullptr, 0);
+        EXPECT_EQ(down.id, 0);
+        EXPECT_EQ(up.id, 0);
     }
 }
 
@@ -34,16 +43,24 @@ TEST_F(TestPreprocessing, TestStationaryDownUp) {
 TEST_F(TestPreprocessing, TestStationaryDownMultiple) {
     for (int i = 0; i < MAX_TOUCHES; i++) {
         touch_event_t newTouch = {TOUCH_EVENT_DOWN, (float)i, 0, 0, TOUCH_ID_UNDEFINED};
-        EXPECT_EQ(assign_group(&newTouch), i);
+        process_touch_event(&newTouch, nullptr, 0);
+        EXPECT_EQ(newTouch.id, i);
     }
     touch_event_t newTouch = {TOUCH_EVENT_DOWN, (float)MAX_TOUCHES, 0, (float)MAX_TOUCHES, TOUCH_ID_UNDEFINED};
-    EXPECT_EQ(assign_group(&newTouch), TOUCH_ID_UNDEFINED);
+    process_touch_event(&newTouch, nullptr, 0);
+    EXPECT_EQ(newTouch.id, TOUCH_ID_UNDEFINED);
 }
 
 // Checks that moves and ups aren't assigned to any group if none are being tracked
 TEST_F(TestPreprocessing, TestMoveUpUndefined) {
-    EXPECT_EQ(assign_group(new touch_event_t({TOUCH_EVENT_MOVE, 0, 0, 0, TOUCH_ID_UNDEFINED})), TOUCH_ID_UNDEFINED);
-    EXPECT_EQ(assign_group(new touch_event_t({TOUCH_EVENT_UP, 0, 0, 0, TOUCH_ID_UNDEFINED})), TOUCH_ID_UNDEFINED);
+    touch_event_t badEvent = {TOUCH_EVENT_MOVE, 0, 0, 0, TOUCH_ID_UNDEFINED};
+    process_touch_event(&badEvent, nullptr, 0);
+    EXPECT_EQ(badEvent.id, TOUCH_ID_UNDEFINED);
+
+    badEvent.id         = TOUCH_ID_UNDEFINED;
+    badEvent.event_type = TOUCH_EVENT_UP;
+    process_touch_event(&badEvent, nullptr, 0);
+    EXPECT_EQ(badEvent.id, TOUCH_ID_UNDEFINED);
 }
 
 // Checks that moving sequences of downs/ups assign to the correct group
@@ -53,14 +70,17 @@ TEST_F(TestPreprocessing, TestDownUpMultiple) {
     for (int i = 0; i < MAX_TOUCHES; i++) {
         downTouches[i] = {TOUCH_EVENT_DOWN, (float)i, 0, 0, TOUCH_ID_UNDEFINED};
         upTouches[i]   = {TOUCH_EVENT_UP, (float)i, 0, 0, TOUCH_ID_UNDEFINED};
-        EXPECT_EQ(assign_group(&downTouches[i]), i);
+        process_touch_event(&downTouches[i], nullptr, 0);
+        EXPECT_EQ(downTouches[i].id, i);
     }
 
     for (int round = 0; round < 5; round++) {
         for (int i = 0; i < MAX_TOUCHES; i++) {
             upTouches[i].position_y += 0.1f;
-            EXPECT_EQ(assign_group(&upTouches[i]), i);
-            EXPECT_EQ(assign_group(&downTouches[i]), i);
+            process_touch_event(&upTouches[i], nullptr, 0);
+            EXPECT_EQ(upTouches[i].id, i);
+            process_touch_event(&downTouches[i], nullptr, 0);
+            EXPECT_EQ(downTouches[i].id, i);
             downTouches[i].position_y += 0.1f;
         }
     }
@@ -68,29 +88,38 @@ TEST_F(TestPreprocessing, TestDownUpMultiple) {
 
 // Checks that a single swipe (down, multiple moves, up) stays in the same group
 TEST_F(TestPreprocessing, TestSwipeSingle) {
-    EXPECT_EQ(assign_group(new touch_event_t({TOUCH_EVENT_DOWN, 0, 0, 0, TOUCH_ID_UNDEFINED})), 0);
+    touch_event_t downEvent = {TOUCH_EVENT_DOWN, 0, 0, 0, TOUCH_ID_UNDEFINED};
+    process_touch_event(&downEvent, nullptr, 0);
+    EXPECT_EQ(downEvent.id, 0);
     for (int i = 0; i < 10; i++) {
-        EXPECT_EQ(assign_group(new touch_event_t({TOUCH_EVENT_MOVE, i * 0.1f, 0, 0, TOUCH_ID_UNDEFINED})), 0);
+        touch_event_t moveEvent = {TOUCH_EVENT_MOVE, i * 0.1f, 0, 0, TOUCH_ID_UNDEFINED};
+        process_touch_event(&moveEvent, nullptr, 0);
+        EXPECT_EQ(moveEvent.id, 0);
     }
-    EXPECT_EQ(assign_group(new touch_event_t({TOUCH_EVENT_UP, 0, 0, 0, TOUCH_ID_UNDEFINED})), 0);
+    touch_event_t upEvent = {TOUCH_EVENT_UP, 0, 0, 0, TOUCH_ID_UNDEFINED};
+    process_touch_event(&upEvent, nullptr, 0);
+    EXPECT_EQ(upEvent.id, 0);
 }
 
 // Checks that multiple swipes stay within their respective groups
 TEST_F(TestPreprocessing, TestSwipeMultiple) {
     int steps = 10;
     for (int touch = 0; touch < MAX_TOUCHES; touch++) {
-        EXPECT_EQ(assign_group(new touch_event_t({TOUCH_EVENT_DOWN, 0, (float)touch, 0, TOUCH_ID_UNDEFINED})), touch);
+        touch_event_t downEvent = {TOUCH_EVENT_DOWN, 0, (float)touch, 0, TOUCH_ID_UNDEFINED};
+        process_touch_event(&downEvent, nullptr, 0);
+        EXPECT_EQ(downEvent.id, touch);
     }
     for (int i = 0; i < steps; i++) {
         for (int touch = 0; touch < MAX_TOUCHES; touch++) {
-            EXPECT_EQ(
-                assign_group(new touch_event_t({TOUCH_EVENT_MOVE, i * 0.1f, (float)touch, 0, TOUCH_ID_UNDEFINED})),
-                touch);
+            touch_event_t moveEvent = {TOUCH_EVENT_MOVE, i * 0.1f, (float)touch, 0, TOUCH_ID_UNDEFINED};
+            process_touch_event(&moveEvent, nullptr, 0);
+            EXPECT_EQ(moveEvent.id, touch);
         }
     }
     for (int touch = 0; touch < MAX_TOUCHES; touch++) {
-        EXPECT_EQ(assign_group(new touch_event_t({TOUCH_EVENT_UP, steps * 0.1f, (float)touch, 0, TOUCH_ID_UNDEFINED})),
-                  touch);
+        touch_event_t upEvent = {TOUCH_EVENT_UP, steps * 0.1f, (float)touch, 0, TOUCH_ID_UNDEFINED};
+        process_touch_event(&upEvent, nullptr, 0);
+        EXPECT_EQ(upEvent.id, touch);
     }
 }
 
@@ -102,26 +131,29 @@ TEST_F(TestPreprocessing, TestSwipeMultipleWithUp) {
         ups[i] = (2 * i + 4) % MAX_TOUCHES;
     }
     for (int touch = 0; touch < MAX_TOUCHES; touch++) {
-        EXPECT_EQ(assign_group(new touch_event_t({TOUCH_EVENT_DOWN, 0, (float)touch, 0, TOUCH_ID_UNDEFINED})), touch);
+        touch_event_t event = touch_event_t({TOUCH_EVENT_DOWN, 0, (float)touch, 0, TOUCH_ID_UNDEFINED});
+        process_touch_event(&event, nullptr, 0);
+        EXPECT_EQ(event.id, touch);
     }
     for (int i = 0; i < steps; i++) {
         for (int touch = 0; touch < MAX_TOUCHES; touch++) {
             if (i == ups[touch]) {
-                EXPECT_EQ(
-                    assign_group(new touch_event_t({TOUCH_EVENT_UP, i * 0.1f, (float)touch, 0, TOUCH_ID_UNDEFINED})),
-                    touch);
-                EXPECT_EQ(
-                    assign_group(new touch_event_t({TOUCH_EVENT_DOWN, i * 0.1f, (float)touch, 0, TOUCH_ID_UNDEFINED})),
-                    touch);
+                touch_event_t upEvent = {TOUCH_EVENT_UP, i * 0.1f, (float)touch, 0, TOUCH_ID_UNDEFINED};
+                process_touch_event(&upEvent, nullptr, 0);
+                EXPECT_EQ(upEvent.id, touch);
+                touch_event_t downEvent = {TOUCH_EVENT_DOWN, i * 0.1f, (float)touch, 0, TOUCH_ID_UNDEFINED};
+                process_touch_event(&downEvent, nullptr, 0);
+                EXPECT_EQ(downEvent.id, touch);
             } else {
-                EXPECT_EQ(
-                    assign_group(new touch_event_t({TOUCH_EVENT_MOVE, i * 0.1f, (float)touch, 0, TOUCH_ID_UNDEFINED})),
-                    touch);
+                touch_event_t event = {TOUCH_EVENT_MOVE, i * 0.1f, (float)touch, 0, TOUCH_ID_UNDEFINED};
+                process_touch_event(&event, nullptr, 0);
+                EXPECT_EQ(event.id, touch);
             }
         }
     }
     for (int touch = 0; touch < MAX_TOUCHES; touch++) {
-        EXPECT_EQ(assign_group(new touch_event_t({TOUCH_EVENT_UP, steps * 0.1f, (float)touch, 0, TOUCH_ID_UNDEFINED})),
-                  touch);
+        touch_event_t event = {TOUCH_EVENT_UP, steps * 0.1f, (float)touch, 0, TOUCH_ID_UNDEFINED};
+        process_touch_event(&event, nullptr, 0);
+        EXPECT_EQ(event.id, touch);
     }
 }

@@ -10,11 +10,18 @@ gesture_recognizer_t recognizers[MAX_RECOGNIZERS];
 int num_recognizers = 0;
 
 /// @brief set containing most recent touch within finger group
-touch_event_t* groups_heads[MAX_TOUCHES];
+touch_event_t latest_touch_events[MAX_TOUCHES];
 touch_event_t empty_touch_event = {
     .event_type = TOUCH_EVENT_UP, .position_x = 0, .position_y = 0, .timestamp = 0, .id = TOUCH_ID_UNDEFINED};
 
 static float squared_distance(touch_event_t* a, touch_event_t* b);
+
+/// @brief assign a group ID to this touch_event. Update group_heads to reflect this. If this is not a DOWN event
+///        and there are no groups being tracked, do not assign an ID. If this is a DOWN event but MAX_TOUCHES groups
+///        are already being tracked, do not assign an ID.
+/// @param touch_event
+/// @return
+static unsigned int assign_group(touch_event_t* touch_event);
 
 /** This is a documentation test. **/
 void init_gesturelib() {
@@ -22,7 +29,7 @@ void init_gesturelib() {
         recognizers[index].enabled = 0;
     }
     for (unsigned int i = 0; i < MAX_TOUCHES; i++) {
-        groups_heads[i] = &empty_touch_event;
+        latest_touch_events[i] = empty_touch_event;
     }
 
     add_recognizer(recognize_single_tap);
@@ -45,15 +52,16 @@ int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, i
             }
         }
     }
+    latest_touch_events[touch_event->id] = *touch_event;
     return size;
 }
 
-unsigned int assign_group(touch_event_t* touch_event) {
+static unsigned int assign_group(touch_event_t* touch_event) {
     if (touch_event->event_type == TOUCH_EVENT_DOWN) {
         unsigned int free_group = MAX_TOUCHES;
         // Find the first untracked group to assign this touch to
         for (unsigned int i = 0; i < MAX_TOUCHES; i++) {
-            if (groups_heads[i]->event_type == TOUCH_EVENT_UP) {
+            if (latest_touch_events[i].event_type == TOUCH_EVENT_UP) {
                 free_group = i;
                 break;
             }
@@ -64,8 +72,7 @@ unsigned int assign_group(touch_event_t* touch_event) {
             return TOUCH_ID_UNDEFINED;
         }
 
-        touch_event->id          = free_group;
-        groups_heads[free_group] = touch_event;
+        touch_event->id = free_group;
         return free_group;
     }
 
@@ -74,11 +81,11 @@ unsigned int assign_group(touch_event_t* touch_event) {
     float closest_dist         = -1;
     for (unsigned int i = 0; i < MAX_TOUCHES; i++) {
         // skip untracked groups
-        if (groups_heads[i]->event_type == TOUCH_EVENT_UP) {
+        if (latest_touch_events[i].event_type == TOUCH_EVENT_UP) {
             continue;
         }
 
-        float dist = squared_distance(groups_heads[i], touch_event);
+        float dist = squared_distance(&latest_touch_events[i], touch_event);
         if (dist <= EVENT_GROUPING_DIST_MAX * EVENT_GROUPING_DIST_MAX &&
             (closest_group == TOUCH_ID_UNDEFINED || dist < closest_dist)) {
             closest_group = i;
@@ -91,9 +98,7 @@ unsigned int assign_group(touch_event_t* touch_event) {
         return TOUCH_ID_UNDEFINED;
     }
 
-    touch_event->id             = closest_group;
-    groups_heads[closest_group] = touch_event;
-
+    touch_event->id = closest_group;
     return closest_group;
 }
 

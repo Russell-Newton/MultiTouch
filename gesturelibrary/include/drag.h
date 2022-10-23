@@ -9,7 +9,7 @@
 #endif
 
 /// @brief
-typedef struct sFingerDrag {
+typedef struct drag {
     state_t state;
     float x0;
     float y0;
@@ -18,12 +18,12 @@ typedef struct sFingerDrag {
     unsigned int cache_start;
     unsigned int cache_size;
     touch_event_t cache[DRAG_CACHED_TOUCH_EVENTS];
-} sFingerDrag_t;
+} drag_t;
 
 /// @brief
 /// @param event
-gesture_event_t* recognize_single_drag(touch_event_t* event);
+gesture_event_t* recognize_drag(touch_event_t* event);
 
 /// @brief
 /// @return
-sFingerDrag_t* get_sFingerDrag();
+drag_t* get_drag();

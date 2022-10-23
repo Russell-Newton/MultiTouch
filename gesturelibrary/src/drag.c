@@ -1,19 +1,19 @@
-#include "singleFingerDrag.h"
+#include "drag.h"
 
-sFingerDrag_t sFingerDrag_d[MAX_TOUCHES];
+drag_t drag_d[MAX_TOUCHES];
 
-gesture_event_t drag_gesture;
+gesture_event_t drag = {.type = GESTURE_TYPE_DRAG, .num_touches = 1, .get_data = (void* (*)(void))get_drag};
 
 static void process_drag_down(touch_event_t* event);
 static void process_drag_move(touch_event_t* event);
 static void process_drag_up(touch_event_t* event);
 
-static void cache(sFingerDrag_t* data, touch_event_t* event);
-static void calculate_velocity(sFingerDrag_t* data);
+static void cache(drag_t* data, touch_event_t* event);
+static void calculate_velocity(drag_t* data);
 
 /// @brief
 /// @param event
-gesture_event_t* recognize_single_drag(touch_event_t* event) {
+gesture_event_t* recognize_drag(touch_event_t* event) {
     switch (event->event_type) {
     case TOUCH_EVENT_DOWN:
         process_drag_down(event);
@@ -27,30 +27,25 @@ gesture_event_t* recognize_single_drag(touch_event_t* event) {
     default:
         break;
     }
-
-    drag_gesture.type        = GESTURE_TYPE_DRAG;
-    drag_gesture.num_touches = 1;
-    drag_gesture.get_data    = (void* (*)(void))get_sFingerDrag;
-    return &drag_gesture;
+    return &drag;
 }
 
 /// @brief
 /// @return
-sFingerDrag_t* get_sFingerDrag() {
-    return sFingerDrag_d;
+drag_t* get_drag() {
+    return drag_d;
 }
 
 static void process_drag_down(touch_event_t* event) {
     for (int index = 0; index < MAX_TOUCHES; index++) {
-        if (sFingerDrag_d[index].state == RECOGNIZER_STATE_START ||
-            sFingerDrag_d[index].state == RECOGNIZER_STATE_FAILED ||
-            sFingerDrag_d[index].state == RECOGNIZER_STATE_COMPLETED) {
-            sFingerDrag_d[index].x0          = event->position_x;
-            sFingerDrag_d[index].y0          = event->position_y;
-            sFingerDrag_d[index].state       = RECOGNIZER_STATE_POSSIBLE;
-            sFingerDrag_d[index].cache_start = 0;
-            sFingerDrag_d[index].cache[0]    = *event;
-            sFingerDrag_d[index].cache_size  = 1;
+        if (drag_d[index].state == RECOGNIZER_STATE_START || drag_d[index].state == RECOGNIZER_STATE_FAILED ||
+            drag_d[index].state == RECOGNIZER_STATE_COMPLETED) {
+            drag_d[index].x0          = event->position_x;
+            drag_d[index].y0          = event->position_y;
+            drag_d[index].state       = RECOGNIZER_STATE_POSSIBLE;
+            drag_d[index].cache_start = 0;
+            drag_d[index].cache[0]    = *event;
+            drag_d[index].cache_size  = 1;
             return;
         }
     }
@@ -58,13 +53,13 @@ static void process_drag_down(touch_event_t* event) {
 
 static void process_drag_move(touch_event_t* event) {
     for (int index = 0; index < MAX_TOUCHES; index++) {
-        int size              = sFingerDrag_d[index].cache_size;
-        int start             = sFingerDrag_d[index].cache_start;
+        int size              = drag_d[index].cache_size;
+        int start             = drag_d[index].cache_start;
         int cache_index       = (start + size - 1) % DRAG_CACHED_TOUCH_EVENTS;
-        touch_event_t* last_e = &sFingerDrag_d[index].cache[cache_index];
+        touch_event_t* last_e = &drag_d[index].cache[cache_index];
         if (last_e->id == event->id) {
-            cache(&sFingerDrag_d[index], event);
-            calculate_velocity(&sFingerDrag_d[index]);
+            cache(&drag_d[index], event);
+            calculate_velocity(&drag_d[index]);
             return;
         }
     }
@@ -72,22 +67,22 @@ static void process_drag_move(touch_event_t* event) {
 
 static void process_drag_up(touch_event_t* event) {
     for (int index = 0; index < MAX_TOUCHES; index++) {
-        int size              = sFingerDrag_d[index].cache_size;
-        int start             = sFingerDrag_d[index].cache_start;
+        int size              = drag_d[index].cache_size;
+        int start             = drag_d[index].cache_start;
         int cache_index       = (start + size - 1) % DRAG_CACHED_TOUCH_EVENTS;
-        touch_event_t* last_e = &sFingerDrag_d[index].cache[cache_index];
+        touch_event_t* last_e = &drag_d[index].cache[cache_index];
         if (last_e->id == event->id) {
-            if (sFingerDrag_d[index].state == RECOGNIZER_STATE_IN_PROGRESS) {
-                sFingerDrag_d[index].state = RECOGNIZER_STATE_COMPLETED;
+            if (drag_d[index].state == RECOGNIZER_STATE_IN_PROGRESS) {
+                drag_d[index].state = RECOGNIZER_STATE_COMPLETED;
             } else {
-                sFingerDrag_d[index].state = RECOGNIZER_STATE_FAILED;
+                drag_d[index].state = RECOGNIZER_STATE_FAILED;
             }
             return;
         }
     }
 }
 
-static void cache(sFingerDrag_t* data, touch_event_t* event) {
+static void cache(drag_t* data, touch_event_t* event) {
     int index          = (data->cache_start + data->cache_size) % DRAG_CACHED_TOUCH_EVENTS;
     data->cache[index] = *event;
     if (data->cache_size < DRAG_CACHED_TOUCH_EVENTS) {
@@ -97,7 +92,7 @@ static void cache(sFingerDrag_t* data, touch_event_t* event) {
     }
 }
 
-static void calculate_velocity(sFingerDrag_t* data) {
+static void calculate_velocity(drag_t* data) {
     if (data->cache_size < DRAG_CACHED_TOUCH_EVENTS) {
         return;
     } else {
@@ -113,8 +108,10 @@ static void calculate_velocity(sFingerDrag_t* data) {
             }
         }
         for (int index = data->cache_start; index != end_index; index = (index + 1) % DRAG_CACHED_TOUCH_EVENTS) {
-            vx += data->cache[(index + 1) % DRAG_CACHED_TOUCH_EVENTS].position_x - data->cache[index].position_x;
-            vy += data->cache[(index + 1) % DRAG_CACHED_TOUCH_EVENTS].position_y - data->cache[index].position_y;
+            touch_event_t* e1 = &data->cache[index];
+            touch_event_t* e2 = &data->cache[(index + 1) % DRAG_CACHED_TOUCH_EVENTS];
+            vx += (e2->position_x - e1->position_x) / (e2->timestamp - e1->timestamp);
+            vy += (e2->position_y - e1->position_y) / (e2->timestamp - e1->timestamp);
         }
         data->vx = vx / data->cache_size;
         data->vy = vy / data->cache_size;

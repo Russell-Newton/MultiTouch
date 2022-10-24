@@ -6,7 +6,6 @@
 extern "C" {
 #include "gesturelib.h"
 #include "recognizer.h"
-#include "singleFingerDrag.h"
 }
 
 using namespace std;

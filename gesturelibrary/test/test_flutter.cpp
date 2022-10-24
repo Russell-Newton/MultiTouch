@@ -127,7 +127,8 @@ protected:
                         cout << "vx_" << index << ": " << drags[index].vx << ", "
                              << "vy_" << index << ": " << drags[index].vy << ", "
                              << "m_" << index << ": " << sqrt(pow(drags[index].vx, 2) + pow(drags[index].vy, 2)) << ", "
-                             << "a_" << index << ": " << atan2(drags[index].vy, drags[index].vx) << endl;
+                             << "a_" << index << ": " << atan2(drags[index].vy, drags[index].vx) << ", "
+                             << "state_" << index << ": " << drags[index].state << endl;
                         switch (s[index]) {
                         case RECOGNIZER_STATE_START:
                             EXPECT_TRUE(drags[index].state == RECOGNIZER_STATE_START ||
@@ -158,6 +159,9 @@ protected:
             }
             EXPECT_TRUE(found);
             delete[] gestures;
+        }
+        for (size_t index = 0; index < num; index++) {
+            EXPECT_EQ(s[index], RECOGNIZER_STATE_COMPLETED);
         }
         delete[] s;
     }
@@ -272,8 +276,8 @@ protected:
                 if (gestures[i].type == GESTURE_TYPE_ZOOM_AND_ROTATE && gestures[i].num_touches == 2) {
                     zoom_and_rotate_t* zoom_and_rotates = ((zoom_and_rotate_t * (*)(void)) gestures[i].get_data)();
                     for (size_t index = 0; index < num; index++) {
-                        cout << "z_" << index << ": " << zoom_and_rotates[index].zoom << ", "
-                             << "r_" << index << ": " << zoom_and_rotates[index].rotate << ", "
+                        cout << "z_" << index << ": " << zoom_and_rotates[index].zoom << ",\t"
+                             << "r_" << index << ": " << zoom_and_rotates[index].rotate << ",\t"
                              << "state_" << index << ": " << zoom_and_rotates[index].state << endl;
                         switch (s[index]) {
                         case RECOGNIZER_STATE_START:
@@ -300,6 +304,9 @@ protected:
             }
             EXPECT_TRUE(found);
             delete[] gestures;
+        }
+        for (size_t index = 0; index < num; index++) {
+            EXPECT_EQ(s[index], RECOGNIZER_STATE_COMPLETED);
         }
         delete[] s;
     }

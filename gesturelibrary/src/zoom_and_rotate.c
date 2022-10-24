@@ -1,7 +1,6 @@
 #include "zoom_and_rotate.h"
 
 #include "math.h"
-#include "stdio.h"
 
 zoom_and_rotate_t zoom_and_rotate_d[MAX_TOUCHES];
 
@@ -17,10 +16,11 @@ gesture_event_t* recognize_zoom_and_rotate(touch_event_t* event) {
 
     drag_t* drag_d = get_drag();
     for (drag_t* drag = drag_d; drag < drag_d + MAX_TOUCHES; drag++) {
-        if (drag->state == RECOGNIZER_STATE_IN_PROGRESS || drag->state == RECOGNIZER_STATE_COMPLETED)
+        if (drag->state == RECOGNIZER_STATE_IN_PROGRESS || drag->state == RECOGNIZER_STATE_COMPLETED) {
             if (!update_zoom_and_rotate(drag)) {
                 initialize_zoom_and_rotate(drag);
             }
+        }
     }
 
     return &zoom_and_rotate;
@@ -81,7 +81,7 @@ static void initialize_zoom_and_rotate(drag_t* drag) {
                     gesture->drag1 = drag;
                 } else if (drag != gesture->drag1) {
                     gesture->drag2 = drag;
-                    gesture->state == RECOGNIZER_STATE_IN_PROGRESS;
+                    gesture->state = RECOGNIZER_STATE_IN_PROGRESS;
                 }
                 return;
             }

@@ -7,11 +7,11 @@
 #define HOLD_TIME_MIN TAP_TIME_MAX
 
 // float euclidean distance for longest tap/hold and shortest drag/swipe
-#define TAP_DIST_MAX   100
+#define TAP_DIST_MAX   10
 #define HOLD_DIST_MAX  TAP_DIST_MAX
 #define DRAG_DIST_MIN  TAP_DIST_MAX
 #define SWIPE_DIST_MIN TAP_DIST_MAX
 
 // float euclidean distance for largest distance between touches for
 // one zoom & rotate gesture
-#define ZOOM_AND_ROTATE_SEPARATION_MAX 10000
+#define ZOOM_AND_ROTATE_SEPARATION_MAX 1000

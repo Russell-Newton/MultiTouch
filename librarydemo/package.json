@@ -7,7 +7,8 @@
     "build": "vite build",
     "prebuild": "emscripten build c_bindings",
     "preview": "vite preview --port 4173",
-    "build:run": "npm run build && live-server --open=dist"
+    "build:run": "npm run build && serve dist",
+    "cleanlib": "emscripten --clean c_bindings"
   },
   "dependencies": {
     "mdb-vue-ui-kit": "^3.0.0",
@@ -16,10 +17,11 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.3",
     "emscripten-build": "^1.0.2",
-    "emscripten-sdk-npm": "git@github.com:Russell-Newton/emscripten-sdk-npm.git",
-    "live-server": "^1.2.2",
-    "make": "^0.8.1",
+    "serve": "^14.0.1",
     "vite": "^3.0.9",
     "vite-plugin-wasm": "^3.0.0"
+  },
+  "overrides": {
+    "emscripten-sdk-npm": "github:Russell-Newton/emscripten-sdk-npm"
   }
 }

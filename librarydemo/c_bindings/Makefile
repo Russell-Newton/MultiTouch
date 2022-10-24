@@ -1,28 +1,30 @@
+DIR_LIB=lib
+
 ifeq ($(OS),Windows_NT)
-	MKDIR_BUILD=if not exist "build" mkdir "build"
+	MKDIR_LIB=if not exist "$(DIR_LIB)" mkdir "$(DIR_LIB)"
 	MKDIR_COMPILE=if not exist "..\public\c_bindings" mkdir "..\public\c_bindings"
-	RM_CLEAN_BUILD=rmdir /q /s "build"
+	RM_CLEAN_LIB=rmdir /q /s "$(DIR_LIB)"
 	RM_CLEAN_COMPILE=rmdir /q /s "..\public\c_bindings"
 else
-	MKDIR_BUILD=mkdir -p build
+	MKDIR_LIB=mkdir -p $(DIR_LIB)
 	MKDIR_COMPILE=mkdir -p ../public/c_bindings
-	RM_CLEAN_BUILD=rm -rf build/
+	RM_CLEAN_LIB=rm -rf $(DIR_LIB)/
 	RM_CLEAN_COMPILE=rm -rf ../public/c_bindings
 endif
 
 
 .PHONY: all
-all: compile_lib
+all: build_lib compile
     
-compile_lib:
-	$(MKDIR_BUILD)
-	emconfigure cmake -S ../../gesturelibrary -B build -G "Unix Makefiles" -D SKIP_TESTS=true
-	cd build && emmake make
+build_lib:
+	$(MKDIR_LIB)
+	emconfigure cmake -S ../../gesturelibrary -B $(DIR_LIB) -G "Unix Makefiles" -D SKIP_TESTS=true
+	cd $(DIR_LIB) && emmake make
 
-main:
+compile: src/*.c lib/libGestureLibrary.a
 	$(MKDIR_COMPILE)
-	emcc src/test.c -o ../public/c_bindings/test_api.js -sEXPORTED_RUNTIME_METHODS=ccall,cwrap
+	emcc -I../../gesturelibrary/include $^ -o ../public/c_bindings/test_api.js -s EXPORTED_RUNTIME_METHODS="['ccall','cwrap']"
 
 clean:
-	$(RM_CLEAN_BUILD)
+	$(RM_CLEAN_LIB)
 	$(RM_CLEAN_COMPILE)

@@ -16,7 +16,7 @@ all: compile_lib
     
 compile_lib:
 	$(MKDIR_BUILD)
-	emconfigure cmake -S ../../gesturelibrary -B build -G "Unix Makefiles"
+	emconfigure cmake -S ../../gesturelibrary -B build -G "Unix Makefiles" -D SKIP_TESTS=true
 	cd build && emmake make
 
 main:

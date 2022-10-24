@@ -124,10 +124,11 @@ protected:
                 if (gestures[i].type == GESTURE_TYPE_DRAG && gestures[i].num_touches == 1) {
                     drag_t* drags = ((drag_t * (*)(void)) gestures[i].get_data)();
                     for (size_t index = 0; index < num; index++) {
-                        cout << "vx_" << index << ": " << drags[index].vx << ", "
-                             << "vy_" << index << ": " << drags[index].vy << ", "
-                             << "m_" << index << ": " << sqrt(pow(drags[index].vx, 2) + pow(drags[index].vy, 2)) << ", "
-                             << "a_" << index << ": " << atan2(drags[index].vy, drags[index].vx) << ", "
+                        cout << "vx_" << index << ": " << drags[index].vx << ",\t"
+                             << "vy_" << index << ": " << drags[index].vy << ",\t"
+                             << "m_" << index << ": " << sqrt(pow(drags[index].vx, 2) + pow(drags[index].vy, 2))
+                             << ",\t"
+                             << "a_" << index << ": " << atan2(drags[index].vy, drags[index].vx) << ",\t"
                              << "state_" << index << ": " << drags[index].state << endl;
                         switch (s[index]) {
                         case RECOGNIZER_STATE_START:

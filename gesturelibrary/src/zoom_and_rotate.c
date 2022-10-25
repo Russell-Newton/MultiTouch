@@ -80,8 +80,24 @@ static void initialize_zoom_and_rotate(drag_t* drag) {
                 if (!gesture->drag1) {
                     gesture->drag1 = drag;
                 } else if (drag != gesture->drag1) {
-                    gesture->drag2 = drag;
-                    gesture->state = RECOGNIZER_STATE_IN_PROGRESS;
+                    int size, start, index;
+                    touch_event_t *e1, *e2;
+
+                    size  = gesture->drag1->cache_size;
+                    start = gesture->drag1->cache_start;
+                    index = (start + size - 1) % DRAG_CACHED_TOUCH_EVENTS;
+                    e1    = gesture->drag1->cache + index;
+                    size  = drag->cache_size;
+                    start = drag->cache_start;
+                    index = (start + size - 1) % DRAG_CACHED_TOUCH_EVENTS;
+                    e2    = drag->cache + index;
+                    if (pow(e2->position_x - e1->position_x, 2) + pow(e2->position_y - e1->position_y, 2) <
+                        ZOOM_AND_ROTATE_SEPARATION_MAX * ZOOM_AND_ROTATE_SEPARATION_MAX) {
+                        gesture->drag2 = drag;
+                        gesture->state = RECOGNIZER_STATE_IN_PROGRESS;
+                    } else {
+                        continue;
+                    }
                 }
                 return;
             }

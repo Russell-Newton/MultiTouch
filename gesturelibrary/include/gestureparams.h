@@ -14,4 +14,4 @@
 
 // float euclidean distance for largest distance between touches for
 // one zoom & rotate gesture
-#define ZOOM_AND_ROTATE_SEPARATION_MAX 1000
+#define ZOOM_AND_ROTATE_SEPARATION_MAX 500

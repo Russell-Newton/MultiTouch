@@ -15,7 +15,7 @@ gesture_event_t* recognize_single_hold(touch_event_t* event) {
     // null at the end of it
 
     // TODO: The following section has been commented since it causes a segfault.
-    // if (event->timestamp - prev_event->timestamp > 10) {
+    // if (event->t - prev_event->t > 10) {
     //     // clear prev events
     //     sFingerHold_d[0].state = RECOGNIZER_STATE_POSSIBLE;
     // }

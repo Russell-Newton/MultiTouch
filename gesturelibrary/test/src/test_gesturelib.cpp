@@ -17,9 +17,9 @@ TEST(GestureLibraryTest, TestInitGestureLib) {
 //     init_gesturelib();
 
 //     touch_event_t event;
-//     event.position_x = 100;
-//     event.position_y = 200;
-//     event.timestamp  = 42;
+//     event.x = 100;
+//     event.y = 200;
+//     event.t  = 42;
 
 //     gesture_event_t gestures[1];
 
@@ -32,14 +32,14 @@ TEST(GestureLibraryTest, TestInitGestureLib) {
 //     init_gesturelib();
 
 //     touch_event_t event1;
-//     event1.position_x = 100;
-//     event1.position_y = 200;
-//     event1.timestamp  = 42;
+//     event1.x = 100;
+//     event1.y = 200;
+//     event1.t  = 42;
 
 //     touch_event_t event2;
-//     event2.position_x = 100;
-//     event2.position_y = 200;
-//     event2.timestamp  = 47;
+//     event2.x = 100;
+//     event2.y = 200;
+//     event2.t  = 47;
 
 //     gesture_event_t gestures[1];
 
@@ -53,14 +53,14 @@ TEST(GestureLibraryTest, TestInitGestureLib) {
 //     init_gesturelib();
 
 //     touch_event_t event1;
-//     event1.position_x = 100;
-//     event1.position_y = 200;
-//     event1.timestamp  = 42;
+//     event1.x = 100;
+//     event1.y = 200;
+//     event1.t  = 42;
 
 //     touch_event_t event2;
-//     event2.position_x = 100;
-//     event2.position_y = 200;
-//     event2.timestamp  = 44;
+//     event2.x = 100;
+//     event2.y = 200;
+//     event2.t  = 44;
 
 //     gesture_event_t gestures[1];
 

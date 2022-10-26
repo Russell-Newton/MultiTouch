@@ -23,11 +23,11 @@ typedef enum event_type {
 
 /// @brief
 typedef struct touch_event {
-    event_type_t event_type;
-    float position_x;
-    float position_y;
-    float timestamp;
-    unsigned int id;
+    event_type_t type;
+    float x;
+    float y;
+    float t;
+    unsigned int group;
 } touch_event_t;
 
 typedef enum gesture_type {

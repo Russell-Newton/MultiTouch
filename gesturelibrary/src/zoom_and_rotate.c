@@ -53,8 +53,8 @@ static int update_zoom_and_rotate(drag_t* drag) {
                     start = gesture->drag2->cache_start;
                     index = (start + size - 1) % DRAG_CACHED_TOUCH_EVENTS;
                     e2    = gesture->drag2->cache + index;
-                    x     = e2->position_x - e1->position_x;
-                    y     = e2->position_y - e1->position_y;
+                    x     = e2->x - e1->x;
+                    y     = e2->y - e1->y;
                     mt    = sqrt(x * x + y * y);
                     at    = atan2(y, x);
 
@@ -76,7 +76,7 @@ static void initialize_zoom_and_rotate(drag_t* drag) {
     if (drag->state == RECOGNIZER_STATE_IN_PROGRESS) {
         for (zoom_and_rotate_t* gesture = zoom_and_rotate_d; gesture < zoom_and_rotate_d + MAX_TOUCHES; gesture++) {
             state_t state = gesture->state;
-            if (state == RECOGNIZER_STATE_START || state == RECOGNIZER_STATE_COMPLETED) {
+            if (state == RECOGNIZER_STATE_NULL || state == RECOGNIZER_STATE_COMPLETED) {
                 if (!gesture->drag1) {
                     gesture->drag1 = drag;
                 } else if (drag != gesture->drag1) {
@@ -91,7 +91,7 @@ static void initialize_zoom_and_rotate(drag_t* drag) {
                     start = drag->cache_start;
                     index = (start + size - 1) % DRAG_CACHED_TOUCH_EVENTS;
                     e2    = drag->cache + index;
-                    if (pow(e2->position_x - e1->position_x, 2) + pow(e2->position_y - e1->position_y, 2) <
+                    if (pow(e2->x - e1->x, 2) + pow(e2->y - e1->y, 2) <
                         ZOOM_AND_ROTATE_SEPARATION_MAX * ZOOM_AND_ROTATE_SEPARATION_MAX) {
                         gesture->drag2 = drag;
                         gesture->state = RECOGNIZER_STATE_IN_PROGRESS;

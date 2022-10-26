@@ -14,7 +14,7 @@ static void calculate_velocity(drag_t* data);
 /// @brief
 /// @param event
 gesture_event_t* recognize_drag(touch_event_t* event) {
-    switch (event->event_type) {
+    switch (event->type) {
     case TOUCH_EVENT_DOWN:
         process_drag_down(event);
         break;
@@ -38,10 +38,10 @@ drag_t* get_drag() {
 
 static void process_drag_down(touch_event_t* event) {
     for (int index = 0; index < MAX_TOUCHES; index++) {
-        if (drag_d[index].state == RECOGNIZER_STATE_START || drag_d[index].state == RECOGNIZER_STATE_FAILED ||
+        if (drag_d[index].state == RECOGNIZER_STATE_NULL || drag_d[index].state == RECOGNIZER_STATE_FAILED ||
             drag_d[index].state == RECOGNIZER_STATE_COMPLETED) {
-            drag_d[index].x0          = event->position_x;
-            drag_d[index].y0          = event->position_y;
+            drag_d[index].x0          = event->x;
+            drag_d[index].y0          = event->y;
             drag_d[index].state       = RECOGNIZER_STATE_POSSIBLE;
             drag_d[index].cache_start = 0;
             drag_d[index].cache[0]    = *event;
@@ -57,7 +57,7 @@ static void process_drag_move(touch_event_t* event) {
         int start             = drag_d[index].cache_start;
         int cache_index       = (start + size - 1) % DRAG_CACHED_TOUCH_EVENTS;
         touch_event_t* last_e = &drag_d[index].cache[cache_index];
-        if (last_e->id == event->id) {
+        if (last_e->group == event->group) {
             cache(&drag_d[index], event);
             calculate_velocity(&drag_d[index]);
             return;
@@ -71,7 +71,7 @@ static void process_drag_up(touch_event_t* event) {
         int start             = drag_d[index].cache_start;
         int cache_index       = (start + size - 1) % DRAG_CACHED_TOUCH_EVENTS;
         touch_event_t* last_e = &drag_d[index].cache[cache_index];
-        if (last_e->id == event->id) {
+        if (last_e->group == event->group) {
             if (drag_d[index].state == RECOGNIZER_STATE_IN_PROGRESS) {
                 drag_d[index].state = RECOGNIZER_STATE_COMPLETED;
             } else {
@@ -100,8 +100,8 @@ static void calculate_velocity(drag_t* data) {
         float vx      = 0;
         float vy      = 0;
         if (data->state == RECOGNIZER_STATE_POSSIBLE) {
-            float dx       = data->cache[end_index].position_x - data->x0;
-            float dy       = data->cache[end_index].position_y - data->y0;
+            float dx       = data->cache[end_index].x - data->x0;
+            float dy       = data->cache[end_index].y - data->y0;
             float distance = dx * dx + dy * dy;
             if (distance > DRAG_DIST_MIN * DRAG_DIST_MIN) {
                 data->state = RECOGNIZER_STATE_IN_PROGRESS;
@@ -110,8 +110,8 @@ static void calculate_velocity(drag_t* data) {
         for (int index = data->cache_start; index != end_index; index = (index + 1) % DRAG_CACHED_TOUCH_EVENTS) {
             touch_event_t* e1 = &data->cache[index];
             touch_event_t* e2 = &data->cache[(index + 1) % DRAG_CACHED_TOUCH_EVENTS];
-            vx += (e2->position_x - e1->position_x) / (e2->timestamp - e1->timestamp);
-            vy += (e2->position_y - e1->position_y) / (e2->timestamp - e1->timestamp);
+            vx += (e2->x - e1->x) / (e2->t - e1->t);
+            vy += (e2->y - e1->y) / (e2->t - e1->t);
         }
         data->vx = vx / data->cache_size;
         data->vy = vy / data->cache_size;

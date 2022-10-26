@@ -6,7 +6,7 @@ static void begin_stroke(touch_event_t* event);
 static void update_stroke(touch_event_t* event, int finish);
 static void process_stroke_up(touch_event_t* event);
 
-static void cache_velocity(stroke_t* stroke, float vx, float vy);
+static void update_velocity(stroke_t* stroke, float vx, float vy);
 static void calculate_velocity(stroke_t* stroke);
 
 gesture_event_t* recognize_stroke(touch_event_t* event) {
@@ -51,8 +51,7 @@ static void update_stroke(touch_event_t* event, int finish) {
         touch_event_t* last = &latest_touch_events[event->id];
         float vx            = (event->position_x - last->position_x) / (event->timestamp - last->timestamp);
         float vy            = (event->position_y - last->position_y) / (event->timestamp - last->timestamp);
-        cache_velocity(stroke_d + event->id, vx, vy);
-        calculate_velocity(stroke_d + event->id);
+        update_velocity(stroke_d + event->id, vx, vy);
         stroke_d[event->id].x = event->position_x;
         stroke_d[event->id].y = event->position_y;
         stroke_d[event->id].t = event->timestamp;
@@ -62,16 +61,27 @@ static void update_stroke(touch_event_t* event, int finish) {
     }
 }
 
-static void cache_velocity(stroke_t* stroke, float vx, float vy) {
+static void update_velocity(stroke_t* stroke, float vx, float vy) {
     if (stroke->cache_size < STROKE_CACHE_SIZE) {
         stroke->cache_last                   = stroke->cache_size;
         stroke->cache_vx[stroke->cache_last] = vx;
         stroke->cache_vy[stroke->cache_last] = vy;
         stroke->cache_size++;
+        if (stroke->cache_size == STROKE_CACHE_SIZE) {
+            calculate_velocity(stroke);
+        }
     } else {
+        stroke->vx *= STROKE_CACHE_SIZE;
+        stroke->vy *= STROKE_CACHE_SIZE;
+        stroke->vx -= stroke->cache_vx[stroke->cache_last];
+        stroke->vy -= stroke->cache_vy[stroke->cache_last];
         stroke->cache_last                   = (stroke->cache_last + 1) % STROKE_CACHE_SIZE;
         stroke->cache_vx[stroke->cache_last] = vx;
         stroke->cache_vy[stroke->cache_last] = vy;
+        stroke->vx += stroke->cache_vx[stroke->cache_last];
+        stroke->vy += stroke->cache_vy[stroke->cache_last];
+        stroke->vx /= STROKE_CACHE_SIZE;
+        stroke->vy /= STROKE_CACHE_SIZE;
     }
 }
 

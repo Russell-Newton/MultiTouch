@@ -5,6 +5,7 @@
 #include "singleFingerHold.h"
 #include "singleFingerSwipe.h"
 #include "singleFingerTap.h"
+#include "stroke.h"
 #include "utils.h"
 
 #define SQUARED_DIST(a, b) (SQUARE_SUM((a)->x - (b)->x, (a)->y - (b)->y))
@@ -32,6 +33,7 @@ void init_gesturelib() {
         latest_touch_events[i] = empty_touch_event;
     }
 
+    add_recognizer(recognize_stroke);
     add_recognizer(recognize_single_tap);
     add_recognizer(recognize_double_tap);
     add_recognizer(recognize_single_hold);

@@ -5,6 +5,9 @@
 #include "singleFingerHold.h"
 #include "singleFingerSwipe.h"
 #include "singleFingerTap.h"
+#include "utils.h"
+
+#define SQUARED_DIST(a, b) (SQUARE_SUM((a)->position_x - (b)->position_x, (a)->position_y - (b)->position_y))
 
 gesture_recognizer_t recognizers[MAX_RECOGNIZERS];
 int num_recognizers = 0;
@@ -13,8 +16,6 @@ int num_recognizers = 0;
 touch_event_t latest_touch_events[MAX_TOUCHES];
 touch_event_t empty_touch_event = {
     .event_type = TOUCH_EVENT_UP, .position_x = 0, .position_y = 0, .timestamp = 0, .id = TOUCH_ID_UNDEFINED};
-
-static float squared_distance(touch_event_t* a, touch_event_t* b);
 
 /// @brief assign a group ID to this touch_event. Update group_heads to reflect this. If this is not a DOWN event
 ///        and there are no groups being tracked, do not assign an ID. If this is a DOWN event but MAX_TOUCHES groups
@@ -85,7 +86,7 @@ static unsigned int assign_group(touch_event_t* touch_event) {
             continue;
         }
 
-        float dist = squared_distance(&latest_touch_events[i], touch_event);
+        float dist = SQUARED_DIST(&latest_touch_events[i], touch_event);
         if (dist <= EVENT_GROUPING_DIST_MAX * EVENT_GROUPING_DIST_MAX &&
             (closest_group == TOUCH_ID_UNDEFINED || dist < closest_dist)) {
             closest_group = i;
@@ -100,12 +101,6 @@ static unsigned int assign_group(touch_event_t* touch_event) {
 
     touch_event->id = closest_group;
     return closest_group;
-}
-
-static float squared_distance(touch_event_t* a, touch_event_t* b) {
-    float dx = a->position_x - b->position_x;
-    float dy = a->position_y - b->position_y;
-    return dx * dx + dy * dy;
 }
 
 int add_recognizer(gesture_event_t* (*recognize)(touch_event_t*)) {

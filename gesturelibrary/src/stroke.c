@@ -71,17 +71,15 @@ static void update_velocity(stroke_t* stroke, float vx, float vy) {
             calculate_velocity(stroke);
         }
     } else {
-        stroke->vx *= STROKE_CACHE_SIZE;
-        stroke->vy *= STROKE_CACHE_SIZE;
-        stroke->cache_last = (stroke->cache_last + 1) % STROKE_CACHE_SIZE;
-        stroke->vx -= stroke->cache_vx[stroke->cache_last];
-        stroke->vy -= stroke->cache_vy[stroke->cache_last];
+        float nvx                            = stroke->vx * STROKE_CACHE_SIZE;
+        float nvy                            = stroke->vy * STROKE_CACHE_SIZE;
+        stroke->cache_last                   = (stroke->cache_last + 1) % STROKE_CACHE_SIZE;
+        nvx                                  = nvx - stroke->cache_vx[stroke->cache_last] + vx;
+        nvy                                  = nvy - stroke->cache_vy[stroke->cache_last] + vy;
         stroke->cache_vx[stroke->cache_last] = vx;
         stroke->cache_vy[stroke->cache_last] = vy;
-        stroke->vx += vx;
-        stroke->vy += vy;
-        stroke->vx /= STROKE_CACHE_SIZE;
-        stroke->vy /= STROKE_CACHE_SIZE;
+        stroke->vx                           = nvx / STROKE_CACHE_SIZE;
+        stroke->vy                           = nvx / STROKE_CACHE_SIZE;
     }
 }
 

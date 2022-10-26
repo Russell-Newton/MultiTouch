@@ -16,14 +16,14 @@ static void process_tap_up(touch_event_t* event);
 sFingerTap_t create_tap_data(state_t state, touch_event_t* event) {
     sFingerTap_t tap_data;
     tap_data.state     = state;
-    tap_data.last_x    = event->position_x;
-    tap_data.last_y    = event->position_y;
-    tap_data.last_time = event->timestamp;
+    tap_data.last_x    = event->x;
+    tap_data.last_y    = event->y;
+    tap_data.last_time = event->t;
     return tap_data;
 }
 
 gesture_event_t* recognize_single_tap(touch_event_t* event) {
-    switch (event->event_type) {
+    switch (event->type) {
     case TOUCH_EVENT_DOWN:
         process_tap_down(event);
         break;
@@ -61,17 +61,17 @@ void clear_data() {
 
 static void process_tap_down(touch_event_t* event) {
     start         = event;
-    updated_state = RECOGNIZER_STATE_START;
+    updated_state = RECOGNIZER_STATE_NULL;
 }
 
 static void process_tap_move(touch_event_t* event) {
     if (updated_state == RECOGNIZER_STATE_FAILED) {
         return;
     }
-    float deltaX   = event->position_x - start->position_x;
-    float deltaY   = event->position_y - start->position_y;
+    float deltaX   = event->x - start->x;
+    float deltaY   = event->y - start->y;
     float distance = deltaX * deltaX + deltaY * deltaY;
-    if (distance > TAP_DIST_MAX || event->timestamp - start->timestamp > TAP_TIME_MAX) {
+    if (distance > TAP_DIST_MAX || event->t - start->t > TAP_TIME_MAX) {
         updated_state = RECOGNIZER_STATE_FAILED;
     } else {
         updated_state = RECOGNIZER_STATE_POSSIBLE;

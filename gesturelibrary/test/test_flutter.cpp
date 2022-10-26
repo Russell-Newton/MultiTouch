@@ -55,21 +55,21 @@ protected:
             vector<string> data = split(event);
             touch_event_t touchEvent;
             if (data[indexType] == "down") {
-                touchEvent.event_type = TOUCH_EVENT_DOWN;
+                touchEvent.type = TOUCH_EVENT_DOWN;
             } else if (data[indexType] == "move") {
-                touchEvent.event_type = TOUCH_EVENT_MOVE;
+                touchEvent.type = TOUCH_EVENT_MOVE;
             } else if (data[indexType] == "up") {
-                touchEvent.event_type = TOUCH_EVENT_UP;
+                touchEvent.type = TOUCH_EVENT_UP;
             }
-            touchEvent.position_x = stof(data[indexX]);
-            touchEvent.position_y = stof(data[indexY]);
-            size_t index1         = data[indexT].find(':');
-            size_t index2         = data[indexT].rfind(':');
-            int hours             = stoi(data[indexT].substr(0, index1));
-            int minutes           = stoi(data[indexT].substr(index1 + 1, index2));
-            float seconds         = stof(data[indexT].substr(index2 + 1));
-            touchEvent.timestamp  = 60 * 60 * hours + 60 * minutes + seconds;
-            touchEvent.id         = TOUCH_ID_UNDEFINED;
+            touchEvent.x     = stof(data[indexX]);
+            touchEvent.y     = stof(data[indexY]);
+            size_t index1    = data[indexT].find(':');
+            size_t index2    = data[indexT].rfind(':');
+            int hours        = stoi(data[indexT].substr(0, index1));
+            int minutes      = stoi(data[indexT].substr(index1 + 1, index2));
+            float seconds    = stof(data[indexT].substr(index2 + 1));
+            touchEvent.t     = 60 * 60 * hours + 60 * minutes + seconds;
+            touchEvent.group = TOUCH_ID_UNDEFINED;
             touchEvents.push_back(touchEvent);
         } while (!file.eof());
     }
@@ -102,7 +102,7 @@ TEST_F(TestFlutter, TapPhone1) {
 class TestDrag : public TestFlutter, public testing::WithParamInterface<int> {
 protected:
     void testDrag1() {
-        state_t s = RECOGNIZER_STATE_START;
+        state_t s = RECOGNIZER_STATE_NULL;
         for (touch_event_t event : touchEvents) {
             bool drag_found           = false;
             gesture_event_t* gestures = new gesture_event_t[MAX_RECOGNIZERS];
@@ -112,7 +112,7 @@ protected:
                     sFingerDrag_t* drags = ((sFingerDrag_t * (*)(void)) gestures[i].get_data)();
                     bool found           = false;
                     switch (s) {
-                    case RECOGNIZER_STATE_START:
+                    case RECOGNIZER_STATE_NULL:
                         for (size_t j = 0; j < MAX_TOUCHES; j++) {
                             if (drags[j].state == RECOGNIZER_STATE_POSSIBLE) {
                                 s     = drags[j].state;
@@ -163,7 +163,7 @@ protected:
 class TestTap : public TestFlutter, public testing::WithParamInterface<int> {
 protected:
     void testTap1() {
-        state_t s = RECOGNIZER_STATE_START;
+        state_t s = RECOGNIZER_STATE_NULL;
         for (touch_event_t event : touchEvents) {
             bool tap_found            = false;
             gesture_event_t* gestures = new gesture_event_t[MAX_RECOGNIZERS];
@@ -172,7 +172,7 @@ protected:
                 if (gestures[i].type == GESTURE_TYPE_TAP && gestures[i].num_touches == 1) {
                     sFingerTap_t* taps = ((sFingerTap_t * (*)(void)) gestures[i].get_data)();
                     switch (s) {
-                    case RECOGNIZER_STATE_START:
+                    case RECOGNIZER_STATE_NULL:
                         EXPECT_TRUE(s == taps[0].state);
                         s = RECOGNIZER_STATE_POSSIBLE;
                         break;

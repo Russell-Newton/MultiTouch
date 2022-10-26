@@ -8,7 +8,7 @@ extern "C" {
 class TestDrag : public TestFlutter, public testing::WithParamInterface<int> {
 protected:
     void testDrag1() {
-        state_t s = RECOGNIZER_STATE_START;
+        state_t s = RECOGNIZER_STATE_NULL;
         for (touch_event_t event : touchEvents) {
             bool drag_found           = false;
             gesture_event_t* gestures = new gesture_event_t[MAX_RECOGNIZERS];
@@ -18,7 +18,7 @@ protected:
                     sFingerDrag_t* drags = ((sFingerDrag_t * (*)(void)) gestures[i].get_data)();
                     bool found           = false;
                     switch (s) {
-                    case RECOGNIZER_STATE_START:
+                    case RECOGNIZER_STATE_NULL:
                         for (size_t j = 0; j < MAX_TOUCHES; j++) {
                             if (drags[j].state == RECOGNIZER_STATE_POSSIBLE) {
                                 s     = drags[j].state;

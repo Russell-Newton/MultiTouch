@@ -10,7 +10,7 @@ static void update_velocity(stroke_t* stroke, float vx, float vy);
 static void calculate_velocity(stroke_t* stroke);
 
 gesture_event_t* recognize_stroke(touch_event_t* event) {
-    switch (event->event_type) {
+    switch (event->type) {
     case TOUCH_EVENT_DOWN:
         begin_stroke(event);
         break;
@@ -29,34 +29,34 @@ stroke_t* get_stroke() {
 }
 
 static void begin_stroke(touch_event_t* event) {
-    if (event->id < MAX_TOUCHES && (stroke_d[event->id].state == RECOGNIZER_STATE_START ||
-                                    stroke_d[event->id].state == RECOGNIZER_STATE_COMPLETED)) {
+    if (event->group < MAX_TOUCHES && (stroke_d[event->group].state == RECOGNIZER_STATE_NULL ||
+                                       stroke_d[event->group].state == RECOGNIZER_STATE_COMPLETED)) {
 
-        stroke_d[event->id].state      = RECOGNIZER_STATE_IN_PROGRESS;
-        stroke_d[event->id].x0         = event->position_x;
-        stroke_d[event->id].y0         = event->position_y;
-        stroke_d[event->id].t0         = event->timestamp;
-        stroke_d[event->id].x          = event->position_x;
-        stroke_d[event->id].y          = event->position_y;
-        stroke_d[event->id].t          = event->timestamp;
-        stroke_d[event->id].vx         = 0;
-        stroke_d[event->id].vy         = 0;
-        stroke_d[event->id].cache_last = 0;
-        stroke_d[event->id].cache_size = 0;
+        stroke_d[event->group].state      = RECOGNIZER_STATE_IN_PROGRESS;
+        stroke_d[event->group].x0         = event->x;
+        stroke_d[event->group].y0         = event->y;
+        stroke_d[event->group].t0         = event->t;
+        stroke_d[event->group].x          = event->x;
+        stroke_d[event->group].y          = event->y;
+        stroke_d[event->group].t          = event->t;
+        stroke_d[event->group].vx         = 0;
+        stroke_d[event->group].vy         = 0;
+        stroke_d[event->group].cache_last = 0;
+        stroke_d[event->group].cache_size = 0;
     }
 }
 
 static void update_stroke(touch_event_t* event, int finish) {
-    if (event->id < MAX_TOUCHES && stroke_d[event->id].state == RECOGNIZER_STATE_IN_PROGRESS) {
-        touch_event_t* last = &latest_touch_events[event->id];
-        float vx            = (event->position_x - last->position_x) / (event->timestamp - last->timestamp);
-        float vy            = (event->position_y - last->position_y) / (event->timestamp - last->timestamp);
-        update_velocity(stroke_d + event->id, vx, vy);
-        stroke_d[event->id].x = event->position_x;
-        stroke_d[event->id].y = event->position_y;
-        stroke_d[event->id].t = event->timestamp;
+    if (event->group < MAX_TOUCHES && stroke_d[event->group].state == RECOGNIZER_STATE_IN_PROGRESS) {
+        touch_event_t* last = &latest_touch_events[event->group];
+        float vx            = (event->x - last->x) / (event->t - last->t);
+        float vy            = (event->y - last->y) / (event->t - last->t);
+        update_velocity(stroke_d + event->group, vx, vy);
+        stroke_d[event->group].x = event->x;
+        stroke_d[event->group].y = event->y;
+        stroke_d[event->group].t = event->t;
         if (finish) {
-            stroke_d[event->id].state = RECOGNIZER_STATE_COMPLETED;
+            stroke_d[event->group].state = RECOGNIZER_STATE_COMPLETED;
         }
     }
 }

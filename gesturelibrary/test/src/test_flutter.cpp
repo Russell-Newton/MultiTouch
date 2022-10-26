@@ -16,7 +16,7 @@ TEST_F(TestFlutter, TapPhone1) {
 class TestTap : public TestFlutter, public testing::WithParamInterface<int> {
 protected:
     void testTap1() {
-        state_t s = RECOGNIZER_STATE_START;
+        state_t s = RECOGNIZER_STATE_NULL;
         for (touch_event_t event : touchEvents) {
             bool tap_found            = false;
             gesture_event_t* gestures = new gesture_event_t[MAX_RECOGNIZERS];
@@ -25,7 +25,7 @@ protected:
                 if (gestures[i].type == GESTURE_TYPE_TAP && gestures[i].num_touches == 1) {
                     sFingerTap_t* taps = ((sFingerTap_t * (*)(void)) gestures[i].get_data)();
                     switch (s) {
-                    case RECOGNIZER_STATE_START:
+                    case RECOGNIZER_STATE_NULL:
                         EXPECT_TRUE(s == taps[0].state);
                         s = RECOGNIZER_STATE_POSSIBLE;
                         break;

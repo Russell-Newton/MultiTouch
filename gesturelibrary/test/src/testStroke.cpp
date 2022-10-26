@@ -26,15 +26,15 @@ protected:
         int completed   = 0;
         state_t* states = new state_t[MAX_TOUCHES];
         for (size_t index = 0; index < MAX_TOUCHES; index++) {
-            states[index] = RECOGNIZER_STATE_START;
+            states[index] = RECOGNIZER_STATE_NULL;
         }
         for (touch_event_t event : touchEvents) {
             process_touch_event(&event, 0, 0);
             stroke_t* strokes = get_stroke();
             for (size_t index = 0; index < MAX_TOUCHES; index++) {
                 switch (states[index]) {
-                case RECOGNIZER_STATE_START:
-                    EXPECT_TRUE(strokes[index].state == RECOGNIZER_STATE_START ||
+                case RECOGNIZER_STATE_NULL:
+                    EXPECT_TRUE(strokes[index].state == RECOGNIZER_STATE_NULL ||
                                 strokes[index].state == RECOGNIZER_STATE_IN_PROGRESS);
                     break;
                 case RECOGNIZER_STATE_IN_PROGRESS:

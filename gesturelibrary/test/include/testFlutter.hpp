@@ -58,21 +58,21 @@ protected:
             vector<string> data = split(event);
             touch_event_t touchEvent;
             if (data[indexType] == "down") {
-                touchEvent.event_type = TOUCH_EVENT_DOWN;
+                touchEvent.type = TOUCH_EVENT_DOWN;
             } else if (data[indexType] == "move") {
-                touchEvent.event_type = TOUCH_EVENT_MOVE;
+                touchEvent.type = TOUCH_EVENT_MOVE;
             } else if (data[indexType] == "up") {
-                touchEvent.event_type = TOUCH_EVENT_UP;
+                touchEvent.type = TOUCH_EVENT_UP;
             }
-            touchEvent.position_x = stof(data[indexX]);
-            touchEvent.position_y = stof(data[indexY]);
-            size_t index1         = data[indexT].find(':');
-            size_t index2         = data[indexT].rfind(':');
-            int hours             = stoi(data[indexT].substr(0, index1));
-            int minutes           = stoi(data[indexT].substr(index1 + 1, index2));
-            float seconds         = stof(data[indexT].substr(index2 + 1));
-            touchEvent.timestamp  = 60 * 60 * hours + 60 * minutes + seconds;
-            touchEvent.id         = TOUCH_ID_UNDEFINED;
+            touchEvent.x     = stof(data[indexX]);
+            touchEvent.y     = stof(data[indexY]);
+            size_t index1    = data[indexT].find(':');
+            size_t index2    = data[indexT].rfind(':');
+            int hours        = stoi(data[indexT].substr(0, index1));
+            int minutes      = stoi(data[indexT].substr(index1 + 1, index2));
+            float seconds    = stof(data[indexT].substr(index2 + 1));
+            touchEvent.t     = 60 * 60 * hours + 60 * minutes + seconds;
+            touchEvent.group = TOUCH_ID_UNDEFINED;
             touchEvents.push_back(touchEvent);
         } while (!file.eof());
     }

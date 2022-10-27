@@ -3,8 +3,8 @@
 extern "C" {
 #include "singleFingerDouble.h"
 #include "singleFingerHold.h"
-#include "singleFingerSwipe.h"
 #include "singleFingerTap.h"
+#include "swipe.h"
 }
 
 TEST(GestureLibraryTest, TestInitGestureLib) {

@@ -3,9 +3,9 @@
 #include "drag.h"
 #include "singleFingerDouble.h"
 #include "singleFingerHold.h"
-#include "singleFingerSwipe.h"
 #include "singleFingerTap.h"
 #include "stroke.h"
+#include "swipe.h"
 #include "utils.h"
 #include "zoom_and_rotate.h"
 

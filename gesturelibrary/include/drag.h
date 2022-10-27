@@ -3,27 +3,24 @@
 #include "gesturelib.h"
 #include "recognizer.h"
 
-#ifndef DRAG_CACHED_TOUCH_EVENTS
-// needs to be at least 2 in order to calculate velocity
-#define DRAG_CACHED_TOUCH_EVENTS 30
-#endif
-
-/// @brief
+/// @brief Data structure for drag gesture data
 typedef struct drag {
+    // recognizer state
     state_t state;
+
+    // initial position
     float x0;
     float y0;
-    float vx;
-    float vy;
-    unsigned int cache_start;
-    unsigned int cache_size;
-    touch_event_t cache[DRAG_CACHED_TOUCH_EVENTS];
+
+    // current position
+    float x;
+    float y;
 } drag_t;
 
-/// @brief
-/// @param event
+/// @brief Recognize drag gesture
+/// @param event touch event to recognize
 gesture_event_t* recognize_drag(touch_event_t* event);
 
-/// @brief
-/// @return
+/// @brief Access drag data array of size MAX_TOUCHES
+/// @return Address of first element of drag data array of size MAX_TOUCHES
 drag_t* get_drag();

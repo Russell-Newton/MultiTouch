@@ -1,12 +1,13 @@
 #include "gesturelib.h"
 
+#include "drag.h"
 #include "singleFingerDouble.h"
-#include "singleFingerDrag.h"
 #include "singleFingerHold.h"
-#include "singleFingerSwipe.h"
 #include "singleFingerTap.h"
 #include "stroke.h"
+#include "swipe.h"
 #include "utils.h"
+#include "zoom_and_rotate.h"
 
 #define SQUARED_DIST(a, b) (SQUARE_SUM((a)->x - (b)->x, (a)->y - (b)->y))
 
@@ -38,7 +39,8 @@ void init_gesturelib() {
     add_recognizer(recognize_double_tap);
     add_recognizer(recognize_single_hold);
     add_recognizer(recognize_swipe);
-    add_recognizer(recognize_single_drag);
+    add_recognizer(recognize_drag);
+    add_recognizer(recognize_zoom_and_rotate);
 }
 
 int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, int max_gestures) {
@@ -46,7 +48,7 @@ int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, i
     if (touch_event->group == TOUCH_ID_UNDEFINED) {
         assign_group(touch_event);
     }
-    for (uint32_t index = 0; index < MAX_RECOGNIZERS; index++) {
+    for (uint32_t index = 0; index < num_recognizers; index++) {
         if (recognizers[index].enabled) {
             gesture_event_t* gesture = recognizers[index].recognize(touch_event);
             if (gesture && size < max_gestures) {
@@ -54,7 +56,9 @@ int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, i
             }
         }
     }
-    latest_touch_events[touch_event->group] = *touch_event;
+    if (touch_event->group < MAX_TOUCHES) {
+        latest_touch_events[touch_event->group] = *touch_event;
+    }
     return size;
 }
 

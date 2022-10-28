@@ -6,7 +6,6 @@
 extern "C" {
 #include "gesturelib.h"
 #include "recognizer.h"
-#include "singleFingerDrag.h"
 }
 
 using namespace std;
@@ -53,7 +52,7 @@ TEST_F(TestPreprocessing, TestStationaryDownMultiple) {
 
 // Checks that moves and ups aren't assigned to any group if none are being tracked
 TEST_F(TestPreprocessing, TestMoveUpUndefined) {
-    touch_event_t badEvent = {TOUCH_EVENT_MOVE, 0, 0, 0, TOUCH_ID_UNDEFINED};
+    touch_event_t badEvent = {.type = TOUCH_EVENT_MOVE, .x = 0, .y = 0, .t = 0, .group = TOUCH_ID_UNDEFINED, .uid = 0};
     process_touch_event(&badEvent, nullptr, 0);
     EXPECT_EQ(badEvent.group, TOUCH_ID_UNDEFINED);
 

@@ -1,9 +1,13 @@
 #include "testFlutter.hpp"
 
+#include <iostream>
+
 extern "C" {
 #include "recognizer.h"
 #include "stroke.h"
 }
+
+using namespace std;
 
 struct StrokeTestParams {
     string fileName;
@@ -22,6 +26,22 @@ ostream& operator<<(ostream& stream, const StrokeTestParams& params) {
 
 class TestStroke : public TestFlutter, public testing::WithParamInterface<StrokeTestParams> {
 protected:
+    void checkVelocity(stroke_t* stroke) {
+        if (stroke->cache_size > 0) {
+            float vx = 0;
+            float vy = 0;
+            for (int i = 0; i < stroke->cache_size; i++) {
+                vx += stroke->cache_vx[i];
+                vy += stroke->cache_vy[i];
+            }
+            EXPECT_LT(fabsf(stroke->vx - vx / stroke->cache_size), 0.01f);
+            EXPECT_LT(fabsf(stroke->vy - vy / stroke->cache_size), 0.01f);
+        } else {
+            EXPECT_FLOAT_EQ(stroke->vx, 0);
+            EXPECT_FLOAT_EQ(stroke->vy, 0);
+        }
+    }
+
     void testStates(int num) {
         int completed   = 0;
         state_t* states = new state_t[MAX_TOUCHES];
@@ -32,6 +52,7 @@ protected:
             process_touch_event(&event, 0, 0);
             stroke_t* strokes = get_stroke();
             for (size_t index = 0; index < MAX_TOUCHES; index++) {
+                checkVelocity(strokes + index);
                 switch (states[index]) {
                 case RECOGNIZER_STATE_NULL:
                     EXPECT_TRUE(strokes[index].state == RECOGNIZER_STATE_NULL ||
@@ -56,6 +77,7 @@ protected:
             }
         }
         EXPECT_EQ(completed, num);
+        delete[] states;
     }
 };
 

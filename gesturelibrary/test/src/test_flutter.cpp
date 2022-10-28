@@ -1,8 +1,8 @@
 #include "testFlutter.hpp"
 
 extern "C" {
+#include "drag.h"
 #include "recognizer.h"
-#include "singleFingerDrag.h"
 #include "singleFingerTap.h"
 }
 

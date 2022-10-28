@@ -13,6 +13,7 @@
 #define MAX_RECOGNIZERS 100
 #endif
 #define TOUCH_ID_UNDEFINED (MAX_TOUCHES + 1)
+#define MAX_UID            MAX_TOUCHES
 
 /// @brief
 typedef enum event_type {
@@ -28,6 +29,7 @@ typedef struct touch_event {
     float y;
     float t;
     unsigned int group;
+    unsigned int uid;
 } touch_event_t;
 
 typedef enum gesture_type {
@@ -35,7 +37,8 @@ typedef enum gesture_type {
     GESTURE_TYPE_SWIPE,
     GESTURE_TYPE_HOLD,
     GESTURE_TYPE_DOUBLE_TAP,
-    GESTURE_TYPE_DRAG
+    GESTURE_TYPE_DRAG,
+    GESTURE_TYPE_ZOOM_AND_ROTATE
 } gesture_type_t;
 
 /// @brief

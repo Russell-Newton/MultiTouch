@@ -2,17 +2,17 @@
 
 extern "C" {
 #include "recognizer.h"
-#include "stroke.h"
+#include "singleFingerHold.h"
 }
 
 class TestHold : public TestFlutter, public testing::WithParamInterface<int> {
 protected:
     void testHold() {
         state_t s = RECOGNIZER_STATE_NULL;
-        for (touch_event_t touch_event : touchEvents) {
+        for (touch_event_t event : touchEvents) {
             gesture_event_t* gestures = new gesture_event_t[MAX_RECOGNIZERS];
             bool found_hold           = false;
-            process_touch_event(&touch_event, gestures, MAX_RECOGNIZERS);
+            process_touch_event(&event, gestures, MAX_RECOGNIZERS);
             for (size_t i = 0; i < MAX_RECOGNIZERS; i++) {  // size_t means unsigned int (positive)
                 if (gestures[i].type == GESTURE_TYPE_HOLD && gestures[i].num_touches == 1) {
                     sFingerHold_t* holds = ((sFingerHold_t * (*)(void)) gestures[i].get_data)();
@@ -26,6 +26,7 @@ protected:
                                 break;
                             }
                         }
+                        cout << found << "\n";
                         EXPECT_TRUE(found);
                         break;
                     case RECOGNIZER_STATE_POSSIBLE:

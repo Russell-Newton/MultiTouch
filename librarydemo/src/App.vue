@@ -2,6 +2,7 @@
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
 import { MDBBtn } from "mdb-vue-ui-kit";
+import {test, testStruct, convertTouchEvent, convertGestureEvent} from "./assets/api_wrapper";
 </script>
 
 <template>
@@ -15,7 +16,8 @@ import { MDBBtn } from "mdb-vue-ui-kit";
 
   <main>
     <TheWelcome />
-    <MDBBtn @click="test()" color="light" size="sm" rounded>Square 3 in C! (Check console output)</MDBBtn>
+    <MDBBtn @click="test" color="light" size="sm" rounded>Square 3 in C! (Check console output)</MDBBtn>
+    <MDBBtn @click="testStruct" color="light" size="sm" rounded>C Struct test</MDBBtn>
   </main>
 </template>
 
@@ -50,14 +52,3 @@ header {
   font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 </style>
-
-<script>
-  export default {
-    methods: {
-      test: function() {
-        let square = Module.cwrap('square', 'number', ['number']);
-        console.log(square(3));
-      }
-    }
-  }
-</script>

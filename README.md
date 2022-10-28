@@ -14,6 +14,18 @@ Data collection web app automatically deployed to [GitHub Pages](https://russell
 
 # Release Notes
 
+## Version 0.3.0
+### New Features
+* Functioning swipe and drag gestures
+* Minimally functioning zoom and rotate gesture
+
+### Bug Fixes
+* Faulty unit tests removed
+
+### Known Issues
+* Zoom and rotate gesture only works with 2 fingers
+* 3+ finger zoom and rotate is planned for next sprint
+
 ## Version 0.2.1
 ### New Features
 * Included Flutter project to collect example gesture `.csv` data.

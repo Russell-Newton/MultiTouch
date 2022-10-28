@@ -4,7 +4,7 @@
 
 // float time in seconds for longest tap and shortest hold/drag
 #define TAP_TIME_MAX  1
-#define HOLD_TIME_MIN 1.5
+#define HOLD_TIME_MIN 1
 #define DRAG_TIME_MIN TAP_TIME_MAX
 
 // float euclidean distance for longest tap/hold and shortest drag/swipe

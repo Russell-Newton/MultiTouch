@@ -58,7 +58,7 @@ extern int num_recognizers;
 extern touch_event_t latest_touch_events[];
 
 /// @brief
-void init_gesturelib();
+int init_gesturelib();
 
 /// @brief
 /// @param touch_event

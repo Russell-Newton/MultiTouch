@@ -48,7 +48,7 @@ int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, i
     if (touch_event->group == TOUCH_ID_UNDEFINED) {
         assign_group(touch_event);
     }
-    for (uint32_t index = 0; index < MAX_RECOGNIZERS; index++) {
+    for (uint32_t index = 0; index < num_recognizers; index++) {
         if (recognizers[index].enabled) {
             gesture_event_t* gesture = recognizers[index].recognize(touch_event);
             if (gesture && size < max_gestures) {
@@ -56,7 +56,9 @@ int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, i
             }
         }
     }
-    latest_touch_events[touch_event->group] = *touch_event;
+    if (touch_event->group < MAX_TOUCHES) {
+        latest_touch_events[touch_event->group] = *touch_event;
+    }
     return size;
 }
 

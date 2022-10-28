@@ -20,7 +20,4 @@
 
 // euclidean distance for largest distance between touches for
 // one zoom & rotate gesture
-#define ZNR_SEP_MAX 500
-
-// euclidean distance for
-#define ZNR_DIST_MAX 50
+#define ZOOM_AND_ROTATE_SEPARATION_MAX 500

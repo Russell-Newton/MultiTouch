@@ -18,6 +18,8 @@ Data collection web app automatically deployed to [GitHub Pages](https://russell
 ### New Features
 * Functioning swipe and drag gestures
 * Minimally functioning zoom and rotate gesture
+* Gesture library compiles into .js and .wasm with emscripten
+  * Functions exposed by Module object to pack and unpack library structs without needing heap DMA
 
 ### Bug Fixes
 * Faulty unit tests removed

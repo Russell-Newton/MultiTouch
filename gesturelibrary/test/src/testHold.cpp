@@ -23,21 +23,22 @@ protected:
                             if (holds[j].state == RECOGNIZER_STATE_POSSIBLE) {
                                 s     = holds[j].state;
                                 found = true;
+                                // EXPECT_FALSE(found); //checking if it enters this if, this should make it auto fail
                                 break;
                             }
                         }
-                        // EXPECT_TRUE(found);
+                        EXPECT_TRUE(found);
                         break;
                     case RECOGNIZER_STATE_POSSIBLE:
                         for (size_t j = 0; j < MAX_TOUCHES; j++) {
                             if (holds[j].state == RECOGNIZER_STATE_POSSIBLE ||
-                                holds[j].state == RECOGNIZER_STATE_IN_PROGRESS) {
+                                holds[j].state == RECOGNIZER_STATE_IN_PROGRESS || RECOGNIZER_STATE_COMPLETED) {
                                 s     = holds[j].state;
                                 found = true;
                                 break;
                             }
                         }
-                        // EXPECT_TRUE(found);
+                        EXPECT_TRUE(found);
                         break;
                     case RECOGNIZER_STATE_IN_PROGRESS:
                         for (size_t j = 0; j < MAX_TOUCHES; j++) {
@@ -48,10 +49,10 @@ protected:
                                 break;
                             }
                         }
-                        // EXPECT_TRUE(found);
+                        EXPECT_TRUE(found);
                         break;
                     default:
-                        // EXPECT_EQ("", "incorrect hold state found");
+                        EXPECT_EQ("", "incorrect hold state found");
                         break;
                     }
                     found_hold = true;
@@ -59,7 +60,7 @@ protected:
                 }
             }
             if (!found_hold) {
-                // EXPECT_EQ("", "failed to return hold gesture");
+                EXPECT_EQ("", "failed to return hold gesture");
             }
             delete[] gestures;
         }
@@ -71,4 +72,4 @@ TEST_P(TestHold, HoldPhone) {
     testHold();
 }
 
-INSTANTIATE_TEST_SUITE_P(HoldPhoneTests, TestHold, testing::Values(1));
+INSTANTIATE_TEST_SUITE_P(HoldPhoneTests, TestHold, testing::Values(1, 2, 3, 4, 5));

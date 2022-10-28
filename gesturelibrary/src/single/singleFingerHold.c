@@ -7,7 +7,7 @@
 sFingerHold_t sFingerHold_d[MAX_TOUCHES];
 static touch_event_t* start;
 static touch_event_t* prev = 0;
-static state_t updated_state;
+state_t updated_state;
 static gesture_event_t* hold_gesture;
 
 int size;
@@ -27,25 +27,25 @@ gesture_event_t* recognize_single_hold(touch_event_t* event) {
         break;
     }
 
-    switch (updated_state) {
-    case RECOGNIZER_STATE_NULL:
-        printf("NULL");
-        break;
-    case RECOGNIZER_STATE_COMPLETED:
-        printf("COMPLETED");
-        break;
-    case RECOGNIZER_STATE_FAILED:
-        printf("FAILED");
-        break;
-    case RECOGNIZER_STATE_IN_PROGRESS:
-        printf("IN_PROGRESS");
-        break;
-    case RECOGNIZER_STATE_POSSIBLE:
-        printf("POSSIBLE");
-        break;
-    default:
-        printf("NOT A VALID STATE");
-    }
+    // switch (updated_state) {
+    // case RECOGNIZER_STATE_NULL:
+    //     printf("NULL");
+    //     break;
+    // case RECOGNIZER_STATE_COMPLETED:
+    //     printf("COMPLETED");
+    //     break;
+    // case RECOGNIZER_STATE_FAILED:
+    //     printf("FAILED");
+    //     break;
+    // case RECOGNIZER_STATE_IN_PROGRESS:
+    //     printf("IN_PROGRESS");
+    //     break;
+    // case RECOGNIZER_STATE_POSSIBLE:
+    //     printf("POSSIBLE");
+    //     break;
+    // default:
+    //     printf("NOT A VALID STATE");
+    // }
 
     add_to_data(create_touch_data(updated_state, event));
     // sFingerHold_d[0] = create_touch_data(updated_state, event);
@@ -87,7 +87,7 @@ sFingerHold_t* create_touch_data(state_t state, touch_event_t* event) {
 
 void process_hold_down(touch_event_t* event) {
     start         = event;
-    updated_state = RECOGNIZER_STATE_NULL;
+    updated_state = RECOGNIZER_STATE_POSSIBLE;
 }
 
 void process_hold_move(touch_event_t* event) {

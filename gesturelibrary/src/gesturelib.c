@@ -26,7 +26,11 @@ touch_event_t empty_touch_event = {.type = TOUCH_EVENT_UP, .x = 0, .y = 0, .t = 
 static unsigned int assign_group(touch_event_t* touch_event);
 
 /** This is a documentation test. **/
-void init_gesturelib() {
+int init_gesturelib() {
+    static int initialized = 0;
+    if (initialized) {
+        return 0;
+    }
     for (uint32_t index = 0; index < MAX_RECOGNIZERS; index++) {
         recognizers[index].enabled = 0;
     }
@@ -41,6 +45,10 @@ void init_gesturelib() {
     add_recognizer(recognize_swipe);
     add_recognizer(recognize_drag);
     add_recognizer(recognize_zoom_and_rotate);
+
+    initialized = 1;
+
+    return 1;
 }
 
 int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, int max_gestures) {

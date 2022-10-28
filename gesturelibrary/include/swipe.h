@@ -16,9 +16,6 @@ typedef struct swipe {
     // current (moving average) velocity
     float vx;
     float vy;
-
-    // last stroke state
-    state_t stroke_state;
 } swipe_t;
 
 /// @brief Recognize swipe gesture

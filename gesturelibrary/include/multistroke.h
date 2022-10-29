@@ -15,27 +15,26 @@ typedef struct multistroke {
     // translation
     float dx;
     float dy;
-    // standard matrix A of transformation T(x)=Ax
-    float a11;
-    float a12;
-    float a21;
-    float a22;
+    // rotation counterclockwise in radians
+    float rotation;
+    // scale factor
+    float scale;
 
     // 1 if stroke is tracked, else 0
     char strokes[MAX_TOUCHES];
     // last complete translation
     float dx0;
     float dy0;
-    // last transformation
-    float a110;
-    float a120;
-    float a210;
-    float a220;
+    // last rotation
+    float rotation0;
+    // last scaling
+    float scale0;
     // center position of time of last touch change
-    float x0;
-    float y0;
-    // transformation helper matrix
-    float B[2][MAX_TOUCHES];
+    float cx;
+    float cy;
+    // scaled offsets since last center change
+    float sx[MAX_TOUCHES];
+    float sy[MAX_TOUCHES];
 } multistroke_t;
 
 /// @brief Recognize multistroke gesture

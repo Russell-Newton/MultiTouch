@@ -1,5 +1,6 @@
 #include "multistroke.h"
 
+#include "math.h"
 #include "stroke.h"
 #include "utils.h"
 
@@ -11,27 +12,21 @@ static void calculate_center(multistroke_t* ms);
 static void calculate_transform(multistroke_t* ms);
 
 gesture_event_t* recognize_multistroke(touch_event_t* event) {
-    char tracked      = 0;
+    int free_index    = -1;
     stroke_t* strokes = get_stroke();
     for (int i = 0; i < MAX_TOUCHES; i++) {
-        if ((multistroke_d[i].state == RECOGNIZER_STATE_POSSIBLE ||
-             multistroke_d[i].state == RECOGNIZER_STATE_IN_PROGRESS) &&
-            multistroke_d[i].uid == strokes[event->group].uid) {
+        if (multistroke_d[i].uid == strokes[event->group].uid &&
+            (multistroke_d[i].state == RECOGNIZER_STATE_POSSIBLE ||
+             multistroke_d[i].state == RECOGNIZER_STATE_IN_PROGRESS)) {
             update_multistroke(multistroke_d + i, event->group);
-            tracked = 1;
-            break;
+            return 0;
+        } else if (free_index < 0 && (multistroke_d[i].state == RECOGNIZER_STATE_NULL ||
+                                      multistroke_d[i].state == RECOGNIZER_STATE_COMPLETED ||
+                                      multistroke_d[i].state == RECOGNIZER_STATE_FAILED)) {
+            free_index = i;
         }
     }
-    if (!tracked) {
-        for (int i = 0; i < MAX_TOUCHES; i++) {
-            if (multistroke_d[i].state == RECOGNIZER_STATE_NULL ||
-                multistroke_d[i].state == RECOGNIZER_STATE_COMPLETED ||
-                multistroke_d[i].state == RECOGNIZER_STATE_FAILED) {
-                update_multistroke(multistroke_d + i, event->group);
-                break;
-            }
-        }
-    }
+    update_multistroke(multistroke_d + free_index, event->group);
     return 0;
 }
 
@@ -81,22 +76,18 @@ static void update_multistroke(multistroke_t* ms, int group) {
 }
 
 static void zero_multistroke(multistroke_t* ms) {
-    ms->dx  = 0;
-    ms->dy  = 0;
-    ms->a11 = 1;
-    ms->a12 = 0;
-    ms->a21 = 0;
-    ms->a22 = 1;
+    ms->dx       = 0;
+    ms->dy       = 0;
+    ms->rotation = 0;
+    ms->scale    = 1;
 }
 
 static void calculate_center(multistroke_t* ms) {
-    // copy last translation and transformation
-    ms->dx0  = ms->dx;
-    ms->dy0  = ms->dy;
-    ms->a110 = ms->a11;
-    ms->a120 = ms->a12;
-    ms->a210 = ms->a21;
-    ms->a220 = ms->a22;
+    // copy last translation and rotation and scaling
+    ms->dx0       = ms->dx;
+    ms->dy0       = ms->dy;
+    ms->rotation0 = ms->rotation;
+    ms->scale0    = ms->scale;
 
     // calculate new center
     stroke_t* strokes = get_stroke();
@@ -110,64 +101,57 @@ static void calculate_center(multistroke_t* ms) {
             ms->size++;
         }
     }
-    ms->x0 = x / ms->size;
-    ms->y0 = y / ms->size;
+    ms->cx = x / ms->size;
+    ms->cy = y / ms->size;
 
-    // calculate new transformation helper matrix
+    // calculate new scaled offsets
     float dx[MAX_TOUCHES];
     float dy[MAX_TOUCHES];
-    float a11 = 0;
-    float a12 = 0;
-    float a22 = 0;
+    float a = 0;
     for (int i = 0; i < MAX_TOUCHES; i++) {
         if (ms->strokes[i]) {
-            dx[i] = strokes[i].x - ms->x0;
-            dy[i] = strokes[i].y - ms->y0;
-            a11 += SQUARE(dx[i]);
-            a12 += dx[i] * dy[i];
-            a22 += SQUARE(dy[i]);
+            dx[i] = strokes[i].x - ms->cx;
+            dy[i] = strokes[i].y - ms->cy;
+            a += SQUARE(dx[i]) + SQUARE(dy[i]);
         }
     }
-    float det = 1 / (a11 * a22 - SQUARE(a12));
     for (int i = 0; i < MAX_TOUCHES; i++) {
-        ms->B[0][i] = det * (a22 * dx[i] - a12 * dy[i]);
-        ms->B[1][i] = det * (a11 * dy[i] - a12 * dx[i]);
+        if (ms->strokes[i]) {
+            ms->sx[i] = dx[i] / a;
+            ms->sy[i] = dy[i] / a;
+        }
     }
 }
 
 static void calculate_transform(multistroke_t* ms) {
     // calculate current center
     stroke_t* strokes = get_stroke();
-    float x0          = 0;
-    float y0          = 0;
+    float cx          = 0;
+    float cy          = 0;
     for (int i = 0; i < MAX_TOUCHES; i++) {
         if (ms->strokes[i]) {
-            x0 += strokes[i].x;
-            y0 += strokes[i].y;
+            cx += strokes[i].x;
+            cy += strokes[i].y;
         }
     }
-    x0 /= ms->size;
-    y0 /= ms->size;
+    cx /= ms->size;
+    cy /= ms->size;
 
     // calculate translation
-    ms->dx = ms->dx0 + (x0 - ms->x0);
-    ms->dy = ms->dy0 + (y0 - ms->y0);
+    ms->dx = ms->dx0 + (cx - ms->cx);
+    ms->dy = ms->dy0 + (cy - ms->cy);
 
-    // calculate transformation
-    float a11 = 0;
-    float a12 = 0;
-    float a21 = 0;
-    float a22 = 0;
+    // calculate rotation and scaling
+    float a = 0;
+    float b = 0;
     for (int i = 0; i < MAX_TOUCHES; i++) {
         if (ms->strokes[i]) {
-            a11 += ms->B[0][i] * (strokes[i].x - x0);
-            a12 += ms->B[1][i] * (strokes[i].x - x0);
-            a21 += ms->B[0][i] * (strokes[i].y - y0);
-            a22 += ms->B[1][i] * (strokes[i].y - y0);
+            float dx = strokes[i].x - cx;
+            float dy = strokes[i].y - cy;
+            a += ms->sx[i] * dx + ms->sy[i] * dy;
+            b += ms->sx[i] * dy - ms->sy[i] * dx;
         }
     }
-    ms->a11 = a11 * ms->a110 + a12 * ms->a210;
-    ms->a12 = a11 * ms->a120 + a12 * ms->a220;
-    ms->a21 = a21 * ms->a110 + a22 * ms->a210;
-    ms->a22 = a21 * ms->a120 + a22 * ms->a220;
+    ms->rotation = ms->rotation0 + atan2f(b, a);
+    ms->scale    = ms->scale0 * sqrtf(SQUARE_SUM(a, b));
 }

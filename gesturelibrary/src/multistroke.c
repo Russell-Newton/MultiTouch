@@ -63,7 +63,6 @@ static void update_multistroke(multistroke_t* ms, int group) {
                 for (int i = 0; i < MAX_TOUCHES; i++) {
                     ms->strokes[i] = 0;
                 }
-                ms->size = 0;
             }
         } else if (ms->state == RECOGNIZER_STATE_IN_PROGRESS) {
             calculate_transform(ms);
@@ -75,7 +74,6 @@ static void update_multistroke(multistroke_t* ms, int group) {
                     for (int i = 0; i < MAX_TOUCHES; i++) {
                         ms->strokes[i] = 0;
                     }
-                    ms->size = 0;
                 }
             }
         }

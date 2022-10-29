@@ -1,5 +1,5 @@
 module.exports = {
-  "emsdkVersion" : "3.1.15",
+  "emsdkVersion" : "1.39.5",
   "settings" : {
     "type" : "make",
     "build" : {

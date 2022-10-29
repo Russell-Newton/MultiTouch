@@ -28,3 +28,4 @@ coverage
 *.sw?
 
 /public/c_bindings/
+/c_bindings/lib

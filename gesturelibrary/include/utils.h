@@ -1,3 +1,4 @@
 #pragma once
 
-#define SQUARE_SUM(x, y) ((x) * (x) + (y) * (y))
+#define SQUARE(x)        ((x) * (x))
+#define SQUARE_SUM(x, y) (SQUARE(x) + SQUARE(y))

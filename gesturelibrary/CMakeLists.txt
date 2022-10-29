@@ -16,6 +16,8 @@ add_library(${TARGET_LIBRARY} STATIC ${LIBRARY_SOURCES})
 #                       POSITION_INDEPENDENT_CODE True
 #                       )
 
+if (NOT SKIP_TESTS)
 enable_testing()
 
 add_subdirectory(test)
+endif()

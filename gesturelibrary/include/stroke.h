@@ -13,6 +13,9 @@ typedef struct stroke {
     // recognizer state
     state_t state;
 
+    // user id
+    unsigned int uid;
+
     // initial position and time
     float x0;
     float y0;

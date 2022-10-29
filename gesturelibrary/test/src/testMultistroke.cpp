@@ -28,17 +28,19 @@ ostream& operator<<(ostream& stream, const MultistrokeTestParams& params) {
 class TestMultistroke : public TestFlutter, public testing::WithParamInterface<MultistrokeTestParams> {
 protected:
     void testStates(int num) {
-        int completed   = 0;
-        state_t* states = new state_t[MAX_TOUCHES];
+        int completed               = 0;
+        multistroke_t* multistrokes = get_multistroke();
+        state_t* states             = new state_t[MAX_TOUCHES];
         for (size_t index = 0; index < MAX_TOUCHES; index++) {
-            states[index] = RECOGNIZER_STATE_NULL;
+            states[index] = multistrokes[index].state;
         }
         for (touch_event_t event : touchEvents) {
             process_touch_event(&event, 0, 0);
-            multistroke_t* multistrokes = get_multistroke();
             for (size_t index = 0; index < MAX_TOUCHES; index++) {
                 if (multistrokes[index].state != RECOGNIZER_STATE_NULL) {
-                    cout << "dx_" << index << ": " << multistrokes[index].dx << ",\t"
+                    cout << "uid_" << index << ": " << multistrokes[index].uid << ",\t"
+                         << "size_" << index << ": " << multistrokes[index].size << ",\t"
+                         << "dx_" << index << ": " << multistrokes[index].dx << ",\t"
                          << "dy_" << index << ": " << multistrokes[index].dy << ",\t"
                          << "s_" << index << ": " << multistrokes[index].scale << ",\t"
                          << "r_" << index << ": " << multistrokes[index].rotation << ",\t"
@@ -126,3 +128,192 @@ INSTANTIATE_TEST_SUITE_P(MultistrokeParamTests,
                              // 2 finger rotates
                              MultistrokeTestParams("res/rotate/phone_1.csv", 1),
                              MultistrokeTestParams("res/rotate/phone_2.csv", 1)));
+
+TEST_F(TestMultistroke, ChangeSize) {
+    touch_event_t event;
+    event.uid = 1000;
+
+    event.x     = 0;
+    event.y     = 0;
+    event.t     = 0;
+    event.type  = TOUCH_EVENT_DOWN;
+    event.group = 0;
+    touchEvents.push_back(event);
+
+    event.x     = 1;
+    event.y     = 0;
+    event.t     = 1;
+    event.type  = TOUCH_EVENT_DOWN;
+    event.group = 1;
+    touchEvents.push_back(event);
+
+    event.x     = 1;
+    event.y     = 1;
+    event.t     = 2;
+    event.type  = TOUCH_EVENT_DOWN;
+    event.group = 2;
+    touchEvents.push_back(event);
+
+    event.x     = 1;
+    event.y     = 1;
+    event.t     = 3;
+    event.type  = TOUCH_EVENT_UP;
+    event.group = 2;
+    touchEvents.push_back(event);
+
+    event.x     = 1;
+    event.y     = 0;
+    event.t     = 4;
+    event.type  = TOUCH_EVENT_UP;
+    event.group = 1;
+    touchEvents.push_back(event);
+
+    event.x     = 0;
+    event.y     = 0;
+    event.t     = 5;
+    event.type  = TOUCH_EVENT_UP;
+    event.group = 0;
+    touchEvents.push_back(event);
+
+    testStates(1);
+}
+
+TEST_F(TestMultistroke, TwoUids) {
+    touch_event_t event;
+
+    event.x     = 0;
+    event.y     = 0;
+    event.t     = 0;
+    event.type  = TOUCH_EVENT_DOWN;
+    event.group = 0;
+    event.uid   = 1000;
+    touchEvents.push_back(event);
+
+    event.x     = 1;
+    event.y     = 0;
+    event.t     = 1;
+    event.type  = TOUCH_EVENT_DOWN;
+    event.group = 1;
+    event.uid   = 2000;
+    touchEvents.push_back(event);
+
+    event.x     = 0;
+    event.y     = 1;
+    event.t     = 2;
+    event.type  = TOUCH_EVENT_DOWN;
+    event.group = 2;
+    event.uid   = 1000;
+    touchEvents.push_back(event);
+
+    event.x     = 1;
+    event.y     = 1;
+    event.t     = 3;
+    event.type  = TOUCH_EVENT_DOWN;
+    event.group = 3;
+    event.uid   = 2000;
+    touchEvents.push_back(event);
+
+    event.x     = 0;
+    event.y     = 0;
+    event.t     = 4;
+    event.type  = TOUCH_EVENT_UP;
+    event.group = 0;
+    event.uid   = 1000;
+    touchEvents.push_back(event);
+
+    event.x     = 1;
+    event.y     = 0;
+    event.t     = 5;
+    event.type  = TOUCH_EVENT_UP;
+    event.group = 1;
+    event.uid   = 2000;
+    touchEvents.push_back(event);
+
+    event.x     = 0;
+    event.y     = 1;
+    event.t     = 6;
+    event.type  = TOUCH_EVENT_UP;
+    event.group = 2;
+    event.uid   = 1000;
+    touchEvents.push_back(event);
+
+    event.x     = 1;
+    event.y     = 1;
+    event.t     = 7;
+    event.type  = TOUCH_EVENT_UP;
+    event.group = 3;
+    event.uid   = 2000;
+    touchEvents.push_back(event);
+
+    testStates(2);
+}
+
+TEST_F(TestMultistroke, TwoMultistrokes) {
+    touch_event_t event;
+
+    event.x     = 0;
+    event.y     = 0;
+    event.t     = 0;
+    event.type  = TOUCH_EVENT_DOWN;
+    event.group = 0;
+    event.uid   = 1000;
+    touchEvents.push_back(event);
+
+    event.x     = 0;
+    event.y     = 1;
+    event.t     = 1;
+    event.type  = TOUCH_EVENT_DOWN;
+    event.group = 2;
+    event.uid   = 1000;
+    touchEvents.push_back(event);
+
+    event.x     = 0;
+    event.y     = 0;
+    event.t     = 2;
+    event.type  = TOUCH_EVENT_UP;
+    event.group = 0;
+    event.uid   = 1000;
+    touchEvents.push_back(event);
+
+    event.x     = 0;
+    event.y     = 1;
+    event.t     = 3;
+    event.type  = TOUCH_EVENT_UP;
+    event.group = 2;
+    event.uid   = 1000;
+    touchEvents.push_back(event);
+
+    event.x     = 1;
+    event.y     = 0;
+    event.t     = 4;
+    event.type  = TOUCH_EVENT_DOWN;
+    event.group = 1;
+    event.uid   = 2000;
+    touchEvents.push_back(event);
+
+    event.x     = 1;
+    event.y     = 1;
+    event.t     = 5;
+    event.type  = TOUCH_EVENT_DOWN;
+    event.group = 3;
+    event.uid   = 2000;
+    touchEvents.push_back(event);
+
+    event.x     = 1;
+    event.y     = 0;
+    event.t     = 6;
+    event.type  = TOUCH_EVENT_UP;
+    event.group = 1;
+    event.uid   = 2000;
+    touchEvents.push_back(event);
+
+    event.x     = 1;
+    event.y     = 1;
+    event.t     = 7;
+    event.type  = TOUCH_EVENT_UP;
+    event.group = 3;
+    event.uid   = 2000;
+    touchEvents.push_back(event);
+
+    testStates(2);
+}

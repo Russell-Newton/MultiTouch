@@ -26,7 +26,9 @@ gesture_event_t* recognize_multistroke(touch_event_t* event) {
             free_index = i;
         }
     }
-    update_multistroke(multistroke_d + free_index, event->group);
+    if (strokes[event->group].state == RECOGNIZER_STATE_IN_PROGRESS) {
+        update_multistroke(multistroke_d + free_index, event->group);
+    }
     return 0;
 }
 
@@ -61,6 +63,7 @@ static void update_multistroke(multistroke_t* ms, int group) {
                 for (int i = 0; i < MAX_TOUCHES; i++) {
                     ms->strokes[i] = 0;
                 }
+                ms->size = 0;
             }
         } else if (ms->state == RECOGNIZER_STATE_IN_PROGRESS) {
             calculate_transform(ms);
@@ -69,6 +72,10 @@ static void update_multistroke(multistroke_t* ms, int group) {
                 calculate_center(ms);
                 if (ms->size < 2) {
                     ms->state = RECOGNIZER_STATE_COMPLETED;
+                    for (int i = 0; i < MAX_TOUCHES; i++) {
+                        ms->strokes[i] = 0;
+                    }
+                    ms->size = 0;
                 }
             }
         }

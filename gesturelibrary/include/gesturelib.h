@@ -29,7 +29,7 @@ typedef struct touch_event {
     float y;
     float t;
     unsigned int group;
-    unsigned int uid;
+    int uid;
 } touch_event_t;
 
 typedef enum gesture_type {

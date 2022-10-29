@@ -14,7 +14,7 @@ typedef struct stroke {
     state_t state;
 
     // user id
-    unsigned int uid;
+    int uid;
 
     // initial position and time
     float x0;

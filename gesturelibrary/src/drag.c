@@ -48,6 +48,8 @@ static void update_drag(drag_t* drag, stroke_t* stroke, swipe_t* swipe) {
             }
         }
         break;
+    default:
+        return;
     }
 
     drag->x0 = stroke->x0;

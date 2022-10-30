@@ -4,11 +4,12 @@
 
 sFingerHold_t sFingerHold_d[MAX_TOUCHES];
 
-static touch_event_t* prev_event;
+// static touch_event_t* prev_event;
 
-static touch_event_t* prev_events[HOLD_LENGTH];
+// static touch_event_t* prev_events[HOLD_LENGTH];
 
 gesture_event_t* recognize_single_hold(touch_event_t* event) {
+    (void)event;
     // TODO: look at the last x timestamps/milliseconds of touch data, verifying they are in the same location there are
     // n continuos touch_events that streamed in during that time (say we recieve data at 100 ms intervals and our hold
     // needs to be a second long) if last was a drag (drag's state is possible) this is default false if we didn't see a

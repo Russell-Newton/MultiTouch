@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.14)
 project(GestureLibrary VERSION 0.1.0)
 
 set(CMAKE_CXX_STANDARD 14)
+add_compile_options(-Wall -Wextra -pedantic -Werror)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include/single)

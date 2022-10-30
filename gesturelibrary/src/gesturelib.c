@@ -1,6 +1,7 @@
 #include "gesturelib.h"
 
 #include "drag.h"
+#include "multistroke.h"
 #include "singleFingerDouble.h"
 #include "singleFingerHold.h"
 #include "singleFingerTap.h"
@@ -39,6 +40,7 @@ int init_gesturelib() {
     }
 
     add_recognizer(recognize_stroke);
+    add_recognizer(recognize_multistroke);
     add_recognizer(recognize_single_tap);
     add_recognizer(recognize_double_tap);
     add_recognizer(recognize_single_hold);
@@ -52,11 +54,11 @@ int init_gesturelib() {
 }
 
 int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, int max_gestures) {
-    uint32_t size = 0;
+    int size = 0;
     if (touch_event->group == TOUCH_ID_UNDEFINED) {
         assign_group(touch_event);
     }
-    for (uint32_t index = 0; index < num_recognizers; index++) {
+    for (int index = 0; index < num_recognizers; index++) {
         if (recognizers[index].enabled) {
             gesture_event_t* gesture = recognizers[index].recognize(touch_event);
             if (gesture && size < max_gestures) {
@@ -131,7 +133,7 @@ gesture_recognizer_t remove_recognizer(int recognizer) {
         return null_recognizer;
     }
     gesture_recognizer_t out = recognizers[recognizer];
-    for (unsigned int i = recognizer; i < num_recognizers - 1; i++) {
+    for (int i = recognizer; i < num_recognizers - 1; i++) {
         recognizers[i] = recognizers[i + 1];
     }
     num_recognizers--;

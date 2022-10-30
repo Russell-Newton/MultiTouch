@@ -8,7 +8,7 @@ swipe_t swipe_d[MAX_TOUCHES];
 
 gesture_event_t swipe = {.type = GESTURE_TYPE_SWIPE, .num_touches = 1, .get_data = (void* (*)(void))get_swipe};
 
-static void update_swipe(swipe_t* swipe, stroke_t* stroke, int down);
+static void update_swipe(swipe_t* swipe, stroke_t* stroke, char down);
 
 gesture_event_t* recognize_swipe(touch_event_t* event) {
     stroke_t* strokes = get_stroke();
@@ -23,7 +23,7 @@ swipe_t* get_swipe() {
     return swipe_d;
 }
 
-static void update_swipe(swipe_t* swipe, stroke_t* stroke, int down) {
+static void update_swipe(swipe_t* swipe, stroke_t* stroke, char down) {
     switch (swipe->state) {
     case RECOGNIZER_STATE_NULL:
         if (stroke->state == RECOGNIZER_STATE_IN_PROGRESS) {
@@ -55,6 +55,8 @@ static void update_swipe(swipe_t* swipe, stroke_t* stroke, int down) {
             swipe->state = RECOGNIZER_STATE_IN_PROGRESS;
         }
         break;
+    default:
+        return;
     }
 
     swipe->x0 = stroke->x0;

@@ -5,8 +5,7 @@
 stroke_t stroke_d[MAX_TOUCHES];
 
 static void begin_stroke(touch_event_t* event);
-static void update_stroke(touch_event_t* event, int up);
-static void process_stroke_up(touch_event_t* event);
+static void update_stroke(touch_event_t* event, char up);
 
 static void update_velocity(stroke_t* stroke, float vx, float vy);
 
@@ -48,10 +47,9 @@ static void begin_stroke(touch_event_t* event) {
     }
 }
 
-static void update_stroke(touch_event_t* event, int up) {
+static void update_stroke(touch_event_t* event, char up) {
     if (event->group < MAX_TOUCHES && stroke_d[event->group].state == RECOGNIZER_STATE_IN_PROGRESS) {
-        stroke_d[event->group].uid = event->uid;
-        touch_event_t* last        = &latest_touch_events[event->group];
+        touch_event_t* last = &latest_touch_events[event->group];
         if (event->t > last->t) {
             float vx = (event->x - last->x) / (event->t - last->t);
             float vy = (event->y - last->y) / (event->t - last->t);

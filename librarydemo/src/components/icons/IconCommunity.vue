@@ -1,5 +1,9 @@
 <template>
-  <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-    <path fill="currentColor" d="M20.56 3.91C21.15 4.5 21.15 5.45 20.56 6.03L16.67 9.92L18.79 19.11L17.38 20.53L13.5 13.1L9.6 17L9.96 19.47L8.89 20.53L7.13 17.35L3.94 15.58L5 14.5L7.5 14.87L11.37 11L3.94 7.09L5.36 5.68L14.55 7.8L18.44 3.91C19 3.33 20 3.33 20.56 3.91Z" />
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notes" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+   <rect x="5" y="3" width="14" height="18" rx="2"></rect>
+   <line x1="9" y1="7" x2="15" y2="7"></line>
+   <line x1="9" y1="11" x2="15" y2="11"></line>
+   <line x1="9" y1="15" x2="13" y2="15"></line>
 </svg>
 </template>

@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
 extern "C" {
+#include "hold.h"
 #include "singleFingerDouble.h"
-#include "singleFingerHold.h"
 #include "swipe.h"
 #include "tap.h"
 }

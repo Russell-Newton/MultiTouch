@@ -1,9 +1,9 @@
 #include "gesturelib.h"
 
 #include "drag.h"
+#include "hold.h"
 #include "multistroke.h"
 #include "singleFingerDouble.h"
-#include "singleFingerHold.h"
 #include "stroke.h"
 #include "swipe.h"
 #include "tap.h"

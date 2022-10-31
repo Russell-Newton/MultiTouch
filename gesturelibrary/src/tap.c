@@ -33,14 +33,17 @@ static void update_tap(tap_t* tap, stroke_t* stroke, char down) {
         }
         break;
     case RECOGNIZER_STATE_IN_PROGRESS:
-        float dt = stroke->t - stroke->t0;
-        float dx = stroke->x - stroke->x0;
-        float dy = stroke->y - stroke->y0;
         if (stroke->state == RECOGNIZER_STATE_IN_PROGRESS) {
+            float dt = stroke->t - stroke->t0;
+            float dx = stroke->x - stroke->x0;
+            float dy = stroke->y - stroke->y0;
             if (dt > TAP_TIME_MAX || SQUARE_SUM(dx, dy) > SQUARE(TAP_DIST_MAX)) {
                 tap->state = RECOGNIZER_STATE_FAILED;
             }
         } else if (stroke->state == RECOGNIZER_STATE_COMPLETED) {
+            float dt = stroke->t - stroke->t0;
+            float dx = stroke->x - stroke->x0;
+            float dy = stroke->y - stroke->y0;
             if (dt > TAP_TIME_MAX || SQUARE_SUM(dx, dy) > SQUARE(TAP_DIST_MAX)) {
                 tap->state = RECOGNIZER_STATE_FAILED;
             } else {

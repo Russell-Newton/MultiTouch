@@ -3,7 +3,7 @@
 extern "C" {
 #include "drag.h"
 #include "recognizer.h"
-#include "singleFingerTap.h"
+#include "tap.h"
 }
 
 TEST_F(TestFlutter, TapPhone1) {

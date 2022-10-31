@@ -35,9 +35,20 @@ jobs:
         with:
           node-version: 16.x
           cache-dependency-path: ./librarydemo/package-lock.json
+      - name: Cache emsdk
+        id: cache-emsdk
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-emsdk
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.emsdk
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install Node dependencies
         working-directory: librarydemo
-        run: npm install
+        run: |
+          npm config set emsdk ~/.emsdk
+          npm install
       - name: Demo app build
         run: |
           cd librarydemo

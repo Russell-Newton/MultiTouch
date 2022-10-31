@@ -18,6 +18,9 @@ typedef struct swipe {
     float vy;
 } swipe_t;
 
+/// @brief Initialize swipe data structures
+void init_swipe();
+
 /// @brief Recognize swipe gesture
 /// @param event touch event to recognize
 gesture_event_t* recognize_swipe(touch_event_t* event);

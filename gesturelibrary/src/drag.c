@@ -7,6 +7,16 @@
 
 drag_t drag_d[MAX_TOUCHES];
 
+void init_drag() {
+    for (int i = 0; i < MAX_TOUCHES; i++) {
+        drag_d[i].state = RECOGNIZER_STATE_NULL;
+        drag_d[i].x0    = 0;
+        drag_d[i].y0    = 0;
+        drag_d[i].x     = 0;
+        drag_d[i].y     = 0;
+    }
+}
+
 gesture_event_t drag = {.type = GESTURE_TYPE_DRAG, .num_touches = 1, .get_data = (void* (*)(void))get_drag};
 
 static void update_drag(drag_t* drag, stroke_t* stroke, swipe_t* swipe);

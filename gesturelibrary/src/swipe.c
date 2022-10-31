@@ -6,6 +6,16 @@
 
 swipe_t swipe_d[MAX_TOUCHES];
 
+void init_swipe() {
+    for (int i = 0; i < MAX_TOUCHES; i++) {
+        swipe_d[i].state = RECOGNIZER_STATE_NULL;
+        swipe_d[i].x0    = 0;
+        swipe_d[i].y0    = 0;
+        swipe_d[i].vx    = 0;
+        swipe_d[i].vy    = 0;
+    }
+}
+
 gesture_event_t swipe = {.type = GESTURE_TYPE_SWIPE, .num_touches = 1, .get_data = (void* (*)(void))get_swipe};
 
 static void update_swipe(swipe_t* swipe, stroke_t* stroke, char down);

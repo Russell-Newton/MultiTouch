@@ -32,21 +32,27 @@ int init_gesturelib() {
     if (initialized) {
         return 0;
     }
-    for (uint32_t index = 0; index < MAX_RECOGNIZERS; index++) {
-        recognizers[index].enabled = 0;
+    for (int i = 0; i < MAX_RECOGNIZERS; i++) {
+        recognizers[i].enabled = 0;
     }
-    for (unsigned int i = 0; i < MAX_TOUCHES; i++) {
+    for (int i = 0; i < MAX_TOUCHES; i++) {
         latest_touch_events[i] = empty_touch_event;
     }
 
-    add_recognizer(recognize_stroke);
-    add_recognizer(recognize_multistroke);
-    add_recognizer(recognize_tap);
-    add_recognizer(recognize_double_tap);
-    add_recognizer(recognize_single_hold);
-    add_recognizer(recognize_swipe);
-    add_recognizer(recognize_drag);
-    add_recognizer(recognize_zoom_and_rotate);
+    add_recognizer(recognize_stroke, init_stroke);
+    add_recognizer(recognize_multistroke, init_multistroke);
+    add_recognizer(recognize_tap, init_tap);
+    add_recognizer(recognize_double_tap, 0);
+    add_recognizer(recognize_single_hold, 0);
+    add_recognizer(recognize_swipe, init_swipe);
+    add_recognizer(recognize_drag, init_drag);
+    add_recognizer(recognize_zoom_and_rotate, init_zoom_and_rotate);
+
+    for (int i = 0; i < MAX_RECOGNIZERS; i++) {
+        if (recognizers[i].enabled && recognizers[i].init) {
+            recognizers[i].init();
+        }
+    }
 
     initialized = 1;
 
@@ -118,11 +124,11 @@ static unsigned int assign_group(touch_event_t* touch_event) {
     return closest_group;
 }
 
-int add_recognizer(gesture_event_t* (*recognize)(touch_event_t*)) {
+int add_recognizer(gesture_event_t* (*recognize)(touch_event_t*), void (*init)(void)) {
     if (num_recognizers == MAX_RECOGNIZERS) {
         return -1;
     }
-    gesture_recognizer_t recognizer = {.recognize = recognize, .enabled = 1};
+    gesture_recognizer_t recognizer = {.recognize = recognize, .enabled = 1, .init = init};
     recognizers[num_recognizers++]  = recognizer;
     return num_recognizers - 1;
 }
@@ -146,6 +152,9 @@ int enable_recognizer(int recognizer) {
         return 0;
     }
     recognizers[recognizer].enabled = 1;
+    if (recognizers[recognizer].init) {
+        recognizers[recognizer].init();
+    }
     return 1;
 }
 

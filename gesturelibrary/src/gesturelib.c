@@ -4,9 +4,9 @@
 #include "multistroke.h"
 #include "singleFingerDouble.h"
 #include "singleFingerHold.h"
-#include "singleFingerTap.h"
 #include "stroke.h"
 #include "swipe.h"
+#include "tap.h"
 #include "utils.h"
 #include "zoom_and_rotate.h"
 

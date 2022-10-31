@@ -40,8 +40,10 @@ import { MDBBtn } from "mdb-vue-ui-kit";
       <EcosystemIcon />
     </template>
     
-    <MDBBtn color="light" size="sm" rounded>Gestures</MDBBtn>
-   Test out different gestures.
+    <a href="/demo">
+      <MDBBtn color="light" size="sm" rounded>Demo</MDBBtn>
+    </a>
+    Test out different gestures.
   </WelcomeItem>
 
   <WelcomeItem>
@@ -49,7 +51,7 @@ import { MDBBtn } from "mdb-vue-ui-kit";
       <CommunityIcon />
     </template>
     <template #heading>Documentation</template>
-    Link to  <a href="./docs">Documentation.</a>
+    Link to  <a href="/docs">Documentation.</a>
     
   </WelcomeItem>
 

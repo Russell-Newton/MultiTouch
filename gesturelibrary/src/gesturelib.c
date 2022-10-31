@@ -4,9 +4,9 @@
 #include "hold.h"
 #include "multistroke.h"
 #include "singleFingerDouble.h"
-#include "singleFingerTap.h"
 #include "stroke.h"
 #include "swipe.h"
+#include "tap.h"
 #include "utils.h"
 #include "zoom_and_rotate.h"
 
@@ -41,7 +41,7 @@ int init_gesturelib() {
 
     add_recognizer(recognize_stroke);
     add_recognizer(recognize_multistroke);
-    add_recognizer(recognize_single_tap);
+    add_recognizer(recognize_tap);
     add_recognizer(recognize_double_tap);
     add_recognizer(recognize_single_hold);
     add_recognizer(recognize_swipe);

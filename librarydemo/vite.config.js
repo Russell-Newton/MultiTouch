@@ -7,6 +7,7 @@ import wasm from "vite-plugin-wasm"
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base : "",
   root : path.join(__dirname, "src"),
   publicDir : path.join(__dirname, "public"),
   plugins : [ vue(), wasm() ],

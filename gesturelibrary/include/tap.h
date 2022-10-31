@@ -25,4 +25,4 @@ gesture_event_t* recognize_tap(touch_event_t* event);
 
 /// @brief Access tap data array of size MAX_TOUCHES
 /// @return Address of first element of tap data array of size MAX_TOUCHES
-sFingerTap_t* get_tap();
+tap_t* get_tap();

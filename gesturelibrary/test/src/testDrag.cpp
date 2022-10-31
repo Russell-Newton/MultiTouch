@@ -125,15 +125,15 @@ INSTANTIATE_TEST_SUITE_P(DragTests,
                              DragTestParams{"drag/phone_26", 1},
 
                              // 1 finger swipes
-                             DragTestParams{"swipe/phone_1", 0},
-                             DragTestParams{"swipe/phone_2", 0},
-                             DragTestParams{"swipe/phone_3", 0},
-                             DragTestParams{"swipe/phone_4", 0},
-                             DragTestParams{"swipe/phone_5", 0},
-                             DragTestParams{"swipe/phone_6", 0},
-                             DragTestParams{"swipe/phone_7", 0},
-                             DragTestParams{"swipe/phone_8", 0},
-                             DragTestParams{"swipe/phone_9", 0},
+                             DragTestParams{"swipe/phone_1", 1},
+                             DragTestParams{"swipe/phone_2", 1},
+                             DragTestParams{"swipe/phone_3", 1},
+                             DragTestParams{"swipe/phone_4", 1},
+                             DragTestParams{"swipe/phone_5", 1},
+                             DragTestParams{"swipe/phone_6", 1},
+                             DragTestParams{"swipe/phone_7", 1},
+                             DragTestParams{"swipe/phone_8", 1},
+                             DragTestParams{"swipe/phone_9", 1},
 
                              // rotates
                              DragTestParams{"rotate/phone_1", 2},
@@ -143,4 +143,16 @@ INSTANTIATE_TEST_SUITE_P(DragTests,
                              DragTestParams{"zoom/phone_1", 2},
                              DragTestParams{"zoom/phone_2", 2},
                              DragTestParams{"zoom/phone_3", 2},
-                             DragTestParams{"zoom/phone_4", 2}));
+                             DragTestParams{"zoom/phone_4", 2},
+
+                             // 1 taps
+                             DragTestParams{"tap/phone_1", 0},
+                             DragTestParams{"tap/phone_2", 0},
+                             DragTestParams{"tap/phone_3", 0},
+                             DragTestParams{"tap/phone_4", 0},
+                             DragTestParams{"tap/phone_5", 0},
+                             DragTestParams{"tap/phone_6", 0},
+                             DragTestParams{"tap/phone_7", 0},
+                             DragTestParams{"tap/phone_8", 0},
+                             DragTestParams{"tap/phone_9", 0},
+                             DragTestParams{"tap/phone_10", 0}));

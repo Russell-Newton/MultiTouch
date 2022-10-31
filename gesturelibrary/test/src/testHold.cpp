@@ -32,7 +32,8 @@ protected:
                     case RECOGNIZER_STATE_POSSIBLE:
                         for (size_t j = 0; j < MAX_TOUCHES; j++) {
                             if (holds[j].state == RECOGNIZER_STATE_POSSIBLE ||
-                                holds[j].state == RECOGNIZER_STATE_IN_PROGRESS || RECOGNIZER_STATE_COMPLETED) {
+                                holds[j].state == RECOGNIZER_STATE_IN_PROGRESS ||
+                                holds[j].state == RECOGNIZER_STATE_COMPLETED) {
                                 s     = holds[j].state;
                                 found = true;
                                 break;

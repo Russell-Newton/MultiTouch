@@ -1,0 +1,7 @@
+type,down,position.dx,position.dy,timeStamp
+down,true,231,231,0:00:01.869000
+move,true,224,232,0:00:03.236000
+move,true,225,232,0:00:04.819000
+move,true,226,232,0:00:06.385000
+move,true,227,233,0:00:07.134000
+up,false,227,233,0:00:07.134000

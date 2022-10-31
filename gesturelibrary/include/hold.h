@@ -20,5 +20,30 @@ typedef struct sFingerHold {
 gesture_event_t* recognize_single_hold(touch_event_t* event);
 
 /// @brief
+/// @param data
+void add_to_data(sFingerHold_t* data);
+
+// /// @brief
+// void clear_data();
+
+/// @brief
+/// @param state
+/// @param event
+/// @return
+sFingerHold_t* create_touch_data(state_t state, touch_event_t* event);
+
+/// @brief
+/// @param event
+void process_hold_down(touch_event_t* event);
+
+/// @brief
+/// @param event
+void process_hold_move(touch_event_t* event);
+
+/// @brief
+/// @param event
+void process_hold_up(touch_event_t* event);
+
+/// @brief
 /// @return
 sFingerHold_t* get_sFingerHold();

@@ -8,6 +8,9 @@
 #define TAP_TIME_MAX  0.5f
 #define HOLD_TIME_MIN TAP_TIME_MAX
 
+#define DOUBLE_DIFF     5
+#define DOUBLE_DISTANCE 0.2
+
 // euclidean distance for longest tap/hold and shortest drag/swipe
 #define TAP_DIST_MAX   10
 #define HOLD_DIST_MAX  TAP_DIST_MAX

@@ -2,7 +2,6 @@
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
 import { MDBBtn } from "mdb-vue-ui-kit";
-import {test, testStruct, convertTouchEvent, convertGestureEvent} from "./assets/api_wrapper";
 </script>
 
 <template>
@@ -16,8 +15,6 @@ import {test, testStruct, convertTouchEvent, convertGestureEvent} from "./assets
 
   <main>
     <TheWelcome />
-    <MDBBtn @click="test" color="light" size="sm" rounded>Square 3 in C! (Check console output)</MDBBtn>
-    <MDBBtn @click="testStruct" color="light" size="sm" rounded>C Struct test</MDBBtn>
   </main>
 </template>
 

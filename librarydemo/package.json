@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite",
     "predev": "emscripten build c_bindings",
-    "build": "vite build",
+    "build": "vite build --emptyOutDir",
     "prebuild": "emscripten build c_bindings",
     "preview": "vite preview --port 4173",
     "build:run": "npm run build && serve dist",

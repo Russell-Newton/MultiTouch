@@ -123,10 +123,11 @@ int add_recognizer(gesture_event_t* (*recognize)(touch_event_t*), void (*init)(v
         return -1;
     }
     gesture_recognizer_t recognizer = {.recognize = recognize, .enabled = 1, .init = init};
-    recognizers[num_recognizers]  = recognizer;
-    recognizers[num_recognizers].init();
-    num_recognizers++;
-    return num_recognizers - 1;
+    recognizers[num_recognizers]    = recognizer;
+    if (recognizers[num_recognizers].init) {
+        recognizers[num_recognizers].init();
+    }
+    return num_recognizers++ - 1;
 }
 
 gesture_recognizer_t remove_recognizer(int recognizer) {

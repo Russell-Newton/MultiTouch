@@ -36,9 +36,7 @@ static void update_double_taps(double_tap_t* _double, stroke_t* strokes, tap_t* 
             coords_t c2 = {.x = strokes->y, .y = strokes->y};
             int dist    = euclidean_distance(c1, c2);
 
-            if (_double->t - strokes->t >
-                DOUBLE_DIFF) {  // if t_diff too big, this dTap has failed cuz we're not getting another stroke that
-                                // magically went back in time, ya feel?
+            if (_double->t - strokes->t > DOUBLE_DIFF) {  // if t_diff too big, this dTap has failed
                 _double->state = RECOGNIZER_STATE_FAILED;
                 break;
             } else if (dist > DOUBLE_DISTANCE) {

@@ -73,4 +73,4 @@ TEST_P(TestDouble, DoubleTapPhone) {
     testDouble();
 }
 
-INSTANTIATE_TEST_SUITE_P(DoubleTapTests, TestDouble, testing::Values(1, 2, 3, 4, 5, 6, 7));
+INSTANTIATE_TEST_SUITE_P(DoubleTapTests, TestDouble, testing::Values(1, 2, 3, 4, 5, 6, 7, 8));

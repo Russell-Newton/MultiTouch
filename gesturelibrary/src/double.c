@@ -9,8 +9,11 @@ gesture_event_t double_tap = {
 
 // static touch_event_t* prev_event;
 
+static void update_double_taps(double_tap_t* _double, stroke_t* strokes, tap_t* taps);
+static int euclidean_distance(coords_t c1, coords_t c2);
+
 gesture_event_t* recognize_double_tap(touch_event_t* event) {
-    (void)event;
+    (void)event;  // do we need the touch event
 
     stroke_t* strokes = get_stroke();
     tap_t* taps       = get_tap();
@@ -22,7 +25,7 @@ gesture_event_t* recognize_double_tap(touch_event_t* event) {
     return &double_tap;
 }
 
-void update_double_taps(double_tap_t* _double, stroke_t* strokes, tap_t* taps) {
+static void update_double_taps(double_tap_t* _double, stroke_t* strokes, tap_t* taps) {
     switch (_double->state) {
     case RECOGNIZER_STATE_POSSIBLE:
         // look at the timestamp of the tap and the location
@@ -63,7 +66,7 @@ void update_double_taps(double_tap_t* _double, stroke_t* strokes, tap_t* taps) {
     _double->t = strokes->t;
 }
 
-int euclidean_distance(coords_t c1, coords_t c2) {
+static int euclidean_distance(coords_t c1, coords_t c2) {
     return sqrt(pow(c2.x - c1.x, 2) + pow(c2.y - c1.y, 2) * 1.0);
 }
 

@@ -6,7 +6,7 @@
 #include "stroke.h"
 #include "tap.h"
 
-/// @brief
+/// @brief holds the state, last location, and timestamp of a double tap instance
 typedef struct double_tap {
     state_t state;
     int x;
@@ -14,27 +14,16 @@ typedef struct double_tap {
     int t;
 } double_tap_t;  // single finger double tap data
 
+/// @brief tuple containing the x and y coordinates of the double_tap event
 typedef struct coords {
     int x;
     int y;
 } coords_t;
 
-/// @brief
-/// @param event
+/// @brief reads the last tap and stroke data and determines whethers this new stroke is part of a double_tap event
+/// @param event touch event
 gesture_event_t* recognize_double_tap(touch_event_t* event);
 
-/// @brief
-/// @param _double
-/// @param strokes
-/// @param taps
-void update_double_taps(double_tap_t* _double, stroke_t* strokes, tap_t* taps);
-
-/// @brief
-/// @param c1
-/// @param c2
-/// @return
-int euclidean_distance(coords_t c1, coords_t c2);
-
-/// @brief
+/// @brief returns an array of the ongoing double_touch data for each finger
 /// @return
 double_tap_t* get_double_tap();

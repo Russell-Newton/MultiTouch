@@ -49,11 +49,53 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   void _printDetails(PointerEvent details, String type) {
-    _details.add("$type,${details.down},${details.position.dx},${details.position.dy},${details.timeStamp}");
+    List<String> detailsString = [
+      type,
+      "${details.down}",
+      "${details.position.dx}",
+      "${details.position.dy}",
+      "${details.timeStamp}",
+      "${details.distance}",
+      "${details.distanceMax}",
+      "${details.distanceMin}",
+      "${details.kind}",
+      "${details.orientation}",
+      "${details.pressure}",
+      "${details.pressureMax}",
+      "${details.pressureMin}",
+      "${details.radiusMajor}",
+      "${details.radiusMinor}",
+      "${details.radiusMax}",
+      "${details.radiusMin}",
+      "${details.size}",
+      "${details.tilt}",
+    ];
+    _details.add(detailsString.join(','));
   }
 
   void _downloadDetails() {
-    _details.insert(0, "type,down,position.dx,position.dy,timeStamp");
+    List<String> header = [
+      "type",
+      "down",
+      "position.dx",
+      "position.dy",
+      "timeStamp",
+      "distance",
+      "distanceMax",
+      "distanceMin",
+      "kind",
+      "orientation",
+      "pressure",
+      "pressureMax",
+      "pressureMin",
+      "radiusMajor",
+      "radiusMinor",
+      "radiusMax",
+      "radiusMin",
+      "size",
+      "tilt",
+    ];
+    _details.insert(0, header.join(','));
     String contents = "${_details.join("\n")}\n";
     List<int> bytes = utf8.encode(contents);
     String encoded = base64Encode(bytes);

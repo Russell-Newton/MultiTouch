@@ -3,7 +3,6 @@
 extern "C" {
 #include "hold.h"
 #include "singleFingerDouble.h"
-#include "swipe.h"
 #include "tap.h"
 }
 

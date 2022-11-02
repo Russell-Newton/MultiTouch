@@ -16,6 +16,9 @@ typedef struct zoom_and_rotate {
     float rotate;
 } zoom_and_rotate_t;
 
+/// @brief Initialize zoom and rotate states
+void init_zoom_and_rotate();
+
 /// @brief Recognizer for zoom_and_rotate gesture
 /// @param event touch event to recognize
 gesture_event_t* recognize_zoom_and_rotate(touch_event_t* event);

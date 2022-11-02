@@ -5,6 +5,16 @@
 
 zoom_and_rotate_t zoom_and_rotate_d[MAX_TOUCHES];
 
+void init_zoom_and_rotate() {
+    for (int i = 0; i < MAX_TOUCHES; i++) {
+        zoom_and_rotate_d[i].state  = RECOGNIZER_STATE_NULL;
+        zoom_and_rotate_d[i].drag1  = 0;
+        zoom_and_rotate_d[i].drag2  = 0;
+        zoom_and_rotate_d[i].rotate = 0;
+        zoom_and_rotate_d[i].zoom   = 1;
+    }
+}
+
 gesture_event_t zoom_and_rotate = {
     .type = GESTURE_TYPE_ZOOM_AND_ROTATE, .num_touches = 2, .get_data = (void* (*)(void))get_zoom_and_rotate};
 

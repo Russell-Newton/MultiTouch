@@ -15,6 +15,10 @@ typedef struct drag {
     // current position
     float x;
     float y;
+
+    // current velocity
+    float vx;
+    float vy;
 } drag_t;
 
 /// @brief Recognize drag gesture

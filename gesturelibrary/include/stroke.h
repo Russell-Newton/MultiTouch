@@ -37,6 +37,9 @@ typedef struct stroke {
     float cache_vx[STROKE_CACHE_SIZE];
 } stroke_t;
 
+/// @brief Initialize stroke data structures
+void init_stroke();
+
 /// @brief Recognize stroke gesture
 /// @param event touch event to recognize
 gesture_event_t* recognize_stroke(touch_event_t* event);

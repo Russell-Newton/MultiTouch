@@ -19,6 +19,9 @@ typedef struct tap {
     float t;
 } tap_t;
 
+/// @brief Initialize tap data structures
+void init_tap();
+
 /// @brief Recognize tap gesture
 /// @param event touch event to recognize
 gesture_event_t* recognize_tap(touch_event_t* event);

@@ -52,6 +52,7 @@ typedef struct gesture_event {
 typedef struct gesture_recognizer {
     char enabled;
     gesture_event_t* (*recognize)(touch_event_t*);
+    void (*init)(void);
 } gesture_recognizer_t;
 
 extern int num_recognizers;
@@ -69,8 +70,9 @@ int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, i
 
 /// @brief register a recognizer via a recognition function
 /// @param recognize the recognition function to add
+/// @param init recognizer initialization function, pass 0 for none
 /// @return which index the recognizer is saved to. -1 if the recognizer couldn't be saved
-int add_recognizer(gesture_event_t* (*recognizer)(touch_event_t*));
+int add_recognizer(gesture_event_t* (*recognizer)(touch_event_t*), void (*init)(void));
 
 /// @brief
 /// @param recognizer which recognizer to remove

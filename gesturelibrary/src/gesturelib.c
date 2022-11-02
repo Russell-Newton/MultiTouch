@@ -48,12 +48,6 @@ int init_gesturelib() {
     add_recognizer(recognize_drag, init_drag);
     add_recognizer(recognize_zoom_and_rotate, init_zoom_and_rotate);
 
-    for (int i = 0; i < MAX_RECOGNIZERS; i++) {
-        if (recognizers[i].enabled && recognizers[i].init) {
-            recognizers[i].init();
-        }
-    }
-
     initialized = 1;
 
     return 1;
@@ -129,7 +123,9 @@ int add_recognizer(gesture_event_t* (*recognize)(touch_event_t*), void (*init)(v
         return -1;
     }
     gesture_recognizer_t recognizer = {.recognize = recognize, .enabled = 1, .init = init};
-    recognizers[num_recognizers++]  = recognizer;
+    recognizers[num_recognizers]  = recognizer;
+    recognizers[num_recognizers].init();
+    num_recognizers++;
     return num_recognizers - 1;
 }
 

@@ -4,8 +4,8 @@
 #include "recognizer.h"
 #include "stroke.h"
 
-/// @brief Data structure for stroke gesture data
-typedef struct multistroke {
+/// @brief Data structure for multidrag gesture data
+typedef struct multidrag {
     // recognizer state
     state_t state;
     // user id of tracked group
@@ -35,15 +35,15 @@ typedef struct multistroke {
     // scaled offsets since last center change
     float sx[MAX_TOUCHES];
     float sy[MAX_TOUCHES];
-} multistroke_t;
+} multidrag_t;
 
-/// @brief Initialize multistroke data structures
-void init_multistroke();
+/// @brief Initialize multidrag data structures
+void init_multidrag();
 
-/// @brief Recognize multistroke gesture. This gesture allows the number of fingers to change.
+/// @brief Recognize multidrag gesture. This gesture locks the number of fingers once any finger starts moving.
 /// @param event touch event to recognize
-gesture_event_t* recognize_multistroke(touch_event_t* event);
+gesture_event_t* recognize_multidrag(touch_event_t* event);
 
-/// @brief Access array of multistroke_t of size MAX_TOUCHES
-/// @return Pointer to first element of array of multistroke_t of size MAX_TOUCHES
-multistroke_t* get_multistroke();
+/// @brief Access array of multidrag_t of size MAX_TOUCHES
+/// @return Pointer to first element of array of multidrag_t of size MAX_TOUCHES
+multidrag_t* get_multidrag();

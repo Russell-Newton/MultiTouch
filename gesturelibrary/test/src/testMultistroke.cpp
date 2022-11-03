@@ -49,11 +49,6 @@ protected:
                 switch (states[index]) {
                 case RECOGNIZER_STATE_NULL:
                     EXPECT_TRUE(multistrokes[index].state == RECOGNIZER_STATE_NULL ||
-                                multistrokes[index].state == RECOGNIZER_STATE_POSSIBLE);
-                    break;
-                case RECOGNIZER_STATE_POSSIBLE:
-                    EXPECT_TRUE(multistrokes[index].state == RECOGNIZER_STATE_POSSIBLE ||
-                                multistrokes[index].state == RECOGNIZER_STATE_FAILED ||
                                 multistrokes[index].state == RECOGNIZER_STATE_IN_PROGRESS);
                     break;
                 case RECOGNIZER_STATE_IN_PROGRESS:
@@ -63,13 +58,12 @@ protected:
                         completed++;
                     }
                     break;
-                case RECOGNIZER_STATE_FAILED:
-                    EXPECT_TRUE(multistrokes[index].state == RECOGNIZER_STATE_FAILED ||
-                                multistrokes[index].state == RECOGNIZER_STATE_POSSIBLE);
-                    break;
                 case RECOGNIZER_STATE_COMPLETED:
                     EXPECT_TRUE(multistrokes[index].state == RECOGNIZER_STATE_COMPLETED ||
-                                multistrokes[index].state == RECOGNIZER_STATE_POSSIBLE);
+                                multistrokes[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                    break;
+                default:
+                    EXPECT_EQ("", "Multistroke: Invalid state found.");
                     break;
                 }
                 states[index] = multistrokes[index].state;

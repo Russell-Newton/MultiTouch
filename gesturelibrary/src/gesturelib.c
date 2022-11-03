@@ -4,12 +4,12 @@
 #include "hold.h"
 #include "multidrag.h"
 #include "multistroke.h"
+#include "rotate.h"
 #include "singleFingerDouble.h"
 #include "stroke.h"
 #include "tap.h"
 #include "utils.h"
 #include "zoom.h"
-#include "zoom_and_rotate.h"
 
 #define SQUARED_DIST(a, b) (SQUARE_SUM((a)->x - (b)->x, (a)->y - (b)->y))
 
@@ -43,7 +43,7 @@ int init_gesturelib() {
     add_recognizer(recognize_drag, init_drag);
     add_recognizer(recognize_multidrag, init_multidrag);
     add_recognizer(recognize_zoom, init_zoom);
-    add_recognizer(recognize_zoom_and_rotate, init_zoom_and_rotate);
+    add_recognizer(recognize_rotate, init_rotate);
 
     return 0;
 }

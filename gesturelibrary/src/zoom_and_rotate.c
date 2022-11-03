@@ -15,8 +15,8 @@ void init_zoom_and_rotate() {
     }
 }
 
-gesture_event_t zoom_and_rotate = {
-    .type = GESTURE_TYPE_ZOOM_AND_ROTATE, .num_touches = 2, .get_data = (void* (*)(void))get_zoom_and_rotate};
+gesture_event_t zoom_and_rotate = {.type     = GESTURE_TYPE_ZOOM_AND_ROTATE,
+                                   .get_data = (void* (*)(void))get_zoom_and_rotate};
 
 static int update_zoom_and_rotate(drag_t* drag);
 static void initialize_zoom_and_rotate(drag_t* drag);

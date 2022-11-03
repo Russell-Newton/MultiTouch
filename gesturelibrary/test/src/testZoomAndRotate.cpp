@@ -32,7 +32,7 @@ protected:
             gesture_event_t* gestures = new gesture_event_t[MAX_RECOGNIZERS];
             process_touch_event(&event, gestures, MAX_RECOGNIZERS);
             for (size_t i = 0; i < MAX_RECOGNIZERS; i++) {
-                if (gestures[i].type == GESTURE_TYPE_ZOOM_AND_ROTATE && gestures[i].num_touches == 2) {
+                if (gestures[i].type == GESTURE_TYPE_ZOOM_AND_ROTATE) {
                     zoom_and_rotate_t* zoom_and_rotates = ((zoom_and_rotate_t * (*)(void)) gestures[i].get_data)();
                     for (size_t index = 0; index < num; index++) {
                         cout << "z_" << index << ": " << zoom_and_rotates[index].zoom << ",\t"

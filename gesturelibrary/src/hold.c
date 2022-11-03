@@ -61,10 +61,9 @@ gesture_event_t* recognize_single_hold(touch_event_t* event) {
     // sFingerHold_d[0] = create_touch_data(updated_state, event);
 
     gesture_event_t hold;
-    hold.type        = GESTURE_TYPE_HOLD;
-    hold.num_touches = 1;
-    hold.get_data    = (void* (*)(void))get_sFingerHold;
-    hold_gesture     = &hold;
+    hold.type     = GESTURE_TYPE_HOLD;
+    hold.get_data = (void* (*)(void))get_sFingerHold;
+    hold_gesture  = &hold;
     return hold_gesture;
 }
 

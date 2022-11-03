@@ -16,7 +16,7 @@ void init_drag() {
     }
 }
 
-gesture_event_t drag = {.type = GESTURE_TYPE_DRAG, .num_touches = 1, .get_data = (void* (*)(void))get_drag};
+gesture_event_t drag = {.type = GESTURE_TYPE_DRAG, .get_data = (void* (*)(void))get_drag};
 
 static void update_drag(drag_t* drag, stroke_t* stroke, char down);
 

@@ -14,7 +14,7 @@ protected:
             bool found_hold           = false;
             process_touch_event(&event, gestures, MAX_RECOGNIZERS);
             for (size_t i = 0; i < MAX_RECOGNIZERS; i++) {  // size_t means unsigned int (positive)
-                if (gestures[i].type == GESTURE_TYPE_HOLD && gestures[i].num_touches == 1) {
+                if (gestures[i].type == GESTURE_TYPE_HOLD) {
                     sFingerHold_t* holds = ((sFingerHold_t * (*)(void)) gestures[i].get_data)();
                     bool found           = false;
                     switch (s) {

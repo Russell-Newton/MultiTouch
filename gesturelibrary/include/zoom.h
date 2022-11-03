@@ -11,8 +11,8 @@ typedef struct zoom {
     int uid;
     // number of tracked strokes
     int size;
-    // rotation counterclockwise in radians
-    float rotation;
+    // scale factor
+    float scale;
 } zoom_t;
 
 /// @brief Initialize zoom data structures

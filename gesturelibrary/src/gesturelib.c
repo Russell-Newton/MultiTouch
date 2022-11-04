@@ -2,6 +2,7 @@
 
 #include "drag.h"
 #include "hold.h"
+#include "multidrag.h"
 #include "multistroke.h"
 #include "singleFingerDouble.h"
 #include "stroke.h"
@@ -25,12 +26,7 @@ touch_event_t empty_touch_event = {.type = TOUCH_EVENT_UP, .x = 0, .y = 0, .t = 
 /// @return
 static unsigned int assign_group(touch_event_t* touch_event);
 
-/** This is a documentation test. **/
 int init_gesturelib() {
-    static int initialized = 0;
-    if (initialized) {
-        return 0;
-    }
     for (int i = 0; i < MAX_RECOGNIZERS; i++) {
         recognizers[i].enabled = 0;
     }
@@ -44,11 +40,10 @@ int init_gesturelib() {
     add_recognizer(recognize_double_tap, 0);
     add_recognizer(recognize_single_hold, 0);
     add_recognizer(recognize_drag, init_drag);
+    add_recognizer(recognize_multidrag, init_multidrag);
     add_recognizer(recognize_zoom_and_rotate, init_zoom_and_rotate);
 
-    initialized = 1;
-
-    return 1;
+    return 0;
 }
 
 int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, int max_gestures) {

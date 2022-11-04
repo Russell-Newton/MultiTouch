@@ -14,11 +14,11 @@ void init_multistroke() {
         multistroke_d[i].dx        = 0;
         multistroke_d[i].dy        = 0;
         multistroke_d[i].rotation  = 0;
-        multistroke_d[i].scale     = 0;
+        multistroke_d[i].scale     = 1;
         multistroke_d[i].dx0       = 0;
         multistroke_d[i].dy0       = 0;
         multistroke_d[i].rotation0 = 0;
-        multistroke_d[i].scale0    = 0;
+        multistroke_d[i].scale0    = 1;
         multistroke_d[i].cx        = 0;
         multistroke_d[i].cy        = 0;
         for (int j = 0; j < MAX_TOUCHES; j++) {
@@ -38,18 +38,14 @@ gesture_event_t* recognize_multistroke(touch_event_t* event) {
     int free_index    = -1;
     stroke_t* strokes = get_stroke();
     for (int i = 0; i < MAX_TOUCHES; i++) {
-        if (multistroke_d[i].uid == strokes[event->group].uid &&
-            (multistroke_d[i].state == RECOGNIZER_STATE_POSSIBLE ||
-             multistroke_d[i].state == RECOGNIZER_STATE_IN_PROGRESS)) {
+        if (multistroke_d[i].uid == strokes[event->group].uid && multistroke_d[i].size) {
             update_multistroke(multistroke_d + i, event->group);
             return 0;
-        } else if (free_index < 0 && (multistroke_d[i].state == RECOGNIZER_STATE_NULL ||
-                                      multistroke_d[i].state == RECOGNIZER_STATE_COMPLETED ||
-                                      multistroke_d[i].state == RECOGNIZER_STATE_FAILED)) {
+        } else if (free_index < 0 && !multistroke_d[i].size) {
             free_index = i;
         }
     }
-    if (strokes[event->group].state == RECOGNIZER_STATE_IN_PROGRESS) {
+    if (free_index >= 0 && strokes[event->group].state == RECOGNIZER_STATE_IN_PROGRESS) {
         update_multistroke(multistroke_d + free_index, event->group);
     }
     return 0;
@@ -63,42 +59,36 @@ static void update_multistroke(multistroke_t* ms, int group) {
     stroke_t* strokes = get_stroke();
     ms->uid           = strokes[group].uid;
     if (!ms->strokes[group]) {
-        ms->strokes[group] = 1;
         switch (ms->state) {
         case RECOGNIZER_STATE_NULL:
-        case RECOGNIZER_STATE_FAILED:
         case RECOGNIZER_STATE_COMPLETED:
-            ms->state = RECOGNIZER_STATE_POSSIBLE;
-            break;
-        case RECOGNIZER_STATE_POSSIBLE:
-            ms->state = RECOGNIZER_STATE_IN_PROGRESS;
+            ms->strokes[group] = 1;
             zero_multistroke(ms);
             calculate_center(ms);
+            if (ms->size > 1) {
+                ms->state = RECOGNIZER_STATE_IN_PROGRESS;
+            }
             break;
         case RECOGNIZER_STATE_IN_PROGRESS:
+            ms->strokes[group] = 1;
             calculate_center(ms);
+            break;
+        default:
             break;
         }
     } else {
-        if (ms->state == RECOGNIZER_STATE_POSSIBLE) {
-            if (strokes[group].state == RECOGNIZER_STATE_COMPLETED) {
-                ms->state = RECOGNIZER_STATE_FAILED;
-                for (int i = 0; i < MAX_TOUCHES; i++) {
-                    ms->strokes[i] = 0;
-                }
-            }
-        } else if (ms->state == RECOGNIZER_STATE_IN_PROGRESS) {
+        if (ms->state == RECOGNIZER_STATE_IN_PROGRESS) {
             calculate_transform(ms);
             if (strokes[group].state == RECOGNIZER_STATE_COMPLETED) {
                 ms->strokes[group] = 0;
                 calculate_center(ms);
                 if (ms->size < 2) {
                     ms->state = RECOGNIZER_STATE_COMPLETED;
-                    for (int i = 0; i < MAX_TOUCHES; i++) {
-                        ms->strokes[i] = 0;
-                    }
                 }
             }
+        } else if (strokes[group].state == RECOGNIZER_STATE_COMPLETED) {
+            ms->strokes[group] = 0;
+            calculate_center(ms);
         }
     }
 }

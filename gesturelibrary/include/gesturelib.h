@@ -13,7 +13,6 @@
 #define MAX_RECOGNIZERS 100
 #endif
 #define TOUCH_ID_UNDEFINED (MAX_TOUCHES + 1)
-#define MAX_UID            MAX_TOUCHES
 
 /// @brief
 typedef enum event_type {

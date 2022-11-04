@@ -21,6 +21,9 @@ typedef struct drag {
     float vy;
 } drag_t;
 
+/// @brief Initialize drag data structures
+void init_drag();
+
 /// @brief Recognize drag gesture
 /// @param event touch event to recognize
 gesture_event_t* recognize_drag(touch_event_t* event);

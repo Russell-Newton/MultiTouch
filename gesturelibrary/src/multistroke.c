@@ -6,6 +6,29 @@
 
 multistroke_t multistroke_d[MAX_TOUCHES];
 
+void init_multistroke() {
+    for (int i = 0; i < MAX_TOUCHES; i++) {
+        multistroke_d[i].state     = RECOGNIZER_STATE_NULL;
+        multistroke_d[i].uid       = 0;
+        multistroke_d[i].size      = 0;
+        multistroke_d[i].dx        = 0;
+        multistroke_d[i].dy        = 0;
+        multistroke_d[i].rotation  = 0;
+        multistroke_d[i].scale     = 0;
+        multistroke_d[i].dx0       = 0;
+        multistroke_d[i].dy0       = 0;
+        multistroke_d[i].rotation0 = 0;
+        multistroke_d[i].scale0    = 0;
+        multistroke_d[i].cx        = 0;
+        multistroke_d[i].cy        = 0;
+        for (int j = 0; j < MAX_TOUCHES; j++) {
+            multistroke_d[i].strokes[j] = 0;
+            multistroke_d[i].sx[j]      = 0;
+            multistroke_d[i].sy[j]      = 0;
+        }
+    }
+}
+
 static void update_multistroke(multistroke_t* ms, int group);
 static void zero_multistroke(multistroke_t* ms);
 static void calculate_center(multistroke_t* ms);

@@ -4,6 +4,27 @@
 
 stroke_t stroke_d[MAX_TOUCHES];
 
+void init_stroke() {
+    for (int i = 0; i < MAX_TOUCHES; i++) {
+        stroke_d[i].state      = RECOGNIZER_STATE_NULL;
+        stroke_d[i].t0         = 0;
+        stroke_d[i].x0         = 0;
+        stroke_d[i].y0         = 0;
+        stroke_d[i].t          = 0;
+        stroke_d[i].x          = 0;
+        stroke_d[i].y          = 0;
+        stroke_d[i].vx         = 0;
+        stroke_d[i].vy         = 0;
+        stroke_d[i].uid        = 0;
+        stroke_d[i].cache_last = 0;
+        stroke_d[i].cache_size = 0;
+        for (int j = 0; j < STROKE_CACHE_SIZE; j++) {
+            stroke_d[i].cache_vx[j] = 0;
+            stroke_d[i].cache_vy[j] = 0;
+        }
+    }
+}
+
 static void begin_stroke(touch_event_t* event);
 static void update_stroke(touch_event_t* event, char up);
 

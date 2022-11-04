@@ -8,6 +8,18 @@
 
 tap_t tap_d[MAX_TOUCHES];
 
+void init_tap() {
+    for (int i = 0; i < MAX_TOUCHES; i++) {
+        tap_d[i].state = RECOGNIZER_STATE_NULL;
+        tap_d[i].t0    = 0;
+        tap_d[i].x0    = 0;
+        tap_d[i].y0    = 0;
+        tap_d[i].t     = 0;
+        tap_d[i].x     = 0;
+        tap_d[i].y     = 0;
+    }
+}
+
 gesture_event_t tap = {.type = GESTURE_TYPE_TAP, .num_touches = 1, .get_data = (void* (*)(void))get_tap};
 
 static void update_tap(tap_t* tap, stroke_t* stroke, char down);

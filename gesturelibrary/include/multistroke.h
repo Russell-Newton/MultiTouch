@@ -37,6 +37,9 @@ typedef struct multistroke {
     float sy[MAX_TOUCHES];
 } multistroke_t;
 
+/// @brief Initialize multistroke data structures
+void init_multistroke();
+
 /// @brief Recognize multistroke gesture
 /// @param event touch event to recognize
 gesture_event_t* recognize_multistroke(touch_event_t* event);

@@ -10,7 +10,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static const String _title = 'Touch Data Collection';
+  static const String _title = 'Touch Data Collection: Perform a gesture on the screen then click the download button.';
 
   @override
   Widget build(BuildContext context) {
@@ -107,24 +107,22 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ConstrainedBox(
-          constraints: BoxConstraints.tight(const Size(300.0, 400.0)),
-          child: Listener(
-            onPointerDown: _processPointerDown,
-            onPointerMove: _processPointerMove,
-            onPointerUp: _processPointerUp,
-            child: Container(
-              color: Colors.lightBlueAccent,
-            ),
+    return Scaffold(
+      body: Center(
+        child: Listener(
+          onPointerDown: _processPointerDown,
+          onPointerMove: _processPointerMove,
+          onPointerUp: _processPointerUp,
+          child: Container(
+            color: Colors.lightBlueAccent,
           ),
         ),
-        TextButton(
-            onPressed: _downloadDetails,
-            child: const Text("Download"),
-        ),
-      ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _downloadDetails,
+        tooltip: "Download",
+        child: const Icon(Icons.download),
+      ),
     );
   }
 }

@@ -1,7 +1,5 @@
 #include "double.h"
 
-// this class takes care of the single finger cases
-
 double_tap_t double_tap_d[MAX_TOUCHES];
 
 gesture_event_t double_tap = {
@@ -33,7 +31,7 @@ static void update_double_taps(double_tap_t* _double, stroke_t* strokes, tap_t* 
         // if timestamp is too far, set this double to failed
         if (strokes->state == RECOGNIZER_STATE_COMPLETED) {
             coords_t c1 = {.x = _double->x, .y = _double->y};
-            coords_t c2 = {.x = strokes->y, .y = strokes->y};
+            coords_t c2 = {.x = strokes->x, .y = strokes->y};
             int dist    = euclidean_distance(c1, c2);
 
             if (_double->t - strokes->t > DOUBLE_DIFF) {  // if t_diff too big, this dTap has failed

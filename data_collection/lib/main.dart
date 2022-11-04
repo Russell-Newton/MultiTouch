@@ -10,7 +10,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static const String _title = 'Touch Data Collection';
+  static const String _title = 'Touch Data Collection: Perform a gesture on the screen then click the download button.';
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +49,53 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   void _printDetails(PointerEvent details, String type) {
-    _details.add("$type,${details.down},${details.position.dx},${details.position.dy},${details.timeStamp}");
+    List<String> detailsString = [
+      type,
+      "${details.down}",
+      "${details.position.dx}",
+      "${details.position.dy}",
+      "${details.timeStamp}",
+      "${details.distance}",
+      "${details.distanceMax}",
+      "${details.distanceMin}",
+      "${details.kind}",
+      "${details.orientation}",
+      "${details.pressure}",
+      "${details.pressureMax}",
+      "${details.pressureMin}",
+      "${details.radiusMajor}",
+      "${details.radiusMinor}",
+      "${details.radiusMax}",
+      "${details.radiusMin}",
+      "${details.size}",
+      "${details.tilt}",
+    ];
+    _details.add(detailsString.join(','));
   }
 
   void _downloadDetails() {
-    _details.insert(0, "type,down,position.dx,position.dy,timeStamp");
+    List<String> header = [
+      "type",
+      "down",
+      "position.dx",
+      "position.dy",
+      "timeStamp",
+      "distance",
+      "distanceMax",
+      "distanceMin",
+      "kind",
+      "orientation",
+      "pressure",
+      "pressureMax",
+      "pressureMin",
+      "radiusMajor",
+      "radiusMinor",
+      "radiusMax",
+      "radiusMin",
+      "size",
+      "tilt",
+    ];
+    _details.insert(0, header.join(','));
     String contents = "${_details.join("\n")}\n";
     List<int> bytes = utf8.encode(contents);
     String encoded = base64Encode(bytes);
@@ -65,24 +107,22 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ConstrainedBox(
-          constraints: BoxConstraints.tight(const Size(300.0, 400.0)),
-          child: Listener(
-            onPointerDown: _processPointerDown,
-            onPointerMove: _processPointerMove,
-            onPointerUp: _processPointerUp,
-            child: Container(
-              color: Colors.lightBlueAccent,
-            ),
+    return Scaffold(
+      body: Center(
+        child: Listener(
+          onPointerDown: _processPointerDown,
+          onPointerMove: _processPointerMove,
+          onPointerUp: _processPointerUp,
+          child: Container(
+            color: Colors.lightBlueAccent,
           ),
         ),
-        TextButton(
-            onPressed: _downloadDetails,
-            child: const Text("Download"),
-        ),
-      ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _downloadDetails,
+        tooltip: "Download",
+        child: const Icon(Icons.download),
+      ),
     );
   }
 }

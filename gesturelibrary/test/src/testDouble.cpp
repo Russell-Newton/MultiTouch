@@ -27,7 +27,7 @@ protected:
                                 break;
                             }
                         }
-                        // EXPECT_TRUE(found);
+                        EXPECT_TRUE(found);
                         break;
                     case RECOGNIZER_STATE_POSSIBLE:
                         for (size_t j = 0; j < MAX_TOUCHES; j++) {
@@ -39,7 +39,7 @@ protected:
                                 break;
                             }
                         }
-                        // EXPECT_TRUE(found);
+                        EXPECT_TRUE(found);
                         break;
                     case RECOGNIZER_STATE_IN_PROGRESS:
                         for (size_t j = 0; j < MAX_TOUCHES; j++) {
@@ -50,13 +50,10 @@ protected:
                                 break;
                             }
                         }
-                        if (!found) {
-                            // EXPECT_TRUE(found);
-                        }
-                        // EXPECT_TRUE(found);
+                        EXPECT_TRUE(found);
                         break;
                     default:
-                        // EXPECT_EQ("", "incorrect hold state found");
+                        EXPECT_EQ("", "incorrect double state found");
                         break;
                     }
                     found_hold = true;
@@ -64,7 +61,7 @@ protected:
                 }
             }
             if (!found_hold) {
-                // EXPECT_EQ("", "failed to return hold gesture");
+                EXPECT_EQ("", "failed to return double gesture");
             }
             delete[] gestures;
         }
@@ -72,7 +69,7 @@ protected:
 };
 
 TEST_P(TestDouble, DoubleTapPhone) {
-    readTouchEvents("res/hold/phone_" + to_string(GetParam()) + ".csv");
+    readTouchEvents("res/double/phone_" + to_string(GetParam()) + ".csv");
     testDouble();
 }
 

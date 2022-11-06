@@ -8,6 +8,7 @@
 #define TAP_TIME_MAX  0.5f
 #define HOLD_TIME_MIN TAP_TIME_MAX
 
+// shortest possible time diff and shortest euclidean distance
 #define DOUBLE_DIFF     5
 #define DOUBLE_DISTANCE 0.2
 

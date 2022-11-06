@@ -2,6 +2,7 @@
 
 #include "gesturelib.h"
 #include "math.h"
+#include "multistroke.h"
 #include "recognizer.h"
 #include "stroke.h"
 #include "tap.h"

@@ -4,10 +4,10 @@ double_tap_t double_tap_d[MAX_TOUCHES];
 
 void init_double_tap() {
     for (int i = 0; i < MAX_TOUCHES; i++) {
-        tap_d[i].state = RECOGNIZER_STATE_NULL;
-        tap_d[i].t     = 0;
-        tap_d[i].x     = 0;
-        tap_d[i].y     = 0;
+        double_tap_d[i].state = RECOGNIZER_STATE_NULL;
+        double_tap_d[i].t     = 0;
+        double_tap_d[i].x     = 0;
+        double_tap_d[i].y     = 0;
     }
 }
 

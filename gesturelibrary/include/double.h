@@ -20,6 +20,9 @@ typedef struct coords {
     int y;
 } coords_t;
 
+/// @brief initializes the data array by setting all field to 0/NULL
+void init_double_tap();
+
 /// @brief reads the last tap and stroke data and determines whethers this new stroke is part of a double_tap event
 /// @param event touch event
 gesture_event_t* recognize_double_tap(touch_event_t* event);

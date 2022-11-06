@@ -2,6 +2,15 @@
 
 double_tap_t double_tap_d[MAX_TOUCHES];
 
+void init_double_tap() {
+    for (int i = 0; i < MAX_TOUCHES; i++) {
+        tap_d[i].state = RECOGNIZER_STATE_NULL;
+        tap_d[i].t     = 0;
+        tap_d[i].x     = 0;
+        tap_d[i].y     = 0;
+    }
+}
+
 gesture_event_t double_tap = {
     .type = GESTURE_TYPE_DOUBLE_TAP, .num_touches = 1, .get_data = (void* (*)(void))get_double_tap};
 

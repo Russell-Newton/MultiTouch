@@ -1,76 +1,96 @@
 #include "testFlutter.hpp"
 
+#include <cmath>
+
 extern "C" {
 #include "hold.h"
 #include "recognizer.h"
+#include "utils.h"
 }
 
-class TestHold : public TestFlutter, public testing::WithParamInterface<int> {
-protected:
-    void testHold() {
-        state_t s = RECOGNIZER_STATE_NULL;
-        for (touch_event_t event : touchEvents) {
-            gesture_event_t* gestures = new gesture_event_t[MAX_RECOGNIZERS];
-            bool found_hold           = false;
-            process_touch_event(&event, gestures, MAX_RECOGNIZERS);
-            for (size_t i = 0; i < MAX_RECOGNIZERS; i++) {  // size_t means unsigned int (positive)
-                if (gestures[i].type == GESTURE_TYPE_HOLD && gestures[i].num_touches == 1) {
-                    sFingerHold_t* holds = ((sFingerHold_t * (*)(void)) gestures[i].get_data)();
-                    bool found           = false;
-                    switch (s) {
-                    case RECOGNIZER_STATE_NULL:
-                        for (size_t j = 0; j < MAX_TOUCHES; j++) {
-                            if (holds[j].state == RECOGNIZER_STATE_POSSIBLE) {
-                                s     = holds[j].state;
-                                found = true;
-                                // EXPECT_FALSE(found); //checking if it enters this if, this should make it auto fail
-                                break;
-                            }
-                        }
-                        EXPECT_TRUE(found);
-                        break;
-                    case RECOGNIZER_STATE_POSSIBLE:
-                        for (size_t j = 0; j < MAX_TOUCHES; j++) {
-                            if (holds[j].state == RECOGNIZER_STATE_POSSIBLE ||
-                                holds[j].state == RECOGNIZER_STATE_IN_PROGRESS ||
-                                holds[j].state == RECOGNIZER_STATE_COMPLETED) {
-                                s     = holds[j].state;
-                                found = true;
-                                break;
-                            }
-                        }
-                        EXPECT_TRUE(found);
-                        break;
-                    case RECOGNIZER_STATE_IN_PROGRESS:
-                        for (size_t j = 0; j < MAX_TOUCHES; j++) {
-                            if (holds[j].state == RECOGNIZER_STATE_IN_PROGRESS ||
-                                holds[j].state == RECOGNIZER_STATE_COMPLETED) {
-                                s     = holds[j].state;
-                                found = true;
-                                break;
-                            }
-                        }
-                        EXPECT_TRUE(found);
-                        break;
-                    default:
-                        EXPECT_EQ("", "incorrect hold state found");
-                        break;
-                    }
-                    found_hold = true;
-                    break;
-                }
-            }
-            if (!found_hold) {
-                EXPECT_EQ("", "failed to return hold gesture");
-            }
-            delete[] gestures;
-        }
+using namespace std;
+
+struct HoldTestParams {
+    string path;
+    size_t num;
+
+    HoldTestParams(const string& path, size_t num) {
+        this->path = path;
+        this->num  = num;
     }
 };
 
-TEST_P(TestHold, HoldPhone) {
-    readTouchEvents("res/hold/phone_" + to_string(GetParam()) + ".csv");
-    testHold();
+ostream& operator<<(ostream& stream, const HoldTestParams& params) {
+    stream << params.path;
+    return stream;
 }
 
-INSTANTIATE_TEST_SUITE_P(HoldPhoneTests, TestHold, testing::Values(1, 2, 3, 4, 5));
+class TestHold : public TestFlutter, public testing::WithParamInterface<HoldTestParams> {
+protected:
+    void testStates(size_t num) {
+        int completed   = 0;
+        state_t* states = new state_t[MAX_TOUCHES];
+        for (size_t index = 0; index < MAX_TOUCHES; index++) {
+            states[index] = RECOGNIZER_STATE_NULL;
+        }
+        for (touch_event_t event : touchEvents) {
+            gesture_event_t* gestures = new gesture_event_t[MAX_RECOGNIZERS];
+            process_touch_event(&event, gestures, MAX_RECOGNIZERS);
+            for (size_t i = 0; i < MAX_RECOGNIZERS; i++) {
+                if (gestures[i].type == GESTURE_TYPE_HOLD && gestures[i].num_touches == 1) {
+                    hold_t* holds = ((hold_t * (*)(void)) gestures[i].get_data)();
+                    for (size_t index = 0; index < MAX_TOUCHES; index++) {
+                        switch (states[index]) {
+                        case RECOGNIZER_STATE_NULL:
+                            EXPECT_TRUE(holds[index].state == RECOGNIZER_STATE_NULL ||
+                                        holds[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                            break;
+                        case RECOGNIZER_STATE_IN_PROGRESS:
+                            EXPECT_TRUE(holds[index].state == RECOGNIZER_STATE_IN_PROGRESS ||
+                                        holds[index].state == RECOGNIZER_STATE_FAILED ||
+                                        holds[index].state == RECOGNIZER_STATE_COMPLETED);
+                            if (holds[index].state == RECOGNIZER_STATE_COMPLETED) {
+                                completed++;
+                            }
+                            break;
+                        case RECOGNIZER_STATE_COMPLETED:
+                            EXPECT_TRUE(holds[index].state == RECOGNIZER_STATE_COMPLETED ||
+                                        holds[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                            break;
+                        case RECOGNIZER_STATE_FAILED:
+                            EXPECT_TRUE(holds[index].state == RECOGNIZER_STATE_FAILED ||
+                                        holds[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                            break;
+                        default:
+                            EXPECT_EQ(to_string(states[index]), "incorrect hold state found");
+                            break;
+                        }
+                        states[index] = holds[index].state;
+                    }
+                    break;
+                }
+            }
+            delete[] gestures;
+        }
+        EXPECT_EQ(completed, num);
+        delete[] states;
+    }
+};
+
+TEST_P(TestHold, States) {
+    readTouchEvents("res/" + GetParam().path + ".csv");
+    testStates(GetParam().num);
+}
+
+INSTANTIATE_TEST_SUITE_P(HoldTests,
+                         TestHold,
+                         testing::Values(
+                             // 1 finger straight holds
+                             HoldTestParams{"hold/phone_1", 1},
+                             HoldTestParams{"hold/phone_2", 1},
+                             HoldTestParams{"hold/phone_3", 1},
+                             HoldTestParams{"hold/phone_4", 1},
+                             HoldTestParams{"hold/phone_5", 1},
+                             // This one has weird data --> Do we want this to count
+                             // HoldTestParams{"hold/phone_6", 1},
+                             HoldTestParams{"hold/phone_7", 1}));

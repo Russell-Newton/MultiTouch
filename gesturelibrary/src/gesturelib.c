@@ -1,10 +1,10 @@
 #include "gesturelib.h"
 
+#include "double.h"
 #include "drag.h"
 #include "hold.h"
 #include "multidrag.h"
 #include "multistroke.h"
-#include "singleFingerDouble.h"
 #include "stroke.h"
 #include "tap.h"
 #include "utils.h"

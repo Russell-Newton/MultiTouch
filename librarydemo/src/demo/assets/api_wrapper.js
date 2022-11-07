@@ -63,8 +63,8 @@ function test() {
 };
 
 function convertTouchEvent(pointer) {
-  const fields = [ "type", "x", "y", "t", "group" ] return convertStruct(
-      pointer, "touch_event", fields);
+  const fields = [ "type", "x", "y", "t", "group" ];
+  return convertStruct(pointer, "touch_event", fields);
 };
 
 function convertGestureEvent(pointer) {

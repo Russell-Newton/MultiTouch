@@ -23,23 +23,21 @@ import {test, testStruct} from "./assets/api_wrapper";
     </div>
     <div class="col-md">
       Click to Change Text:
-      <MDBBtn @click="setText('Text A')" color="light" size="sm" rounded>A</MDBBtn>
-      <MDBBtn @click="setText('Text B')" color="light" size="sm" rounded>B</MDBBtn>
+      <MDBBtn @click="setText('Gesture A')" color="light" size="sm" rounded>A</MDBBtn>
+      <MDBBtn @click="setText('Gesture B')" color="light" size="sm" rounded>B</MDBBtn>
       <h3 >
         {{ myText }}
       </h3>
     </div>
   </div>
 </div>
-  
-  
 
   
   
   
 </template>
 
-<script>
+<script >
 export default {
   data() {
     return {
@@ -53,4 +51,6 @@ export default {
   }
 }
 </script>
+
+
 

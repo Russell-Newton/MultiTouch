@@ -23,6 +23,7 @@ import {test, testStruct} from "./assets/api_wrapper";
     </div>
     <div class="col-md">
       Click to Change Text:
+      <MDBBtn @click="setTextSquare3()" color="light" size="sm" rounded>Square 3 in C! (Check console output)</MDBBtn>
       <MDBBtn @click="setText('Gesture A')" color="light" size="sm" rounded>A</MDBBtn>
       <MDBBtn @click="setText('Gesture B')" color="light" size="sm" rounded>B</MDBBtn>
       <h3 >
@@ -41,12 +42,15 @@ import {test, testStruct} from "./assets/api_wrapper";
 export default {
   data() {
     return {
-      myText: "Hello World!"
+      myText: "Perform a Gesture"
     }
   },
   methods: {
     setText(newText) {
       this.myText = newText;
+    },
+    setTextSquare3() {
+      this.setText(Module._square(3));
     }
   }
 }

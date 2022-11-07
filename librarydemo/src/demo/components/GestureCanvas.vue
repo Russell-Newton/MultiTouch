@@ -1,5 +1,5 @@
 <script setup>
-import {convertTouchEvent, convertGestureEvent} from "../assets/api_wrapper";
+    import { processPointerEvent } from "../assets/api_wrapper";
 </script>
 
 <template>
@@ -13,7 +13,8 @@ import {convertTouchEvent, convertGestureEvent} from "../assets/api_wrapper";
 export default {
     data() {
       return {
-          dragging: {}
+          dragging: {},
+          initialized: false
       }  
     },
     props: {
@@ -25,9 +26,17 @@ export default {
       let ctx = canvas.getContext("2d");
       ctx.globalCompositeOperation = 'destination-over';
       ctx.fillStyle = "lightgrey";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);  
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     },
     methods: {
+        maybeInit() {
+            if (this.initialized) {
+                return;
+            }
+
+            Module._init_gesturelib();
+            this.initialized = true;
+        },
         eventToCanvasCoordinate(event) {
             // need to use getBoundingClientRect for responsive <canvas> sizing
             // NOTE: if you use transforms, see
@@ -70,9 +79,15 @@ export default {
             this.logEvent(event, "up");
         },
         logEvent(event, type) {
-            let {x, y} = this.eventToCanvasCoordinate(event);
-            let t = performance.now() / 1000;   // in ms by default
-            console.log(`Caught ${type} touch_event at time ${t}: (${x}, ${y})`);
+            this.maybeInit();
+            // let {x, y} = this.eventToCanvasCoordinate(event);
+            // let t = event.timeStamp / 1000;   // in ms by default
+            // console.log(`Caught ${type} touch_event at time ${t}: (${x}, ${y})`);
+            console.log(`Results of processed touch:`);
+            let processed_gestures = processPointerEvent(event, type);
+            for (let gesture of processed_gestures) {
+                console.log(gesture);
+            }
         }
     }
 }

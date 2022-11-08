@@ -38,4 +38,4 @@ drag_t* get_drag();
 /// @brief Subscribe listener to drag gesture updates
 /// @param event listener that accepts a const drag_t*
 /// @return 0 if first listener, 1 if replacing existing listener
-int subscribe_drag(void (*event)(const drag_t*));
+int set_on_drag(void (*event)(const drag_t*));

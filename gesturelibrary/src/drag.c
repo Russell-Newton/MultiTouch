@@ -34,7 +34,7 @@ drag_t* get_drag() {
     return drag_d;
 }
 
-int subscribe_drag(void (*event)(const drag_t*)) {
+int set_on_drag(void (*event)(const drag_t*)) {
     if (on_drag) {
         on_drag = event;
         return 0;

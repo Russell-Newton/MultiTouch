@@ -1,11 +1,12 @@
 #include "gesturelib.h"
 
+#include "double.h"
 #include "drag.h"
 #include "hold.h"
+#include "hold_and_drag.h"
 #include "multidrag.h"
 #include "multistroke.h"
 #include "rotate.h"
-#include "singleFingerDouble.h"
 #include "stroke.h"
 #include "tap.h"
 #include "utils.h"
@@ -39,8 +40,9 @@ int init_gesturelib() {
     add_recognizer(recognize_multistroke, init_multistroke);
     add_recognizer(recognize_tap, init_tap);
     add_recognizer(recognize_double_tap, 0);
-    add_recognizer(recognize_single_hold, 0);
+    add_recognizer(recognize_hold, init_hold);
     add_recognizer(recognize_drag, init_drag);
+    add_recognizer(recognize_hold_and_drag, init_hold_and_drag);
     add_recognizer(recognize_multidrag, init_multidrag);
     add_recognizer(recognize_zoom, init_zoom);
     add_recognizer(recognize_rotate, init_rotate);

@@ -1,126 +1,81 @@
 #include "hold.h"
 
-// this class takes care of the single finger cases
+#include "math.h"
+#include "stroke.h"
+#include "utils.h"
 
-sFingerHold_t sFingerHold_d[MAX_TOUCHES];
+// data[group1, group2, group3, group4, group5]
 
-static touch_event_t* start;
-static touch_event_t* prev = 0;
-state_t updated_state;
-static gesture_event_t* hold_gesture;
+hold_t hold_d[MAX_TOUCHES];
 
-int size;
-int d_index;
+void init_hold() {
+    for (int i = 0; i < MAX_TOUCHES; i++) {
+        hold_d[i].state = RECOGNIZER_STATE_NULL;
+        hold_d[i].t0    = 0;
+        hold_d[i].x0    = 0;
+        hold_d[i].y0    = 0;
+        hold_d[i].t     = 0;
+        hold_d[i].x     = 0;
+        hold_d[i].y     = 0;
+    }
+}
 
-gesture_event_t* recognize_single_hold(touch_event_t* event) {
-    // TODO: look at the last x timestamps/milliseconds of touch data, verifying they are in the same location there are
-    // n continuos touch_events that streamed in during that time (say we recieve data at 100 ms intervals and our hold
-    // needs to be a second long) if last was a drag (drag's state is possible) this is default false if we didn't see a
-    // null at the end of it
+gesture_event_t hold = {.type = GESTURE_TYPE_HOLD, .get_data = (void* (*)(void))get_hold};
 
-    // TODO: The following section has been commented since it causes a segfault.
-    // if (event->t - prev_event->t > 10) {
-    //     // clear prev events
-    //     sFingerHold_d[0].state = RECOGNIZER_STATE_POSSIBLE;
-    // }
+static void update_hold(hold_t* hold, stroke_t* stroke, char down);
 
-    switch (event->type) {
-    case TOUCH_EVENT_DOWN:
-        process_hold_down(event);
-        // clear_data();
-        break;
-    case TOUCH_EVENT_MOVE:
-        process_hold_move(event);
-        break;
-    case TOUCH_EVENT_UP:
-        process_hold_up(event);
-        break;
+gesture_event_t* recognize_hold(touch_event_t* event) {
+    stroke_t* strokes = get_stroke();
+    for (int index = 0; index < MAX_TOUCHES; index++) {
+        update_hold(hold_d + index, strokes + index, event->type == TOUCH_EVENT_DOWN);
     }
 
-    // switch (updated_state) {
-    // case RECOGNIZER_STATE_NULL:
-    //     printf("NULL");
-    //     break;
-    // case RECOGNIZER_STATE_COMPLETED:
-    //     printf("COMPLETED");
-    //     break;
-    // case RECOGNIZER_STATE_FAILED:
-    //     printf("FAILED");
-    //     break;
-    // case RECOGNIZER_STATE_IN_PROGRESS:
-    //     printf("IN_PROGRESS");
-    //     break;
-    // case RECOGNIZER_STATE_POSSIBLE:
-    //     printf("POSSIBLE");
-    //     break;
-    // default:
-    //     printf("NOT A VALID STATE");
-    // }
-
-    add_to_data(create_touch_data(updated_state, event));
-    // sFingerHold_d[0] = create_touch_data(updated_state, event);
-
-    gesture_event_t hold;
-    hold.type     = GESTURE_TYPE_HOLD;
-    hold.get_data = (void* (*)(void))get_sFingerHold;
-    hold_gesture  = &hold;
-    return hold_gesture;
+    return &hold;
 }
 
-void add_to_data(sFingerHold_t* data) {
-    // add data circularly
-
-    if (d_index == MAX_TOUCHES) {
-        d_index = 0;
-    }
-
-    sFingerHold_d[size] = *data;
-    if (size != MAX_TOUCHES)
-        size++;
-    d_index++;
+hold_t* get_hold() {
+    return hold_d;
 }
 
-// void clear_data() {
-//     for (int i = 0; i < )
-// }
-
-sFingerHold_t* create_touch_data(state_t state, touch_event_t* event) {
-    sFingerHold_t sFingerHold_data;
-    sFingerHold_data.state     = state;
-    sFingerHold_data.last_x    = event->x;
-    sFingerHold_data.last_y    = event->y;
-    sFingerHold_data.last_time = event->t;
-    sFingerHold_t* data        = &sFingerHold_data;
-    return data;
-}
-
-void process_hold_down(touch_event_t* event) {
-    start         = event;
-    updated_state = RECOGNIZER_STATE_POSSIBLE;
-}
-
-void process_hold_move(touch_event_t* event) {
-    if (prev) {  // if prev's been initiated
-        if (event->x - prev->t > HOLD_DIST_MAX || event->y - prev->y > HOLD_DIST_MAX) {
-            updated_state = RECOGNIZER_STATE_FAILED;
+static void update_hold(hold_t* hold, stroke_t* stroke, char down) {
+    switch (hold->state) {
+    case RECOGNIZER_STATE_NULL:
+        if (stroke->state == RECOGNIZER_STATE_IN_PROGRESS) {
+            hold->state = RECOGNIZER_STATE_IN_PROGRESS;
         }
-    } else if (event->x - start->x > HOLD_DIST_MAX || event->y - start->y > HOLD_DIST_MAX) {
-        updated_state = RECOGNIZER_STATE_FAILED;
-    } else {
-        updated_state = RECOGNIZER_STATE_POSSIBLE;
+        break;
+    case RECOGNIZER_STATE_IN_PROGRESS:
+        if (stroke->state == RECOGNIZER_STATE_IN_PROGRESS) {
+            float dx = stroke->x - stroke->x0;
+            float dy = stroke->y - stroke->y0;
+            if (SQUARE_SUM(dx, dy) > SQUARE(HOLD_DIST_MAX)) {
+                hold->state = RECOGNIZER_STATE_FAILED;
+            }
+        } else if (stroke->state == RECOGNIZER_STATE_COMPLETED) {
+            float dt = stroke->t - stroke->t0;
+            float dx = stroke->x - stroke->x0;
+            float dy = stroke->y - stroke->y0;
+            if (dt <= HOLD_TIME_MIN || SQUARE_SUM(dx, dy) > SQUARE(HOLD_DIST_MAX)) {
+                hold->state = RECOGNIZER_STATE_FAILED;
+            } else {
+                hold->state = RECOGNIZER_STATE_COMPLETED;
+            }
+        }
+        break;
+    case RECOGNIZER_STATE_COMPLETED:
+    case RECOGNIZER_STATE_FAILED:
+        if (down && stroke->state == RECOGNIZER_STATE_IN_PROGRESS) {
+            hold->state = RECOGNIZER_STATE_IN_PROGRESS;
+        }
+        break;
+    default:
+        return;
     }
-}
 
-void process_hold_up(touch_event_t* event) {
-    if (event->x - start->x > HOLD_DIST_MAX || event->y - start->y > HOLD_DIST_MAX) {
-        updated_state = RECOGNIZER_STATE_FAILED;
-    } else if (event->t - start->t < HOLD_TIME_MIN) {
-        updated_state = RECOGNIZER_STATE_FAILED;
-    } else {
-        updated_state = RECOGNIZER_STATE_COMPLETED;
-    }
-}
-
-sFingerHold_t* get_sFingerHold() {
-    return sFingerHold_d;
+    hold->x0 = stroke->x0;
+    hold->y0 = stroke->y0;
+    hold->t0 = stroke->t0;
+    hold->x  = stroke->x;
+    hold->y  = stroke->y;
+    hold->t  = stroke->t;
 }

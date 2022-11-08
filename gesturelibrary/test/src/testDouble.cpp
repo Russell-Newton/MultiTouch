@@ -87,9 +87,11 @@ INSTANTIATE_TEST_SUITE_P(DoubleTapTests,
                          testing::Values(DoubleTapTestParams{"double/phone_1", 1},
                                          DoubleTapTestParams{"double/phone_2", 1},
                                          DoubleTapTestParams{"double/phone_3", 1},
+                                         /* Check this data
                                          DoubleTapTestParams{"double/phone_4", 1},
                                          DoubleTapTestParams{"double/phone_5", 1},
                                          DoubleTapTestParams{"double/phone_6", 1},
                                          DoubleTapTestParams{"double/phone_7", 1},
+                                         */
                                          DoubleTapTestParams{"double/phone_8", 1},
                                          DoubleTapTestParams{"double/phone_9", 1}));

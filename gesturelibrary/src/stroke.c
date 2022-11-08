@@ -54,6 +54,7 @@ static void begin_stroke(touch_event_t* event) {
                                        stroke_d[event->group].state == RECOGNIZER_STATE_COMPLETED)) {
 
         stroke_d[event->group].state      = RECOGNIZER_STATE_IN_PROGRESS;
+        stroke_d[event->group].group      = event->group;
         stroke_d[event->group].uid        = event->uid;
         stroke_d[event->group].x0         = event->x;
         stroke_d[event->group].y0         = event->y;

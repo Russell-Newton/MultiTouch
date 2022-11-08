@@ -33,7 +33,6 @@ typedef struct touch_event {
 
 typedef enum gesture_type {
     GESTURE_TYPE_TAP,
-    GESTURE_TYPE_SWIPE,
     GESTURE_TYPE_HOLD,
     GESTURE_TYPE_HOLD_AND_DRAG,
     GESTURE_TYPE_DOUBLE_TAP,

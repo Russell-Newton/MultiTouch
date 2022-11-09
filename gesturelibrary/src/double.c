@@ -43,7 +43,7 @@ static void update_double_taps(double_tap_t* double_tap, stroke_t* stroke, tap_t
         // if too far, move on to the next one
         // if timestamp is too far, set this double to failed
         if (tap->state == RECOGNIZER_STATE_COMPLETED) {
-            int dist = SQUARED_DIST(double_tap, stroke);
+            int dist = SQUARED_DIST(double_tap, tap);
 
             if (double_tap->t - stroke->t > DOUBLE_DIFF) {  // if t_diff too big, this dTap has failed
                 double_tap->state = RECOGNIZER_STATE_FAILED;

@@ -33,17 +33,17 @@ typedef struct touch_event {
 
 typedef enum gesture_type {
     GESTURE_TYPE_TAP,
-    GESTURE_TYPE_SWIPE,
     GESTURE_TYPE_HOLD,
+    GESTURE_TYPE_HOLD_AND_DRAG,
     GESTURE_TYPE_DOUBLE_TAP,
     GESTURE_TYPE_DRAG,
-    GESTURE_TYPE_ZOOM_AND_ROTATE
+    GESTURE_TYPE_ZOOM,
+    GESTURE_TYPE_ROTATE
 } gesture_type_t;
 
 /// @brief
 typedef struct gesture_event {
     gesture_type_t type;
-    unsigned int num_touches;
     unsigned int index;  // do we need this?
     void* (*get_data)(void);
 } gesture_event_t;

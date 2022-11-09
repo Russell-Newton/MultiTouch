@@ -13,6 +13,8 @@ typedef struct stroke {
     // recognizer state
     state_t state;
 
+    // touch event group
+    unsigned int group;
     // user id
     int uid;
 

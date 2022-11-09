@@ -20,7 +20,7 @@ void init_tap() {
     }
 }
 
-gesture_event_t tap = {.type = GESTURE_TYPE_TAP, .num_touches = 1, .get_data = (void* (*)(void))get_tap};
+gesture_event_t tap = {.type = GESTURE_TYPE_TAP, .get_data = (void* (*)(void))get_tap};
 
 static void update_tap(tap_t* tap, stroke_t* stroke, char down);
 

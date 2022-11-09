@@ -1,49 +1,31 @@
 #pragma once
 
 #include "gesturelib.h"
+#include "gestureparams.h"
 #include "recognizer.h"
 
-/// @brief
-typedef struct sFingerHold {
+/// @brief Data structure for hold data
+typedef struct hold {
     state_t state;
-    uint32_t last_x;
-    uint32_t last_y;
-    uint32_t last_time;
-} sFingerHold_t;
 
-#ifndef HOLD_LENGTH
-#define HOLD_LENGTH 10
-#endif
+    // intial position and time
+    float x0;
+    float y0;
+    float t0;
 
-/// @brief
-/// @param event
-gesture_event_t* recognize_single_hold(touch_event_t* event);
+    // current position
+    float x;
+    float y;
+    float t;
+} hold_t;
 
-/// @brief
-/// @param data
-void add_to_data(sFingerHold_t* data);
+/// @brief Initialize hold data structures
+void init_hold();
 
-// /// @brief
-// void clear_data();
+/// @brief Recognize hold gesture
+/// @param event touch event to recognize
+gesture_event_t* recognize_hold(touch_event_t* event);
 
-/// @brief
-/// @param state
-/// @param event
-/// @return
-sFingerHold_t* create_touch_data(state_t state, touch_event_t* event);
-
-/// @brief
-/// @param event
-void process_hold_down(touch_event_t* event);
-
-/// @brief
-/// @param event
-void process_hold_move(touch_event_t* event);
-
-/// @brief
-/// @param event
-void process_hold_up(touch_event_t* event);
-
-/// @brief
-/// @return
-sFingerHold_t* get_sFingerHold();
+/// @brief Access hold data array of size MAX_TOUCHES
+/// @return Address of first element of hold data array of size MAX_TOUCHES
+hold_t* get_hold();

@@ -67,7 +67,6 @@ UNPACKER_FUNCTION(float, t)
 #define STRUCT_NAME gesture_event
 ARRAY_GETTER_FUNCTION
 UNPACKER_FUNCTION(unsigned int, type)
-UNPACKER_FUNCTION(unsigned int, num_touches)
 UNPACKER_FUNCTION(unsigned int, index)
 UNPACKER_FUNCTION(void *, get_data)
 #undef STRUCT_NAME

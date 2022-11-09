@@ -32,16 +32,15 @@ const GESTURE_DATA_NAMES_BACKWARD = {
   6 : "rotate"
 }
 
-const GESTURE_DATA_FIELDS_BACKWARD =
-    {
-      0 : [ "state", "x0", "y0", "t0", "x", "y", "t" ],
-      1 : [ "state", "x0", "y0", "t0", "x", "y", "t" ],
-      2 : [ "state", "x0", "y0", "x", "y", "vx", "vy" ],
-      3 : [ "state", "x", "y", "t" ],
-      4 : [ "state", "group", "x0", "y0", "x", "y", "vx", "vy" ],
-      5 : [ "state", "uid", "size", "scale" ],
-      6 : [ "state", "uid", "size", "rotation" ],
-    }
+const GESTURE_DATA_FIELDS_BACKWARD = {
+  0 : [ "state", "x0", "y0", "t0", "x", "y", "t" ],
+  1 : [ "state", "x0", "y0", "t0", "x", "y", "t" ],
+  2 : [ "state", "x0", "y0", "x", "y", "vx", "vy" ],
+  3 : [ "state", "x", "y", "t" ],
+  4 : [ "state", "group", "x0", "y0", "x", "y", "vx", "vy" ],
+  5 : [ "state", "uid", "size", "scale" ],
+  6 : [ "state", "uid", "size", "rotation" ]
+}
 
 function convertStruct(pointer, struct_name, fields) {
   let out = {};
@@ -80,6 +79,10 @@ function convertGestureEvent(pointer) {
   return out;
 };
 
+function registerListeners() {
+  Module._register_listeners();
+}
+
 // TODO - Unpack Gesture data
 function processPointerEvent(event, type) {
   let touch_ptr = Module._build_touch_event(TOUCH_TYPES_FORWARD[type], event.x,
@@ -111,4 +114,4 @@ function testStruct() {
   console.log(out);
 };
 
-export {test, testStruct, processPointerEvent}
+export {test, testStruct, processPointerEvent, registerListeners}

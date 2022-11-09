@@ -1,5 +1,5 @@
 <script setup>
-    import { processPointerEvent } from "../assets/api_wrapper";
+    import { processPointerEvent, registerListeners } from "../assets/api_wrapper";
 </script>
 
 <template>
@@ -20,6 +20,10 @@ export default {
     props: {
         width: Number,
         height: Number,
+        setParentText: Function,
+    },
+    created() {
+      document.addEventListener("emscriptenready", this.initLib);  
     },
     mounted() {
       let canvas = this.$el;
@@ -29,12 +33,14 @@ export default {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     },
     methods: {
-        maybeInit() {
+        initLib() {
             if (this.initialized) {
                 return;
             }
 
             Module._init_gesturelib();
+            registerListeners();
+            console.log("Library ready!");
             this.initialized = true;
         },
         eventToCanvasCoordinate(event) {
@@ -79,15 +85,15 @@ export default {
             this.logEvent(event, "up");
         },
         logEvent(event, type) {
-            this.maybeInit();
-            // let {x, y} = this.eventToCanvasCoordinate(event);
-            // let t = event.timeStamp / 1000;   // in ms by default
+            let {x, y} = this.eventToCanvasCoordinate(event);
+            let t = event.timeStamp / 1000;   // in ms by default
             // console.log(`Caught ${type} touch_event at time ${t}: (${x}, ${y})`);
             console.log(`Results of processed touch:`);
             let processed_gestures = processPointerEvent(event, type);
             for (let gesture of processed_gestures) {
                 console.log(gesture);
             }
+            this.setParentText(`Caught ${type} touch_event at time ${t}: (${x}, ${y})`);
         }
     }
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "gesturelib.h"
+#include "gestureparams.h"
 #include "math.h"
 #include "multistroke.h"
 #include "recognizer.h"

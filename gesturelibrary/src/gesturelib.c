@@ -12,8 +12,6 @@
 #include "utils.h"
 #include "zoom.h"
 
-#define SQUARED_DIST(a, b) (SQUARE_SUM((a)->x - (b)->x, (a)->y - (b)->y))
-
 gesture_recognizer_t recognizers[MAX_RECOGNIZERS];
 int num_recognizers = 0;
 

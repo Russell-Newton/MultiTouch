@@ -1,5 +1,8 @@
 #include "double.h"
 
+#include "gestureparams.h"
+#include "utils.h"
+
 double_tap_t double_tap_d[MAX_TOUCHES];
 
 void init_double_tap() {
@@ -16,8 +19,7 @@ gesture_event_t double_tap = {
 
 // static touch_event_t* prev_event;
 
-static void update_double_taps(double_tap_t* _double, stroke_t* strokes, tap_t* taps);
-static int euclidean_distance(coords_t c1, coords_t c2);
+static void update_double_taps(double_tap_t* double_tap, stroke_t* stroke, tap_t* tap);
 
 gesture_event_t* recognize_double_tap(touch_event_t* event) {
     (void)event;  // do we need the touch event
@@ -32,47 +34,40 @@ gesture_event_t* recognize_double_tap(touch_event_t* event) {
     return &double_tap;
 }
 
-static void update_double_taps(double_tap_t* _double, stroke_t* strokes, tap_t* taps) {
-    switch (_double->state) {
-    case RECOGNIZER_STATE_POSSIBLE:
+static void update_double_taps(double_tap_t* double_tap, stroke_t* stroke, tap_t* tap) {
+    switch (double_tap->state) {
+    case RECOGNIZER_STATE_IN_PROGRESS:
         // look at the timestamp of the tap and the location
         // if too far, move on to the next one
         // if timestamp is too far, set this double to failed
-        if (strokes->state == RECOGNIZER_STATE_COMPLETED) {
-            coords_t c1 = {.x = _double->x, .y = _double->y};
-            coords_t c2 = {.x = strokes->x, .y = strokes->y};
-            int dist    = euclidean_distance(c1, c2);
+        if (tap->state == RECOGNIZER_STATE_COMPLETED) {
+            int dist = SQUARED_DIST(double_tap, tap);
 
-            if (_double->t - strokes->t > DOUBLE_DIFF) {  // if t_diff too big, this dTap has failed
-                _double->state = RECOGNIZER_STATE_FAILED;
+            if (double_tap->t - stroke->t > DOUBLE_DIFF) {  // if t_diff too big, this dTap has failed
+                double_tap->state = RECOGNIZER_STATE_FAILED;
                 break;
             } else if (dist > DOUBLE_DISTANCE) {
                 break;
             } else {
-                _double->state = RECOGNIZER_STATE_COMPLETED;
+                double_tap->state = RECOGNIZER_STATE_COMPLETED;
                 break;
             }
         }
         break;
     case RECOGNIZER_STATE_FAILED:
-        if (taps->state == RECOGNIZER_STATE_COMPLETED) {
-            _double->state = RECOGNIZER_STATE_POSSIBLE;
-            break;
-        }
-        break;
     case RECOGNIZER_STATE_NULL:
     case RECOGNIZER_STATE_COMPLETED:
+        if (tap->state == RECOGNIZER_STATE_COMPLETED) {
+            double_tap->state = RECOGNIZER_STATE_IN_PROGRESS;
+        }
+        break;
     default:
         return;
     }
 
-    _double->x = strokes->x;
-    _double->y = strokes->y;
-    _double->t = strokes->t;
-}
-
-static int euclidean_distance(coords_t c1, coords_t c2) {
-    return sqrt(pow(c2.x - c1.x, 2) + pow(c2.y - c1.y, 2) * 1.0);
+    double_tap->x = stroke->x;
+    double_tap->y = stroke->y;
+    double_tap->t = stroke->t;
 }
 
 double_tap_t* get_double_tap() {

@@ -3,8 +3,6 @@
 #include "gestureparams.h"
 #include "utils.h"
 
-#define SQUARED_DIST(a, b) (SQUARE_SUM((a)->x - (b)->x, (a)->y - (b)->y))
-
 double_tap_t double_tap_d[MAX_TOUCHES];
 
 void init_double_tap() {

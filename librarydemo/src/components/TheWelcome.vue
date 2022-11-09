@@ -40,7 +40,7 @@ import { MDBBtn } from "mdb-vue-ui-kit";
       <EcosystemIcon />
     </template>
     
-    <a href="./demo">
+    <a href="./demo/index.html">
       <MDBBtn color="light" size="sm" rounded>Demo</MDBBtn>
     </a>
     Test out different gestures.

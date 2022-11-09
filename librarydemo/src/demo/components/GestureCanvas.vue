@@ -19,6 +19,7 @@ export default {
     props: {
         width: Number,
         height: Number,
+        setParentText: Function,
     },
     mounted() {
       let canvas = this.$el;
@@ -73,6 +74,7 @@ export default {
             let {x, y} = this.eventToCanvasCoordinate(event);
             let t = performance.now() / 1000;   // in ms by default
             console.log(`Caught ${type} touch_event at time ${t}: (${x}, ${y})`);
+            this.setParentText(`Caught ${type} touch_event at time ${t}: (${x}, ${y})`);
         }
     }
 }

@@ -61,6 +61,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          cache: true
       - name: Flutter Build
         working-directory: data_collection
         run: flutter build web --base-href /${{ github.event.repository.name }}/data-collection/

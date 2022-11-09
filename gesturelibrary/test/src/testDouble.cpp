@@ -37,7 +37,7 @@ protected:
             gesture_event_t* gestures = new gesture_event_t[MAX_RECOGNIZERS];
             process_touch_event(&event, gestures, MAX_RECOGNIZERS);
             for (size_t i = 0; i < MAX_RECOGNIZERS; i++) {
-                if (gestures[i].type == GESTURE_TYPE_DOUBLE_TAP && gestures[i].num_touches == 1) {
+                if (gestures[i].type == GESTURE_TYPE_DOUBLE_TAP) {
                     double_tap_t* taps = ((double_tap_t * (*)(void)) gestures[i].get_data)();
                     for (size_t index = 0; index < MAX_TOUCHES; index++) {
                         switch (states[index]) {

@@ -14,8 +14,7 @@ void init_double_tap() {
     }
 }
 
-gesture_event_t double_tap = {
-    .type = GESTURE_TYPE_DOUBLE_TAP, .num_touches = 1, .get_data = (void* (*)(void))get_double_tap};
+gesture_event_t double_tap = {.type = GESTURE_TYPE_DOUBLE_TAP, .get_data = (void* (*)(void))get_double_tap};
 
 // static touch_event_t* prev_event;
 

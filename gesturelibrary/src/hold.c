@@ -20,7 +20,7 @@ void init_hold() {
     }
 }
 
-gesture_event_t hold = {.type = GESTURE_TYPE_HOLD, .num_touches = 1, .get_data = (void* (*)(void))get_hold};
+gesture_event_t hold = {.type = GESTURE_TYPE_HOLD, .get_data = (void* (*)(void))get_hold};
 
 static void update_hold(hold_t* hold, stroke_t* stroke, char down);
 

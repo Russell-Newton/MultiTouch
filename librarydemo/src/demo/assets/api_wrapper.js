@@ -1,9 +1,11 @@
 const GESTURE_TYPES_BACKWARD = {
   0 : "tap",
-  2 : "hold",
+  1 : "hold",
+  2 : "hold_and_drag",
   3 : "double_tap",
   4 : "drag",
-  5 : "zoom_and_rotate"
+  5 : "zoom",
+  6 : "rotate"
 };
 
 const TOUCH_TYPES_FORWARD = {
@@ -22,19 +24,23 @@ const RECOGNIZER_STATES_BACKWARD = {
 
 const GESTURE_DATA_NAMES_BACKWARD = {
   0 : "tap",
-  2 : "hold",
+  1 : "hold",
+  2 : "hold_and_drag",
   3 : "double_tap",
   4 : "drag",
-  5 : "zoom_and_rotate"
+  5 : "zoom",
+  6 : "rotate"
 }
 
 const GESTURE_DATA_FIELDS_BACKWARD =
     {
       0 : [ "state", "x0", "y0", "t0", "x", "y", "t" ],
-      2 : [ "state", "last_x", "last_y", "last_time" ],
+      1 : [ "state", "x0", "y0", "t0", "x", "y", "t" ],
+      2 : [ "state", "x0", "y0", "x", "y", "vx", "vy" ],
       3 : [ "state", "x", "y", "t" ],
-      4 : [ "state", "x0", "y0", "x", "y", "vx", "vy" ],
-      5 : [ "state", "drag1", "drag2", "zoom", "rotate" ],
+      4 : [ "state", "group", "x0", "y0", "x", "y", "vx", "vy" ],
+      5 : [ "state", "uid", "size", "scale" ],
+      6 : [ "state", "uid", "size", "rotation" ],
     }
 
 function convertStruct(pointer, struct_name, fields) {
@@ -68,7 +74,7 @@ function convertTouchEvent(pointer) {
 };
 
 function convertGestureEvent(pointer) {
-  const fields = [ "type", "num_touches", "index", "get_data" ];
+  const fields = [ "type", "index", "get_data" ];
   let out = convertStruct(pointer, "gesture_event", fields);
   out.type = GESTURE_TYPES_BACKWARD[out.type];
   return out;

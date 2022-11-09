@@ -5,9 +5,11 @@
 #include "drag.h"
 #include "gesturelib.h"
 #include "hold.h"
+#include "hold_and_drag.h"
 #include "recognizer.h"
+#include "rotate.h"
 #include "tap.h"
-#include "zoom_and_rotate.h"
+#include "zoom.h"
 #include <emscripten.h>
 
 #include "struct_pack.h"
@@ -89,9 +91,25 @@ UNPACKER_FUNCTION(float, t)
 //////////////////////////////////////////////////////////////////////
 #define STRUCT_NAME hold
 UNPACKER_FUNCTION(state_t, state)
-UNPACKER_FUNCTION(float, last_x)
-UNPACKER_FUNCTION(float, last_y)
-UNPACKER_FUNCTION(float, last_time)
+UNPACKER_FUNCTION(float, x0)
+UNPACKER_FUNCTION(float, y0)
+UNPACKER_FUNCTION(float, t0)
+UNPACKER_FUNCTION(float, x)
+UNPACKER_FUNCTION(float, y)
+UNPACKER_FUNCTION(float, t)
+#undef STRUCT_NAME
+
+//////////////////////////////////////////////////////////////////////
+// hold_and_drag_t unpacking functions
+//////////////////////////////////////////////////////////////////////
+#define STRUCT_NAME hold_and_drag
+UNPACKER_FUNCTION(state_t, state)
+UNPACKER_FUNCTION(float, x0)
+UNPACKER_FUNCTION(float, y0)
+UNPACKER_FUNCTION(float, x)
+UNPACKER_FUNCTION(float, y)
+UNPACKER_FUNCTION(float, vx)
+UNPACKER_FUNCTION(float, vy)
 #undef STRUCT_NAME
 
 //////////////////////////////////////////////////////////////////////
@@ -109,6 +127,7 @@ UNPACKER_FUNCTION(float, t)
 //////////////////////////////////////////////////////////////////////
 #define STRUCT_NAME drag
 UNPACKER_FUNCTION(state_t, state)
+UNPACKER_FUNCTION(int, group)
 UNPACKER_FUNCTION(float, x0)
 UNPACKER_FUNCTION(float, y0)
 UNPACKER_FUNCTION(float, x)
@@ -118,12 +137,21 @@ UNPACKER_FUNCTION(float, vy)
 #undef STRUCT_NAME
 
 //////////////////////////////////////////////////////////////////////
-// zoom_and_rotate_t unpacking functions
+// zoom_t unpacking functions
 //////////////////////////////////////////////////////////////////////
-#define STRUCT_NAME zoom_and_rotate
+#define STRUCT_NAME zoom
 UNPACKER_FUNCTION(state_t, state)
-UNPACKER_FUNCTION(drag_t *, drag1)
-UNPACKER_FUNCTION(drag_t *, drag2)
-UNPACKER_FUNCTION(float, zoom)
-UNPACKER_FUNCTION(float, rotate)
+UNPACKER_FUNCTION(int, uid)
+UNPACKER_FUNCTION(int, size)
+UNPACKER_FUNCTION(float, scale)
+#undef STRUCT_NAME
+
+//////////////////////////////////////////////////////////////////////
+// rotate_t unpacking functions
+//////////////////////////////////////////////////////////////////////
+#define STRUCT_NAME rotate
+UNPACKER_FUNCTION(state_t, state)
+UNPACKER_FUNCTION(int, uid)
+UNPACKER_FUNCTION(int, size)
+UNPACKER_FUNCTION(float, rotation)
 #undef STRUCT_NAME

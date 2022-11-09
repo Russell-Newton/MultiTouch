@@ -21,8 +21,7 @@ void init_hold_and_drag() {
     }
 }
 
-gesture_event_t hold_and_drag = {
-    .type = GESTURE_TYPE_HOLD_AND_DRAG, .num_touches = 1, .get_data = (void* (*)(void))get_hold_and_drag};
+gesture_event_t hold_and_drag = {.type = GESTURE_TYPE_HOLD_AND_DRAG, .get_data = (void* (*)(void))get_hold_and_drag};
 
 static void update_hold_and_drag(hold_and_drag_t* hold_and_drag, hold_t* hold, drag_t* drag);
 

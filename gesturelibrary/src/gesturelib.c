@@ -6,12 +6,11 @@
 #include "hold_and_drag.h"
 #include "multidrag.h"
 #include "multistroke.h"
+#include "rotate.h"
 #include "stroke.h"
 #include "tap.h"
 #include "utils.h"
-#include "zoom_and_rotate.h"
-
-#define SQUARED_DIST(a, b) (SQUARE_SUM((a)->x - (b)->x, (a)->y - (b)->y))
+#include "zoom.h"
 
 gesture_recognizer_t recognizers[MAX_RECOGNIZERS];
 int num_recognizers = 0;
@@ -43,7 +42,8 @@ int init_gesturelib() {
     add_recognizer(recognize_drag, init_drag);
     add_recognizer(recognize_hold_and_drag, init_hold_and_drag);
     add_recognizer(recognize_multidrag, init_multidrag);
-    add_recognizer(recognize_zoom_and_rotate, init_zoom_and_rotate);
+    add_recognizer(recognize_zoom, init_zoom);
+    add_recognizer(recognize_rotate, init_rotate);
 
     return 0;
 }

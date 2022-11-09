@@ -39,11 +39,6 @@ unsigned int unpack_gesture_type(gesture_event_t *ptr) {
 }
 
 EMSCRIPTEN_KEEPALIVE
-unsigned int unpack_gesture_num_touches(gesture_event_t *ptr) {
-  return ptr->num_touches;
-}
-
-EMSCRIPTEN_KEEPALIVE
 unsigned int unpack_gesture_index(gesture_event_t *ptr) { return ptr->index; }
 
 EMSCRIPTEN_KEEPALIVE

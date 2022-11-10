@@ -25,3 +25,8 @@ gesture_event_t* recognize_zoom(touch_event_t* event);
 /// @brief Access array of zoom_t of size MAX_TOUCHES
 /// @return Pointer to first element of array of zoom_t of size MAX_TOUCHES
 zoom_t* get_zoom();
+
+/// @brief Subscribe listener to zoom gesture updates
+/// @param event listener that accepts a const zoom_t*
+/// @return 0 if first listener, 1 if replacing existing listener
+int set_on_zoom(void (*event)(const zoom_t*));

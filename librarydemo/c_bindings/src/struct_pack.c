@@ -110,6 +110,17 @@ UNPACKER_FUNCTION(float, rotation)
 #define TYPE_NAME out_data
 ARRAY_GETTER_FUNCTION
 #undef TYPE_NAME
+
+EMSCRIPTEN_KEEPALIVE
+out_data_t* get_out_data(int i) {
+    return get_out_data_ptr_from_array(out_data, i);
+}
+
 #define TYPE_NAME out_type
 ARRAY_GETTER_FUNCTION_NOPTR
 #undef TYPE_NAME
+
+EMSCRIPTEN_KEEPALIVE
+out_type_t get_out_type(int i) {
+    return get_out_type_from_array(out_types, i);
+}

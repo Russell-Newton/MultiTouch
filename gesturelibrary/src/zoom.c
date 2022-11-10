@@ -42,12 +42,12 @@ zoom_t* get_zoom() {
     return zoom_d;
 }
 
-int set_on_zoom(void (*event)(const zoom_t*)) {
+int set_on_zoom(void (*listener)(const zoom_t*)) {
     if (on_zoom) {
-        on_zoom = event;
+        on_zoom = listener;
         return 0;
     } else {
-        on_zoom = event;
+        on_zoom = listener;
         return 1;
     }
 }

@@ -36,6 +36,6 @@ gesture_event_t* recognize_drag(touch_event_t* event);
 drag_t* get_drag();
 
 /// @brief Subscribe listener to drag gesture updates
-/// @param event listener that accepts a const drag_t*
+/// @param listener accepts a const drag_t*
 /// @return 0 if first listener, 1 if replacing existing listener
-int set_on_drag(void (*event)(const drag_t*));
+int set_on_drag(void (*listener)(const drag_t*));

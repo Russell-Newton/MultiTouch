@@ -27,6 +27,6 @@ gesture_event_t* recognize_zoom(touch_event_t* event);
 zoom_t* get_zoom();
 
 /// @brief Subscribe listener to zoom gesture updates
-/// @param event listener that accepts a const zoom_t*
+/// @param listener accepts a const zoom_t*
 /// @return 0 if first listener, 1 if replacing existing listener
-int set_on_zoom(void (*event)(const zoom_t*));
+int set_on_zoom(void (*listener)(const zoom_t*));

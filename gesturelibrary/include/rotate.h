@@ -27,6 +27,6 @@ gesture_event_t* recognize_rotate(touch_event_t* event);
 rotate_t* get_rotate();
 
 /// @brief Subscribe listener to rotate gesture updates
-/// @param event listener that accepts a const rotate_t*
+/// @param listener accepts a const rotate_t*
 /// @return 0 if first listener, 1 if replacing existing listener
-int set_on_rotate(void (*event)(const rotate_t*));
+int set_on_rotate(void (*listener)(const rotate_t*));

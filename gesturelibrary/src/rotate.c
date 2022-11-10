@@ -42,12 +42,12 @@ rotate_t* get_rotate() {
     return rotate_d;
 }
 
-int set_on_rotate(void (*event)(const rotate_t*)) {
+int set_on_rotate(void (*listener)(const rotate_t*)) {
     if (on_rotate) {
-        on_rotate = event;
+        on_rotate = listener;
         return 0;
     } else {
-        on_rotate = event;
+        on_rotate = listener;
         return 1;
     }
 }

@@ -36,6 +36,8 @@ EMSCRIPTEN_KEEPALIVE
 void register_listeners() {
     n_out_data = 0;
     set_on_drag(my_on_drag);
+    set_on_zoom(my_on_zoom);
+    set_on_rotate(my_on_rotate);
 }
 
 EMSCRIPTEN_KEEPALIVE

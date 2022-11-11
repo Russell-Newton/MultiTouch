@@ -8,7 +8,7 @@
 // data[group1, group2, group3, group4, group5]
 
 hold_and_drag_t hold_and_drag_d[MAX_TOUCHES];
-void (*on_hold_and_drag)(const drag_t*) = 0;
+void (*on_hold_and_drag)(const hold_and_drag_t*) = 0;
 
 void init_hold_and_drag() {
     for (int i = 0; i < MAX_TOUCHES; i++) {

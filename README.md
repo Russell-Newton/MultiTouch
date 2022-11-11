@@ -1,4 +1,4 @@
-# MultiTouch (name WIP)
+# MultiTouch
 [![Deploy Artifacts to GitHub Pages](https://github.com/Russell-Newton/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/actions/workflows/pages_deploy.yml/badge.svg)](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/)
 [![Checks: pre-commit](https://github.com/Russell-Newton/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/Russell-Newton/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/actions/workflows/pre-commit.yml)
 [![Unit Tests](https://github.com/Russell-Newton/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/actions/workflows/run_tests.yml/badge.svg)](https://github.com/Russell-Newton/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/actions/workflows/run_tests.yml)

@@ -4,6 +4,7 @@
 #include "utils.h"
 
 double_tap_t double_tap_d[MAX_TOUCHES];
+void (*on_double)(const double_tap_t*) = 0;
 
 void init_double_tap() {
     for (int i = 0; i < MAX_TOUCHES; i++) {
@@ -12,6 +13,7 @@ void init_double_tap() {
         double_tap_d[i].x     = 0;
         double_tap_d[i].y     = 0;
     }
+    on_double = 0;
 }
 
 gesture_event_t double_tap = {.type = GESTURE_TYPE_DOUBLE_TAP, .get_data = (void* (*)(void))get_double_tap};
@@ -31,6 +33,16 @@ gesture_event_t* recognize_double_tap(touch_event_t* event) {
     }
 
     return &double_tap;
+}
+
+int set_on_double_tap(void (*listener)(const double_tap_t*)) {
+    if (on_double) {
+        on_double = listener;
+        return 0;
+    } else {
+        on_double = listener;
+        return 1;
+    }
 }
 
 static void update_double_taps(double_tap_t* double_tap, stroke_t* stroke, tap_t* tap) {

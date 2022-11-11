@@ -7,6 +7,7 @@
 // data[group1, group2, group3, group4, group5]
 
 hold_t hold_d[MAX_TOUCHES];
+void (*on_hold)(const hold_t*) = 0;
 
 void init_hold() {
     for (int i = 0; i < MAX_TOUCHES; i++) {
@@ -18,6 +19,7 @@ void init_hold() {
         hold_d[i].x     = 0;
         hold_d[i].y     = 0;
     }
+    on_hold = 0;
 }
 
 gesture_event_t hold = {.type = GESTURE_TYPE_HOLD, .get_data = (void* (*)(void))get_hold};
@@ -31,6 +33,16 @@ gesture_event_t* recognize_hold(touch_event_t* event) {
     }
 
     return &hold;
+}
+
+int set_on_hold(void (*listener)(const hold_t*)) {
+    if (on_hold) {
+        on_hold = listener;
+        return 0;
+    } else {
+        on_hold = listener;
+        return 1;
+    }
 }
 
 hold_t* get_hold() {

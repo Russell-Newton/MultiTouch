@@ -29,3 +29,8 @@ gesture_event_t* recognize_hold_and_drag(touch_event_t* event);
 /// @brief Access hold and drag data array of size MAX_TOUCHES
 /// @return Address of first element of hold data array of size MAX_TOUCHES
 hold_and_drag_t* get_hold_and_drag();
+
+/// @brief Subscribe listener to hold and drag gesture updates
+/// @param listener accepts a const hold_and_drag_t*
+/// @return 0 if first listener, 1 if replacing existing listener
+int set_on_hold_and_drag(void (*listener)(const hold_and_drag_t*));

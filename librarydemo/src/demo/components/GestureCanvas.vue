@@ -1,10 +1,10 @@
 <script setup>
-import {convertTouchEvent, convertGestureEvent} from "../assets/api_wrapper";
+    import { processPointerEvent, registerListeners, outDataToString } from "../assets/api_wrapper";
 </script>
 
 <template>
   <canvas v-bind:width="width" v-bind:height="height"
-          style="touch-action: none"
+          style="touch-action: none; width: 75%; aspect-ratio: 1;"
           @pointerdown.prevent.stop="pointerdown" @pointerup="pointerup" @pointermove="pointermove">
   </canvas>
 </template>
@@ -13,7 +13,8 @@ import {convertTouchEvent, convertGestureEvent} from "../assets/api_wrapper";
 export default {
     data() {
       return {
-          dragging: {}
+          dragging: {},
+          initialized: false
       }  
     },
     props: {
@@ -21,14 +22,27 @@ export default {
         height: Number,
         setParentText: Function,
     },
+    created() {
+      document.addEventListener("emscriptenready", this.initLib);  
+    },
     mounted() {
       let canvas = this.$el;
       let ctx = canvas.getContext("2d");
       ctx.globalCompositeOperation = 'destination-over';
       ctx.fillStyle = "lightgrey";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);  
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     },
     methods: {
+        initLib() {
+            if (this.initialized) {
+                return;
+            }
+
+            Module._init_gesturelib();
+            registerListeners();
+            console.log("Library ready!");
+            this.initialized = true;
+        },
         eventToCanvasCoordinate(event) {
             // need to use getBoundingClientRect for responsive <canvas> sizing
             // NOTE: if you use transforms, see
@@ -72,9 +86,18 @@ export default {
         },
         logEvent(event, type) {
             let {x, y} = this.eventToCanvasCoordinate(event);
-            let t = performance.now() / 1000;   // in ms by default
-            console.log(`Caught ${type} touch_event at time ${t}: (${x}, ${y})`);
-            this.setParentText(`Caught ${type} touch_event at time ${t}: (${x}, ${y})`);
+            let t = event.timeStamp / 1000;   // in ms by default
+            let processed_gestures = processPointerEvent({ x, y, t }, type);
+            if (processed_gestures.length > 0) {
+                this.setParentText(outDataToString(processed_gestures));
+                //console.log(`Results of processed touch:`);
+                //for (let gesture of processed_gestures) {
+                    //console.log(gesture);
+                //}
+            } else {
+                this.setParentText("No gestures caught from this event.");
+            }
+            //this.setParentText(`Caught ${type} touch_event at time ${t}: (${x}, ${y})`);
         }
     }
 }

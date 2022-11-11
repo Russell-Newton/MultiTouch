@@ -1,45 +1,126 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "struct_pack.h"
 
-#include "gesturelib.h"
-#include <emscripten.h>
+//////////////////////////////////////////////////////////////////////
+// touch_event_t unpacking functions
+//////////////////////////////////////////////////////////////////////
+#define TYPE_NAME touch_event
+UNPACKER_FUNCTION(unsigned int, type)
+UNPACKER_FUNCTION(unsigned int, group)
+UNPACKER_FUNCTION(float, x)
+UNPACKER_FUNCTION(float, y)
+UNPACKER_FUNCTION(float, t)
+#undef TYPE_NAME
+
+//////////////////////////////////////////////////////////////////////
+// gesture_event_t unpacking functions
+//////////////////////////////////////////////////////////////////////
+#define TYPE_NAME gesture_event
+ARRAY_GETTER_FUNCTION
+UNPACKER_FUNCTION(unsigned int, type)
+UNPACKER_FUNCTION(unsigned int, index)
+UNPACKER_FUNCTION(void*, get_data)
+#undef TYPE_NAME
+
+//////////////////////////////////////////////////////////////////////
+// tap_t unpacking functions
+//////////////////////////////////////////////////////////////////////
+#define TYPE_NAME tap
+UNPACKER_FUNCTION(state_t, state)
+UNPACKER_FUNCTION(float, x0)
+UNPACKER_FUNCTION(float, y0)
+UNPACKER_FUNCTION(float, t0)
+UNPACKER_FUNCTION(float, x)
+UNPACKER_FUNCTION(float, y)
+UNPACKER_FUNCTION(float, t)
+#undef TYPE_NAME
+
+//////////////////////////////////////////////////////////////////////
+// hold_t unpacking functions
+//////////////////////////////////////////////////////////////////////
+#define TYPE_NAME hold
+UNPACKER_FUNCTION(state_t, state)
+UNPACKER_FUNCTION(float, x0)
+UNPACKER_FUNCTION(float, y0)
+UNPACKER_FUNCTION(float, t0)
+UNPACKER_FUNCTION(float, x)
+UNPACKER_FUNCTION(float, y)
+UNPACKER_FUNCTION(float, t)
+#undef TYPE_NAME
+
+//////////////////////////////////////////////////////////////////////
+// hold_and_drag_t unpacking functions
+//////////////////////////////////////////////////////////////////////
+#define TYPE_NAME hold_and_drag
+UNPACKER_FUNCTION(state_t, state)
+UNPACKER_FUNCTION(float, x0)
+UNPACKER_FUNCTION(float, y0)
+UNPACKER_FUNCTION(float, x)
+UNPACKER_FUNCTION(float, y)
+UNPACKER_FUNCTION(float, vx)
+UNPACKER_FUNCTION(float, vy)
+#undef TYPE_NAME
+
+//////////////////////////////////////////////////////////////////////
+// double_tap_t unpacking functions
+//////////////////////////////////////////////////////////////////////
+#define TYPE_NAME double_tap
+UNPACKER_FUNCTION(state_t, state)
+UNPACKER_FUNCTION(float, x)
+UNPACKER_FUNCTION(float, y)
+UNPACKER_FUNCTION(float, t)
+#undef TYPE_NAME
+
+//////////////////////////////////////////////////////////////////////
+// drag_t unpacking functions
+//////////////////////////////////////////////////////////////////////
+#define TYPE_NAME drag
+UNPACKER_FUNCTION(state_t, state)
+UNPACKER_FUNCTION(int, group)
+UNPACKER_FUNCTION(float, x0)
+UNPACKER_FUNCTION(float, y0)
+UNPACKER_FUNCTION(float, x)
+UNPACKER_FUNCTION(float, y)
+UNPACKER_FUNCTION(float, vx)
+UNPACKER_FUNCTION(float, vy)
+#undef TYPE_NAME
+
+//////////////////////////////////////////////////////////////////////
+// zoom_t unpacking functions
+//////////////////////////////////////////////////////////////////////
+#define TYPE_NAME zoom
+UNPACKER_FUNCTION(state_t, state)
+UNPACKER_FUNCTION(int, uid)
+UNPACKER_FUNCTION(int, size)
+UNPACKER_FUNCTION(float, scale)
+#undef TYPE_NAME
+
+//////////////////////////////////////////////////////////////////////
+// rotate_t unpacking functions
+//////////////////////////////////////////////////////////////////////
+#define TYPE_NAME rotate
+UNPACKER_FUNCTION(state_t, state)
+UNPACKER_FUNCTION(int, uid)
+UNPACKER_FUNCTION(int, size)
+UNPACKER_FUNCTION(float, rotation)
+#undef TYPE_NAME
+
+//////////////////////////////////////////////////////////////////////
+// out_data unpacking functions
+//////////////////////////////////////////////////////////////////////
+#define TYPE_NAME out_data
+ARRAY_GETTER_FUNCTION
+#undef TYPE_NAME
 
 EMSCRIPTEN_KEEPALIVE
-touch_event_t *build_touch_event(event_type_t type, float x, float y, float t,
-                                 unsigned int group) {
-  touch_event_t *out = malloc(sizeof(touch_event_t));
-  out->type = type;
-  out->x = x;
-  out->y = y;
-  out->t = t;
-  out->group = group;
-  return out;
+out_data_t* get_out_data(int i) {
+    return get_out_data_ptr_from_array(out_data, i);
 }
 
+#define TYPE_NAME out_type
+ARRAY_GETTER_FUNCTION_NOPTR
+#undef TYPE_NAME
+
 EMSCRIPTEN_KEEPALIVE
-unsigned int unpack_touch_type(touch_event_t *ptr) {
-  return (unsigned int)ptr->type;
+out_type_t get_out_type(int i) {
+    return get_out_type_from_array(out_types, i);
 }
-
-EMSCRIPTEN_KEEPALIVE
-float unpack_touch_x(touch_event_t *ptr) { return ptr->x; }
-
-EMSCRIPTEN_KEEPALIVE
-float unpack_touch_y(touch_event_t *ptr) { return ptr->y; }
-
-EMSCRIPTEN_KEEPALIVE
-float unpack_touch_t(touch_event_t *ptr) { return ptr->t; }
-
-EMSCRIPTEN_KEEPALIVE
-float unpack_touch_group(touch_event_t *ptr) { return ptr->group; }
-
-EMSCRIPTEN_KEEPALIVE
-unsigned int unpack_gesture_type(gesture_event_t *ptr) {
-  return (unsigned int)ptr->type;
-}
-
-EMSCRIPTEN_KEEPALIVE
-unsigned int unpack_gesture_index(gesture_event_t *ptr) { return ptr->index; }
-
-EMSCRIPTEN_KEEPALIVE
-void *unpack_gesture_get_data(gesture_event_t *ptr) { return ptr->get_data; }

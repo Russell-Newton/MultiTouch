@@ -6,11 +6,11 @@
 A lightweight, robust touch gesture recognition library created in C for use within aircraft.
 
 # Demo and Documentation
-Demo web app automatically deployed to [GitHub Pages](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/).
+Demo web app automatically deployed to [GitHub Pages](https://russell-newton.github.io/MultiTouch/).
 
-Documentation automatically deployed to [GitHub Pages](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/docs).
+Documentation automatically deployed to [GitHub Pages](https://russell-newton.github.io/MultiTouch/docs).
 
-Data collection web app automatically deployed to [GitHub Pages](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/data-collection)
+Data collection web app automatically deployed to [GitHub Pages](https://russell-newton.github.io/MultiTouch/data-collection)
 
 # Release Notes
 
@@ -32,9 +32,9 @@ Data collection web app automatically deployed to [GitHub Pages](https://russell
 ### New Features
 * Included Flutter project to collect example gesture `.csv` data.
 * Pages deploy workflow modified to deploy web artifacts
-  * Demo app: deployed to [root endpoint](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/)
-  * Documentation: deployed to [/docs endpoint](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/docs)
-  * Data collection: deployed to [/data-collection endpoint](https://russell-newton.github.io/Team-2135-Graphics-Applications-for-Transparent-Electronic-Displays/data-collection)
+  * Demo app: deployed to [root endpoint](https://russell-newton.github.io/MultiTouch/)
+  * Documentation: deployed to [/docs endpoint](https://russell-newton.github.io/MultiTouch/docs)
+  * Data collection: deployed to [/data-collection endpoint](https://russell-newton.github.io/MultiTouch/data-collection)
 ### Known Issues
 * Some unit tests SEGFAULT. These have been commented so the unit test workflow passes.
 

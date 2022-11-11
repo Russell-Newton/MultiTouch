@@ -25,3 +25,8 @@ gesture_event_t* recognize_rotate(touch_event_t* event);
 /// @brief Access array of rotate_t of size MAX_TOUCHES
 /// @return Pointer to first element of array of rotate_t of size MAX_TOUCHES
 rotate_t* get_rotate();
+
+/// @brief Subscribe listener to rotate gesture updates
+/// @param listener accepts a const rotate_t*
+/// @return 0 if first listener, 1 if replacing existing listener
+int set_on_rotate(void (*listener)(const rotate_t*));

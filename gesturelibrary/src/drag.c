@@ -34,12 +34,12 @@ drag_t* get_drag() {
     return drag_d;
 }
 
-int set_on_drag(void (*event)(const drag_t*)) {
+int set_on_drag(void (*listener)(const drag_t*)) {
     if (on_drag) {
-        on_drag = event;
+        on_drag = listener;
         return 0;
     } else {
-        on_drag = event;
+        on_drag = listener;
         return 1;
     }
 }

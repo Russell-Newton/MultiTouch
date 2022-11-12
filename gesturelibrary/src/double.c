@@ -13,7 +13,7 @@ void init_double_tap() {
         double_tap_d[i].x     = 0;
         double_tap_d[i].y     = 0;
     }
-    on_double = 0;
+    on_double_tap = 0;
 }
 
 gesture_event_t double_tap = {.type = GESTURE_TYPE_DOUBLE_TAP, .get_data = (void* (*)(void))get_double_tap};

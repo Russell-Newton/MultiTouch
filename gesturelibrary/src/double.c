@@ -4,7 +4,7 @@
 #include "utils.h"
 
 double_tap_t double_tap_d[MAX_TOUCHES];
-void (*on_double)(const double_tap_t*) = 0;
+void (*on_double_tap)(const double_tap_t*) = 0;
 
 void init_double_tap() {
     for (int i = 0; i < MAX_TOUCHES; i++) {
@@ -36,11 +36,11 @@ gesture_event_t* recognize_double_tap(touch_event_t* event) {
 }
 
 int set_on_double_tap(void (*listener)(const double_tap_t*)) {
-    if (on_double) {
-        on_double = listener;
+    if (on_double_tap) {
+        on_double_tap = listener;
         return 0;
     } else {
-        on_double = listener;
+        on_double_tap = listener;
         return 1;
     }
 }
@@ -63,6 +63,9 @@ static void update_double_taps(double_tap_t* double_tap, stroke_t* stroke, tap_t
                 double_tap->state = RECOGNIZER_STATE_COMPLETED;
                 break;
             }
+            if (on_double_tap) {
+                on_double_tap(double_tap);
+            }
         }
         break;
     case RECOGNIZER_STATE_FAILED:
@@ -70,6 +73,9 @@ static void update_double_taps(double_tap_t* double_tap, stroke_t* stroke, tap_t
     case RECOGNIZER_STATE_COMPLETED:
         if (tap->state == RECOGNIZER_STATE_COMPLETED) {
             double_tap->state = RECOGNIZER_STATE_IN_PROGRESS;
+            if (on_double_tap) {
+                on_double_tap(double_tap);
+            }
         }
         break;
     default:

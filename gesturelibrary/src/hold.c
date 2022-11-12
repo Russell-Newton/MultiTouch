@@ -54,6 +54,9 @@ static void update_hold(hold_t* hold, stroke_t* stroke, char down) {
     case RECOGNIZER_STATE_NULL:
         if (stroke->state == RECOGNIZER_STATE_IN_PROGRESS) {
             hold->state = RECOGNIZER_STATE_IN_PROGRESS;
+            if (on_hold) {
+                on_hold(hold);
+            }
         }
         break;
     case RECOGNIZER_STATE_IN_PROGRESS:
@@ -62,6 +65,9 @@ static void update_hold(hold_t* hold, stroke_t* stroke, char down) {
             float dy = stroke->y - stroke->y0;
             if (SQUARE_SUM(dx, dy) > SQUARE(HOLD_DIST_MAX)) {
                 hold->state = RECOGNIZER_STATE_FAILED;
+            }
+            if (on_hold) {
+                on_hold(hold);
             }
         } else if (stroke->state == RECOGNIZER_STATE_COMPLETED) {
             float dt = stroke->t - stroke->t0;
@@ -72,12 +78,18 @@ static void update_hold(hold_t* hold, stroke_t* stroke, char down) {
             } else {
                 hold->state = RECOGNIZER_STATE_COMPLETED;
             }
+            if (on_hold) {
+                on_hold(hold);
+            }
         }
         break;
     case RECOGNIZER_STATE_COMPLETED:
     case RECOGNIZER_STATE_FAILED:
         if (down && stroke->state == RECOGNIZER_STATE_IN_PROGRESS) {
             hold->state = RECOGNIZER_STATE_IN_PROGRESS;
+            if (on_hold) {
+                on_hold(hold);
+            }
         }
         break;
     default:

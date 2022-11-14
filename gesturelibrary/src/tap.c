@@ -7,6 +7,7 @@
 // data[group1, group2, group3, group4, group5]
 
 tap_t tap_d[MAX_TOUCHES];
+void (*on_tap)(const tap_t*) = 0;
 
 void init_tap() {
     for (int i = 0; i < MAX_TOUCHES; i++) {
@@ -18,6 +19,7 @@ void init_tap() {
         tap_d[i].x     = 0;
         tap_d[i].y     = 0;
     }
+    on_tap = 0;
 }
 
 gesture_event_t tap = {.type = GESTURE_TYPE_TAP, .get_data = (void* (*)(void))get_tap};
@@ -37,11 +39,24 @@ tap_t* get_tap() {
     return tap_d;
 }
 
+int set_on_tap(void (*listener)(const tap_t*)) {
+    if (on_tap) {
+        on_tap = listener;
+        return 0;
+    } else {
+        on_tap = listener;
+        return 1;
+    }
+}
+
 static void update_tap(tap_t* tap, stroke_t* stroke, char down) {
     switch (tap->state) {
     case RECOGNIZER_STATE_NULL:
         if (stroke->state == RECOGNIZER_STATE_IN_PROGRESS) {
             tap->state = RECOGNIZER_STATE_IN_PROGRESS;
+            if (on_tap) {
+                on_tap(tap);
+            }
         }
         break;
     case RECOGNIZER_STATE_IN_PROGRESS:
@@ -62,11 +77,17 @@ static void update_tap(tap_t* tap, stroke_t* stroke, char down) {
                 tap->state = RECOGNIZER_STATE_COMPLETED;
             }
         }
+        if (on_tap) {
+            on_tap(tap);
+        }
         break;
     case RECOGNIZER_STATE_COMPLETED:
     case RECOGNIZER_STATE_FAILED:
         if (down && stroke->state == RECOGNIZER_STATE_IN_PROGRESS) {
             tap->state = RECOGNIZER_STATE_IN_PROGRESS;
+            if (on_tap) {
+                on_tap(tap);
+            }
         }
         break;
     default:

@@ -13,6 +13,12 @@ else
 endif
 
 
+FLAGS = -Wall -Wextra -pedantic -Werror
+FLAGS += -s EXPORTED_FUNCTIONS="['_init_gesturelib']"
+FLAGS += -s EXPORTED_RUNTIME_METHODS="['ccall','cwrap']"
+FLAGS += --pre-js pre.js
+
+
 .PHONY: all
 all: build_lib compile
     
@@ -23,7 +29,7 @@ build_lib:
 
 compile: src/*.c lib/libGestureLibrary.a
 	$(MKDIR_COMPILE)
-	emcc -I../../gesturelibrary/include $^ -o ../public/c_bindings/gesturelib_api.js -s EXPORTED_FUNCTIONS="['_init_gesturelib']" -s EXPORTED_RUNTIME_METHODS="['ccall','cwrap']" --pre-js pre.js
+	emcc -I../../gesturelibrary/include $^ -o ../public/c_bindings/gesturelib_api.js $(FLAGS)
 
 clean:
 	$(RM_CLEAN_LIB)

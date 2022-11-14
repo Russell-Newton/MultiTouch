@@ -11,6 +11,7 @@ touch_event_t* build_touch_event(event_type_t type, float x, float y, float t, u
     out->y             = y;
     out->t             = t;
     out->group         = group;
+    out->uid           = 0;
     return out;
 }
 
@@ -38,6 +39,8 @@ void register_listeners() {
     set_on_drag(my_on_drag);
     set_on_zoom(my_on_zoom);
     set_on_rotate(my_on_rotate);
+    set_on_tap(my_on_tap);
+    set_on_hold_and_drag(my_on_hold_and_drag);
 }
 
 EMSCRIPTEN_KEEPALIVE

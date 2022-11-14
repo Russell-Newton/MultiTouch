@@ -14,6 +14,24 @@ Data collection web app automatically deployed to [GitHub Pages](https://russell
 
 # Release Notes
 
+## Version 0.4.0
+### New Features
+* Zoom and Rotate split into their own gestures
+* Removed swipe gesture
+* Finished implementing gestures: tap, double tap, hold, hold and drag
+* Demo page updates:
+  * Links back to home page
+  * Communicates with library using new listener structure
+  * GestureCanvas component now sets display text within Demo component
+  * Folder structure overhauled
+
+### Bug Fixes
+* Zoom and rotate gestures work with more than 2 fingers
+
+### Known Issues
+* Zoom and rotate gesture occasionally marked as complete on the demo page when a single drag has been performed
+* Multi-finger double tap tests failing for unknown reason
+
 ## Version 0.3.0
 ### New Features
 * Functioning swipe and drag gestures

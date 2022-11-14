@@ -29,3 +29,8 @@ gesture_event_t* recognize_tap(touch_event_t* event);
 /// @brief Access tap data array of size MAX_TOUCHES
 /// @return Address of first element of tap data array of size MAX_TOUCHES
 tap_t* get_tap();
+
+/// @brief Subscribe listener to tap gesture updates
+/// @param Listener accepts a const tap_t*
+/// @return 0 if first listener, 1 if replacing existing listener
+int set_on_tap(void (*listener)(const tap_t*));

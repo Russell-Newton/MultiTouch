@@ -50,10 +50,20 @@ hold_t* get_hold() {
 }
 
 static void update_hold(hold_t* hold, stroke_t* stroke, char down) {
+    // hold->x0 = stroke->x0;
+    // hold->y0 = stroke->y0;
+    // hold->t0 = stroke->t0;
+    hold->x = stroke->x;
+    hold->y = stroke->y;
+    hold->t = stroke->t;
+
     switch (hold->state) {
     case RECOGNIZER_STATE_NULL:
         if (stroke->state == RECOGNIZER_STATE_IN_PROGRESS) {
             hold->state = RECOGNIZER_STATE_IN_PROGRESS;
+            hold->x0    = stroke->x0;
+            hold->y0    = stroke->y0;
+            hold->t0    = stroke->t0;
             if (on_hold) {
                 on_hold(hold);
             }
@@ -66,9 +76,6 @@ static void update_hold(hold_t* hold, stroke_t* stroke, char down) {
             if (SQUARE_SUM(dx, dy) > SQUARE(HOLD_DIST_MAX)) {
                 hold->state = RECOGNIZER_STATE_FAILED;
             }
-            if (on_hold) {
-                on_hold(hold);
-            }
         } else if (stroke->state == RECOGNIZER_STATE_COMPLETED) {
             float dt = stroke->t - stroke->t0;
             float dx = stroke->x - stroke->x0;
@@ -78,15 +85,18 @@ static void update_hold(hold_t* hold, stroke_t* stroke, char down) {
             } else {
                 hold->state = RECOGNIZER_STATE_COMPLETED;
             }
-            if (on_hold) {
-                on_hold(hold);
-            }
+        }
+        if (on_hold) {
+            on_hold(hold);
         }
         break;
     case RECOGNIZER_STATE_COMPLETED:
     case RECOGNIZER_STATE_FAILED:
         if (down && stroke->state == RECOGNIZER_STATE_IN_PROGRESS) {
             hold->state = RECOGNIZER_STATE_IN_PROGRESS;
+            hold->x0    = stroke->x0;
+            hold->y0    = stroke->y0;
+            hold->t0    = stroke->t0;
             if (on_hold) {
                 on_hold(hold);
             }
@@ -95,11 +105,4 @@ static void update_hold(hold_t* hold, stroke_t* stroke, char down) {
     default:
         return;
     }
-
-    hold->x0 = stroke->x0;
-    hold->y0 = stroke->y0;
-    hold->t0 = stroke->t0;
-    hold->x  = stroke->x;
-    hold->y  = stroke->y;
-    hold->t  = stroke->t;
 }

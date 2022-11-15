@@ -46,14 +46,16 @@ int set_on_double_tap(void (*listener)(const double_tap_t*)) {
 }
 
 static void update_double_taps(double_tap_t* double_tap, stroke_t* stroke, tap_t* tap) {
+    double_tap->x = stroke->x;
+    double_tap->y = stroke->y;
+    double_tap->t = stroke->t;
+
     switch (double_tap->state) {
     case RECOGNIZER_STATE_IN_PROGRESS:
         // look at the timestamp of the tap and the location
         // if too far, move on to the next one
         // if timestamp is too far, set this double to failed
-        if (on_double_tap) {
-            on_double_tap(double_tap);
-        }
+
         if (tap->state == RECOGNIZER_STATE_COMPLETED) {
             int dist = SQUARED_DIST(double_tap, tap);
 
@@ -67,24 +69,23 @@ static void update_double_taps(double_tap_t* double_tap, stroke_t* stroke, tap_t
                 break;
             }
         }
+        if (on_double_tap) {
+            on_double_tap(double_tap);
+        }
         break;
     case RECOGNIZER_STATE_FAILED:
     case RECOGNIZER_STATE_NULL:
     case RECOGNIZER_STATE_COMPLETED:
-        if (on_double_tap) {
-            on_double_tap(double_tap);
-        }
         if (tap->state == RECOGNIZER_STATE_COMPLETED) {
             double_tap->state = RECOGNIZER_STATE_IN_PROGRESS;
+        }
+        if (on_double_tap) {
+            on_double_tap(double_tap);
         }
         break;
     default:
         return;
     }
-
-    double_tap->x = stroke->x;
-    double_tap->y = stroke->y;
-    double_tap->t = stroke->t;
 }
 
 double_tap_t* get_double_tap() {

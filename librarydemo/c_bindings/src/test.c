@@ -27,8 +27,8 @@ void init_lib() {
 
 void print_memory(void* ptr, unsigned long size) {
     unsigned char* char_ptr = (unsigned char*)ptr;
-    for (int i = 0; i < size; i++) {
-        printf("Memory at offset %d: 0x%x\n", i, *(char_ptr + i));
+    for (unsigned long i = 0; i < size; i++) {
+        printf("Memory at offset %lu: 0x%x\n", i, *(char_ptr + i));
     }
 }
 

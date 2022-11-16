@@ -29,3 +29,8 @@ gesture_event_t* recognize_hold(touch_event_t* event);
 /// @brief Access hold data array of size MAX_TOUCHES
 /// @return Address of first element of hold data array of size MAX_TOUCHES
 hold_t* get_hold();
+
+/// @brief Listen to hold events
+/// @param listener accepts a const hold_t*
+/// @return 0 if first listener, 1 if replacing existing listener
+int set_on_hold(void (*listener)(const hold_t*));

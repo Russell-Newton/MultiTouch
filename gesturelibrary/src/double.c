@@ -20,16 +20,17 @@ gesture_event_t double_tap = {.type = GESTURE_TYPE_DOUBLE_TAP, .get_data = (void
 
 // static touch_event_t* prev_event;
 
-static void update_double_taps(double_tap_t* double_tap, stroke_t* stroke, tap_t* tap);
+static void update_double_taps(double_tap_t* double_tap, stroke_t* stroke, tap_t* tap, multistroke_t* m_stroke);
 
 gesture_event_t* recognize_double_tap(touch_event_t* event) {
     (void)event;  // do we need the touch event
 
-    stroke_t* strokes = get_stroke();
-    tap_t* taps       = get_tap();
+    stroke_t* strokes       = get_stroke();
+    tap_t* taps             = get_tap();
+    multistroke_t* m_stroke = get_multistroke();
 
     for (int i = 0; i < MAX_TOUCHES; i++) {
-        update_double_taps(double_tap_d + i, strokes + i, taps + i);
+        update_double_taps(double_tap_d + i, strokes + i, taps + i, m_stroke + i);
     }
 
     return &double_tap;
@@ -45,10 +46,17 @@ int set_on_double_tap(void (*listener)(const double_tap_t*)) {
     }
 }
 
-static void update_double_taps(double_tap_t* double_tap, stroke_t* stroke, tap_t* tap) {
+static void update_double_taps(double_tap_t* double_tap, stroke_t* stroke, tap_t* tap, multistroke_t* m_stroke) {
     double_tap->x = stroke->x;
     double_tap->y = stroke->y;
     double_tap->t = stroke->t;
+
+    for (int i = 0; i < 0; i++) {
+        int num_taps = m_stroke->size;
+        if (num_taps == 3) {
+            break;
+        }
+    }
 
     switch (double_tap->state) {
     case RECOGNIZER_STATE_IN_PROGRESS:

@@ -37,21 +37,26 @@ protected:
         }
         for (touch_event_t event : touchEvents) {
             process_touch_event(&event, 0, 0);
-            for (size_t index = 0; index < MAX_TOUCHES; index++) {
-                if (multidrags[index].state != RECOGNIZER_STATE_NULL) {
-                    cout << setprecision(5);
-                    cout << "uid_" << index << ": " << multidrags[index].uid << ",\t"
-                         << "state_" << index << ": " << multidrags[index].state << ",\t"
-                         << "size_" << index << ": " << multidrags[index].size << ",\t"
-                         << "dx_" << index << ": " << multidrags[index].dx << ",\t"
-                         << "dy_" << index << ": " << multidrags[index].dy << ",\t"
-                         << "s_" << index << ": " << multidrags[index].scale << ",\t"
-                         << "r_" << index << ": " << multidrags[index].rotation << endl;
-                }
+            for (size_t index = 0; index < 1; index++) {
+                // if (multidrags[index].state != RECOGNIZER_STATE_NULL) {
+                cout << setprecision(5);
+                cout << "uid_" << index << ": " << multidrags[index].uid << ",\t"
+                     << "state_" << index << ": " << multidrags[index].state << ",\t"
+                     << "size_" << index << ": " << multidrags[index].size << ",\t"
+                     << "dx_" << index << ": " << multidrags[index].dx << ",\t"
+                     << "dy_" << index << ": " << multidrags[index].dy << ",\t"
+                     << "s_" << index << ": " << multidrags[index].scale << ",\t"
+                     << "r_" << index << ": " << multidrags[index].rotation << endl;
+                // }
                 switch (states[index]) {
                 case RECOGNIZER_STATE_NULL:
                     EXPECT_TRUE(multidrags[index].state == RECOGNIZER_STATE_NULL ||
-                                multidrags[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                                multidrags[index].state == RECOGNIZER_STATE_POSSIBLE);
+                    break;
+                case RECOGNIZER_STATE_POSSIBLE:
+                    EXPECT_TRUE(multidrags[index].state == RECOGNIZER_STATE_POSSIBLE ||
+                                multidrags[index].state == RECOGNIZER_STATE_IN_PROGRESS ||
+                                multidrags[index].state == RECOGNIZER_STATE_FAILED);
                     break;
                 case RECOGNIZER_STATE_IN_PROGRESS:
                     EXPECT_TRUE(multidrags[index].state == RECOGNIZER_STATE_IN_PROGRESS ||
@@ -62,7 +67,11 @@ protected:
                     break;
                 case RECOGNIZER_STATE_COMPLETED:
                     EXPECT_TRUE(multidrags[index].state == RECOGNIZER_STATE_COMPLETED ||
-                                multidrags[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                                multidrags[index].state == RECOGNIZER_STATE_POSSIBLE);
+                    break;
+                case RECOGNIZER_STATE_FAILED:
+                    EXPECT_TRUE(multidrags[index].state == RECOGNIZER_STATE_FAILED ||
+                                multidrags[index].state == RECOGNIZER_STATE_POSSIBLE);
                     break;
                 default:
                     EXPECT_EQ("", "Multidrag: Invalid state found.");
@@ -142,6 +151,8 @@ INSTANTIATE_TEST_SUITE_P(MultidragParamTests,
 
                              // 2 finger followed by 1 finger drag
                              MultidragTestParams("res/drag/phone_27.csv", 1),
+                             // drag, drag, zoom, drag
+                             MultidragTestParams("res/drag/laptop_1.csv", 1),
 
                              // 2 finger zooms
                              MultidragTestParams("res/zoom/phone_1.csv", 1),

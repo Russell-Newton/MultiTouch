@@ -7,6 +7,7 @@
 // data[group1, group2, group3, group4, group5]
 
 hold_t hold_d[MAX_TOUCHES];
+void (*on_hold)(const hold_t*) = 0;
 
 void init_hold() {
     for (int i = 0; i < MAX_TOUCHES; i++) {
@@ -18,6 +19,7 @@ void init_hold() {
         hold_d[i].x     = 0;
         hold_d[i].y     = 0;
     }
+    on_hold = 0;
 }
 
 gesture_event_t hold = {.type = GESTURE_TYPE_HOLD, .get_data = (void* (*)(void))get_hold};
@@ -33,15 +35,38 @@ gesture_event_t* recognize_hold(touch_event_t* event) {
     return &hold;
 }
 
+int set_on_hold(void (*listener)(const hold_t*)) {
+    if (on_hold) {
+        on_hold = listener;
+        return 0;
+    } else {
+        on_hold = listener;
+        return 1;
+    }
+}
+
 hold_t* get_hold() {
     return hold_d;
 }
 
 static void update_hold(hold_t* hold, stroke_t* stroke, char down) {
+    // hold->x0 = stroke->x0;
+    // hold->y0 = stroke->y0;
+    // hold->t0 = stroke->t0;
+    hold->x = stroke->x;
+    hold->y = stroke->y;
+    hold->t = stroke->t;
+
     switch (hold->state) {
     case RECOGNIZER_STATE_NULL:
         if (stroke->state == RECOGNIZER_STATE_IN_PROGRESS) {
             hold->state = RECOGNIZER_STATE_IN_PROGRESS;
+            hold->x0    = stroke->x0;
+            hold->y0    = stroke->y0;
+            hold->t0    = stroke->t0;
+            if (on_hold) {
+                on_hold(hold);
+            }
         }
         break;
     case RECOGNIZER_STATE_IN_PROGRESS:
@@ -61,21 +86,23 @@ static void update_hold(hold_t* hold, stroke_t* stroke, char down) {
                 hold->state = RECOGNIZER_STATE_COMPLETED;
             }
         }
+        if (on_hold) {
+            on_hold(hold);
+        }
         break;
     case RECOGNIZER_STATE_COMPLETED:
     case RECOGNIZER_STATE_FAILED:
         if (down && stroke->state == RECOGNIZER_STATE_IN_PROGRESS) {
             hold->state = RECOGNIZER_STATE_IN_PROGRESS;
+            hold->x0    = stroke->x0;
+            hold->y0    = stroke->y0;
+            hold->t0    = stroke->t0;
+            if (on_hold) {
+                on_hold(hold);
+            }
         }
         break;
     default:
         return;
     }
-
-    hold->x0 = stroke->x0;
-    hold->y0 = stroke->y0;
-    hold->t0 = stroke->t0;
-    hold->x  = stroke->x;
-    hold->y  = stroke->y;
-    hold->t  = stroke->t;
 }

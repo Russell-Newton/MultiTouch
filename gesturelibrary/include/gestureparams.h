@@ -2,26 +2,32 @@
 
 #include "math.h"
 
+// This is the maximum number of simultaneous touches supported.
+// Processing more simultaneous gestures requires more memory and execution time.
+#define MAX_TOUCHES 5
+
+// This is the maximum number of gesture recognizers supported.
+// Each recognizer may recognize multiple instances of the same gesture simultaneously.
+#define MAX_RECOGNIZERS 100
+
+// Touch events passed into the library should set their group field to this unless
+// the user wants to specify a particular group. The touch event struct is defined in
+// gesturelib.h
+#define TOUCH_ID_UNDEFINED (MAX_TOUCHES + 1)
+
+// When using the library to assign touch event groups, two touch events more than this
+// distance apart will never be assigned the same group.
 #define EVENT_GROUPING_DIST_MAX 150
 
-// time in seconds for longest tap and shortest hold
+// Time in seconds for longest tap and shortest hold.
 #define TAP_TIME_MAX  0.5f
 #define HOLD_TIME_MIN TAP_TIME_MAX
 
-// shortest possible time diff and shortest euclidean distance
+// Shortest possible time difference and shortest euclidean distance for double taps.
 #define DOUBLE_DIFF     5
 #define DOUBLE_DISTANCE 0.2
 
-// euclidean distance for longest tap/hold and shortest drag/swipe
-#define TAP_DIST_MAX   10
-#define HOLD_DIST_MAX  TAP_DIST_MAX
-#define DRAG_DIST_MIN  TAP_DIST_MAX
-#define SWIPE_DIST_MIN TAP_DIST_MAX
-
-// max angle in radians before a gesture is considered not straight
-#define SWIPE_ANGLE_MAX (M_PI / 6)
-#define DRAG_ANGLE_MIN  SWIPE_ANGLE_MAX
-
-// euclidean distance for largest distance between touches for
-// one zoom & rotate gesture
-#define ZOOM_AND_ROTATE_SEPARATION_MAX 500
+// Euclidean distance for longest tap/hold and shortest drag.
+#define TAP_DIST_MAX  10
+#define HOLD_DIST_MAX TAP_DIST_MAX
+#define DRAG_DIST_MIN TAP_DIST_MAX

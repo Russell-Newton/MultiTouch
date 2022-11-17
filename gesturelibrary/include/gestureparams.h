@@ -17,11 +17,3 @@
 #define HOLD_DIST_MAX  TAP_DIST_MAX
 #define DRAG_DIST_MIN  TAP_DIST_MAX
 #define SWIPE_DIST_MIN TAP_DIST_MAX
-
-// max angle in radians before a gesture is considered not straight
-#define SWIPE_ANGLE_MAX (M_PI / 6)
-#define DRAG_ANGLE_MIN  SWIPE_ANGLE_MAX
-
-// euclidean distance for largest distance between touches for
-// one zoom & rotate gesture
-#define ZOOM_AND_ROTATE_SEPARATION_MAX 500

@@ -97,7 +97,7 @@ Example:
 #include <gesturelib.h>
 #include <tap.h>
 
-void tap_listener(tap_t event) {
+void tap_listener(const tap_t* event) {
     if (event.type == RECOGNIZER_STATE_COMPLETED) {
         printf("Tap received at (%.3f, %.3f)!", event.x, event.y);
     }

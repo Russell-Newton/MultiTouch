@@ -40,6 +40,17 @@
         "doc",
         "test"
       ]
+    },
+    {
+      "login": "ocean-ift",
+      "name": "Iftekherul Karim",
+      "avatar_url": "https://avatars.githubusercontent.com/u/69494796?v=4",
+      "profile": "https://github.com/ocean-ift",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,

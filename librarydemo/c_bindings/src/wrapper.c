@@ -36,11 +36,9 @@ X_RECOGNIZERS
 EMSCRIPTEN_KEEPALIVE
 void register_listeners() {
     n_out_data = 0;
-    set_on_drag(my_on_drag);
-    set_on_zoom(my_on_zoom);
-    set_on_rotate(my_on_rotate);
-    set_on_tap(my_on_tap);
-    set_on_hold_and_drag(my_on_hold_and_drag);
+#define X(type, TYPE) CAT(set_on_, type)(CAT(my_on_, type));
+    X_RECOGNIZERS
+#undef X
 }
 
 EMSCRIPTEN_KEEPALIVE

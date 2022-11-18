@@ -34,43 +34,36 @@ protected:
             states[index] = RECOGNIZER_STATE_NULL;
         }
         for (touch_event_t event : touchEvents) {
-            gesture_event_t* gestures = new gesture_event_t[MAX_RECOGNIZERS];
-            process_touch_event(&event, gestures, MAX_RECOGNIZERS);
-            for (size_t i = 0; i < MAX_RECOGNIZERS; i++) {
-                if (gestures[i].type == GESTURE_TYPE_HOLD) {
-                    hold_t* holds = ((hold_t * (*)(void)) gestures[i].get_data)();
-                    for (size_t index = 0; index < MAX_TOUCHES; index++) {
-                        switch (states[index]) {
-                        case RECOGNIZER_STATE_NULL:
-                            EXPECT_TRUE(holds[index].state == RECOGNIZER_STATE_NULL ||
-                                        holds[index].state == RECOGNIZER_STATE_IN_PROGRESS);
-                            break;
-                        case RECOGNIZER_STATE_IN_PROGRESS:
-                            EXPECT_TRUE(holds[index].state == RECOGNIZER_STATE_IN_PROGRESS ||
-                                        holds[index].state == RECOGNIZER_STATE_FAILED ||
-                                        holds[index].state == RECOGNIZER_STATE_COMPLETED);
-                            if (holds[index].state == RECOGNIZER_STATE_COMPLETED) {
-                                completed++;
-                            }
-                            break;
-                        case RECOGNIZER_STATE_COMPLETED:
-                            EXPECT_TRUE(holds[index].state == RECOGNIZER_STATE_COMPLETED ||
-                                        holds[index].state == RECOGNIZER_STATE_IN_PROGRESS);
-                            break;
-                        case RECOGNIZER_STATE_FAILED:
-                            EXPECT_TRUE(holds[index].state == RECOGNIZER_STATE_FAILED ||
-                                        holds[index].state == RECOGNIZER_STATE_IN_PROGRESS);
-                            break;
-                        default:
-                            EXPECT_EQ(to_string(states[index]), "incorrect hold state found");
-                            break;
-                        }
-                        states[index] = holds[index].state;
+            process_touch_event(&event);
+            hold_t* holds = get_hold();
+            for (size_t index = 0; index < MAX_TOUCHES; index++) {
+                switch (states[index]) {
+                case RECOGNIZER_STATE_NULL:
+                    EXPECT_TRUE(holds[index].state == RECOGNIZER_STATE_NULL ||
+                                holds[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                    break;
+                case RECOGNIZER_STATE_IN_PROGRESS:
+                    EXPECT_TRUE(holds[index].state == RECOGNIZER_STATE_IN_PROGRESS ||
+                                holds[index].state == RECOGNIZER_STATE_FAILED ||
+                                holds[index].state == RECOGNIZER_STATE_COMPLETED);
+                    if (holds[index].state == RECOGNIZER_STATE_COMPLETED) {
+                        completed++;
                     }
                     break;
+                case RECOGNIZER_STATE_COMPLETED:
+                    EXPECT_TRUE(holds[index].state == RECOGNIZER_STATE_COMPLETED ||
+                                holds[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                    break;
+                case RECOGNIZER_STATE_FAILED:
+                    EXPECT_TRUE(holds[index].state == RECOGNIZER_STATE_FAILED ||
+                                holds[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                    break;
+                default:
+                    EXPECT_EQ(to_string(states[index]), "incorrect hold state found");
+                    break;
                 }
+                states[index] = holds[index].state;
             }
-            delete[] gestures;
         }
         EXPECT_EQ(completed, num);
         delete[] states;

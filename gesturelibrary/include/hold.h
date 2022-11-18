@@ -24,7 +24,7 @@ void init_hold();
 
 /// @brief Recognize hold gesture
 /// @param event touch event to recognize
-gesture_event_t* recognize_hold(touch_event_t* event);
+void recognize_hold(touch_event_t* event);
 
 /// @brief Access hold data array of size MAX_TOUCHES
 /// @return Address of first element of hold data array of size MAX_TOUCHES

@@ -35,7 +35,7 @@ protected:
             states[index] = multistrokes[index].state;
         }
         for (touch_event_t event : touchEvents) {
-            process_touch_event(&event, 0, 0);
+            process_touch_event(&event);
             for (size_t index = 0; index < MAX_TOUCHES; index++) {
                 if (multistrokes[index].state != RECOGNIZER_STATE_NULL) {
                     cout << "uid_" << index << ": " << multistrokes[index].uid << ",\t"

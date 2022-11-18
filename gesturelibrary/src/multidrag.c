@@ -34,13 +34,13 @@ static void zero_multidrag(multidrag_t* md);
 static void calculate_center(multidrag_t* md);
 static void calculate_transform(multidrag_t* md);
 
-gesture_event_t* recognize_multidrag(touch_event_t* event) {
+void recognize_multidrag(touch_event_t* event) {
     int free_index    = -1;
     stroke_t* strokes = get_stroke();
     for (int i = 0; i < MAX_TOUCHES; i++) {
         if (multidrag_d[i].uid == strokes[event->group].uid && multidrag_d[i].size) {
             update_multidrag(multidrag_d + i, event->group);
-            return 0;
+            return;
         } else if (free_index < 0 && !multidrag_d[i].size) {
             free_index = i;
         }
@@ -48,7 +48,6 @@ gesture_event_t* recognize_multidrag(touch_event_t* event) {
     if (free_index >= 0 && strokes[event->group].state == RECOGNIZER_STATE_IN_PROGRESS) {
         update_multidrag(multidrag_d + free_index, event->group);
     }
-    return 0;
 }
 
 multidrag_t* get_multidrag() {

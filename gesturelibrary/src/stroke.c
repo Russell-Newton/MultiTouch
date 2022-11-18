@@ -30,7 +30,7 @@ static void update_stroke(touch_event_t* event, char up);
 
 static void update_velocity(stroke_t* stroke, float vx, float vy);
 
-gesture_event_t* recognize_stroke(touch_event_t* event) {
+void recognize_stroke(touch_event_t* event) {
     switch (event->type) {
     case TOUCH_EVENT_DOWN:
         begin_stroke(event);
@@ -42,7 +42,6 @@ gesture_event_t* recognize_stroke(touch_event_t* event) {
         update_stroke(event, 1);
         break;
     }
-    return 0;
 }
 
 stroke_t* get_stroke() {

@@ -22,17 +22,13 @@ void init_hold() {
     on_hold = 0;
 }
 
-gesture_event_t hold = {.type = GESTURE_TYPE_HOLD, .get_data = (void* (*)(void))get_hold};
-
 static void update_hold(hold_t* hold, stroke_t* stroke, char down);
 
-gesture_event_t* recognize_hold(touch_event_t* event) {
+void recognize_hold(touch_event_t* event) {
     stroke_t* strokes = get_stroke();
     for (int index = 0; index < MAX_TOUCHES; index++) {
         update_hold(hold_d + index, strokes + index, event->type == TOUCH_EVENT_DOWN);
     }
-
-    return &hold;
 }
 
 int set_on_hold(void (*listener)(const hold_t*)) {

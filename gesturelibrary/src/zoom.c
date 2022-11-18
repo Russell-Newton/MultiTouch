@@ -15,9 +15,7 @@ void init_zoom() {
     }
 }
 
-gesture_event_t zoom = {.type = GESTURE_TYPE_ZOOM, .get_data = (void* (*)(void))get_zoom};
-
-gesture_event_t* recognize_zoom(touch_event_t* event) {
+void recognize_zoom(touch_event_t* event) {
     // let multidrag process the event
     (void)event;
 
@@ -34,8 +32,6 @@ gesture_event_t* recognize_zoom(touch_event_t* event) {
             }
         }
     }
-
-    return &zoom;
 }
 
 zoom_t* get_zoom() {

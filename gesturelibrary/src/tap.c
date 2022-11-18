@@ -22,17 +22,13 @@ void init_tap() {
     on_tap = 0;
 }
 
-gesture_event_t tap = {.type = GESTURE_TYPE_TAP, .get_data = (void* (*)(void))get_tap};
-
 static void update_tap(tap_t* tap, stroke_t* stroke, char down);
 
-gesture_event_t* recognize_tap(touch_event_t* event) {
+void recognize_tap(touch_event_t* event) {
     stroke_t* strokes = get_stroke();
     for (int index = 0; index < MAX_TOUCHES; index++) {
         update_tap(tap_d + index, strokes + index, event->type == TOUCH_EVENT_DOWN);
     }
-
-    return &tap;
 }
 
 tap_t* get_tap() {

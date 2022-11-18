@@ -36,7 +36,7 @@ protected:
             states[index] = multidrags[index].state;
         }
         for (touch_event_t event : touchEvents) {
-            process_touch_event(&event, 0, 0);
+            process_touch_event(&event);
             for (size_t index = 0; index < 1; index++) {
                 // if (multidrags[index].state != RECOGNIZER_STATE_NULL) {
                 cout << setprecision(5);

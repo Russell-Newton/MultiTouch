@@ -34,50 +34,43 @@ protected:
             states[index] = RECOGNIZER_STATE_NULL;
         }
         for (touch_event_t event : touchEvents) {
-            gesture_event_t* gestures = new gesture_event_t[MAX_RECOGNIZERS];
-            process_touch_event(&event, gestures, MAX_RECOGNIZERS);
-            for (size_t i = 0; i < MAX_RECOGNIZERS; i++) {
-                if (gestures[i].type == GESTURE_TYPE_DRAG) {
-                    drag_t* drags = ((drag_t * (*)(void)) gestures[i].get_data)();
-                    for (size_t index = 0; index < MAX_TOUCHES; index++) {
-                        // if (drags[index].state != RECOGNIZER_STATE_NULL) {
-                        //     float dx = drags[index].x - drags[index].x0;
-                        //     float dy = drags[index].y - drags[index].y0;
-                        //     cout << "dist_" << index << ": " << sqrtf(SQUARE_SUM(dx, dy)) << ",\t"
-                        //          << "angle_" << index << ": " << atan2f(dy, dx) << ",\t"
-                        //          << "state_" << index << ": " << drags[index].state << endl;
-                        // }
-                        switch (states[index]) {
-                        case RECOGNIZER_STATE_NULL:
-                            EXPECT_TRUE(drags[index].state == RECOGNIZER_STATE_NULL ||
-                                        drags[index].state == RECOGNIZER_STATE_IN_PROGRESS);
-                            break;
-                        case RECOGNIZER_STATE_IN_PROGRESS:
-                            EXPECT_TRUE(drags[index].state == RECOGNIZER_STATE_IN_PROGRESS ||
-                                        drags[index].state == RECOGNIZER_STATE_FAILED ||
-                                        drags[index].state == RECOGNIZER_STATE_COMPLETED);
-                            if (drags[index].state == RECOGNIZER_STATE_COMPLETED) {
-                                completed++;
-                            }
-                            break;
-                        case RECOGNIZER_STATE_COMPLETED:
-                            EXPECT_TRUE(drags[index].state == RECOGNIZER_STATE_COMPLETED ||
-                                        drags[index].state == RECOGNIZER_STATE_IN_PROGRESS);
-                            break;
-                        case RECOGNIZER_STATE_FAILED:
-                            EXPECT_TRUE(drags[index].state == RECOGNIZER_STATE_FAILED ||
-                                        drags[index].state == RECOGNIZER_STATE_IN_PROGRESS);
-                            break;
-                        default:
-                            EXPECT_EQ(to_string(states[index]), "incorrect drag state found");
-                            break;
-                        }
-                        states[index] = drags[index].state;
+            process_touch_event(&event);
+            drag_t* drags = get_drag();
+            for (size_t index = 0; index < MAX_TOUCHES; index++) {
+                // if (drags[index].state != RECOGNIZER_STATE_NULL) {
+                //     float dx = drags[index].x - drags[index].x0;
+                //     float dy = drags[index].y - drags[index].y0;
+                //     cout << "dist_" << index << ": " << sqrtf(SQUARE_SUM(dx, dy)) << ",\t"
+                //          << "angle_" << index << ": " << atan2f(dy, dx) << ",\t"
+                //          << "state_" << index << ": " << drags[index].state << endl;
+                // }
+                switch (states[index]) {
+                case RECOGNIZER_STATE_NULL:
+                    EXPECT_TRUE(drags[index].state == RECOGNIZER_STATE_NULL ||
+                                drags[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                    break;
+                case RECOGNIZER_STATE_IN_PROGRESS:
+                    EXPECT_TRUE(drags[index].state == RECOGNIZER_STATE_IN_PROGRESS ||
+                                drags[index].state == RECOGNIZER_STATE_FAILED ||
+                                drags[index].state == RECOGNIZER_STATE_COMPLETED);
+                    if (drags[index].state == RECOGNIZER_STATE_COMPLETED) {
+                        completed++;
                     }
                     break;
+                case RECOGNIZER_STATE_COMPLETED:
+                    EXPECT_TRUE(drags[index].state == RECOGNIZER_STATE_COMPLETED ||
+                                drags[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                    break;
+                case RECOGNIZER_STATE_FAILED:
+                    EXPECT_TRUE(drags[index].state == RECOGNIZER_STATE_FAILED ||
+                                drags[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                    break;
+                default:
+                    EXPECT_EQ(to_string(states[index]), "incorrect drag state found");
+                    break;
                 }
+                states[index] = drags[index].state;
             }
-            delete[] gestures;
         }
         EXPECT_EQ(completed, num);
         delete[] states;

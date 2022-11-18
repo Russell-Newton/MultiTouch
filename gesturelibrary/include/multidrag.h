@@ -45,7 +45,7 @@ void init_multidrag();
 
 /// @brief Recognize multidrag gesture. This gesture locks the number of fingers once any finger starts moving.
 /// @param event touch event to recognize
-gesture_event_t* recognize_multidrag(touch_event_t* event);
+void recognize_multidrag(touch_event_t* event);
 
 /// @brief Access array of multidrag_t of size MAX_TOUCHES
 /// @return Pointer to first element of array of multidrag_t of size MAX_TOUCHES

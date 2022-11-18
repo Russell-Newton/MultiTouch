@@ -46,6 +46,6 @@ void register_listeners() {
 EMSCRIPTEN_KEEPALIVE
 int lib_process_touch_event(touch_event_t* ptr) {
     n_out_data = 0;
-    process_touch_event(ptr, 0, 0);
+    process_touch_event(ptr);
     return n_out_data;
 }

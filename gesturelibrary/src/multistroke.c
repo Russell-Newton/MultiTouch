@@ -34,13 +34,13 @@ static void zero_multistroke(multistroke_t* ms);
 static void calculate_center(multistroke_t* ms);
 static void calculate_transform(multistroke_t* ms);
 
-gesture_event_t* recognize_multistroke(touch_event_t* event) {
+void recognize_multistroke(touch_event_t* event) {
     int free_index    = -1;
     stroke_t* strokes = get_stroke();
     for (int i = 0; i < MAX_TOUCHES; i++) {
         if (multistroke_d[i].uid == strokes[event->group].uid && multistroke_d[i].size) {
             update_multistroke(multistroke_d + i, event->group);
-            return 0;
+            return;
         } else if (free_index < 0 && !multistroke_d[i].size) {
             free_index = i;
         }
@@ -48,7 +48,6 @@ gesture_event_t* recognize_multistroke(touch_event_t* event) {
     if (free_index >= 0 && strokes[event->group].state == RECOGNIZER_STATE_IN_PROGRESS) {
         update_multistroke(multistroke_d + free_index, event->group);
     }
-    return 0;
 }
 
 multistroke_t* get_multistroke() {

@@ -49,7 +49,7 @@ protected:
             states[index] = RECOGNIZER_STATE_NULL;
         }
         for (touch_event_t event : touchEvents) {
-            process_touch_event(&event, 0, 0);
+            process_touch_event(&event);
             stroke_t* strokes = get_stroke();
             for (size_t index = 0; index < MAX_TOUCHES; index++) {
                 checkVelocity(strokes + index);

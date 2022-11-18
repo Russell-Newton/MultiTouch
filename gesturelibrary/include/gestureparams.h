@@ -13,7 +13,7 @@
 // Touch events passed into the library should set their group field to this unless
 // the user wants to specify a particular group. The touch event struct is defined in
 // gesturelib.h
-#define TOUCH_ID_UNDEFINED (MAX_TOUCHES + 1)
+#define TOUCH_GROUP_UNDEFINED (MAX_TOUCHES + 1)
 
 // When using the library to assign touch event groups, two touch events more than this
 // distance apart will never be assigned the same group.

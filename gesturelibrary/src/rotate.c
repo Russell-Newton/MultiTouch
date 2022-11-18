@@ -15,9 +15,7 @@ void init_rotate() {
     }
 }
 
-gesture_event_t rotate = {.type = GESTURE_TYPE_ROTATE, .get_data = (void* (*)(void))get_rotate};
-
-gesture_event_t* recognize_rotate(touch_event_t* event) {
+void recognize_rotate(touch_event_t* event) {
     // let multidrag process the event
     (void)event;
 
@@ -34,8 +32,6 @@ gesture_event_t* recognize_rotate(touch_event_t* event) {
             }
         }
     }
-
-    return &rotate;
 }
 
 rotate_t* get_rotate() {

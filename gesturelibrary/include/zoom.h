@@ -20,7 +20,7 @@ void init_zoom();
 
 /// @brief Recognize zoom gesture. This gesture locks the number of fingers once any finger starts moving.
 /// @param event touch event to recognize
-gesture_event_t* recognize_zoom(touch_event_t* event);
+void recognize_zoom(touch_event_t* event);
 
 /// @brief Access array of zoom_t of size MAX_TOUCHES
 /// @return Pointer to first element of array of zoom_t of size MAX_TOUCHES

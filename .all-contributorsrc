@@ -51,6 +51,17 @@
         "doc",
         "test"
       ]
+    },
+    {
+      "login": "deborahsrcho",
+      "name": "deborahsrcho",
+      "avatar_url": "https://avatars.githubusercontent.com/u/84360441?v=4",
+      "profile": "https://github.com/deborahsrcho",
+      "contributions": [
+        "code",
+        "design",
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,

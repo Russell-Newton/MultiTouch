@@ -31,3 +31,9 @@
 #define TAP_DIST_MAX  10
 #define HOLD_DIST_MAX TAP_DIST_MAX
 #define DRAG_DIST_MIN TAP_DIST_MAX
+
+// Minimum scale factor difference from 1 to be a zoom.
+#define ZOOM_SCALE_MIN 0.15f
+
+// Minimum rotation angle in radians to be a rotate.
+#define ROTATE_ANGLE_MIN (M_PI / 12)

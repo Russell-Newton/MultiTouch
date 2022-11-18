@@ -22,12 +22,18 @@ Spring-Fall 2022 Junior Design program.
 
 ### [See the Demo!](https://russell-newton.github.io/MultiTouch/)
 
+---
+
 ## Contents
 
 * [Installation](#installation)
 * [Usage](#usage)
-* [Design Considerations](#design-considerations)
+* [Design](#design)
+  * [Touch Preprocessing](#touch-preprocessing)
+  * [Recognizers](#recognizers)
 * [Release Notes](#release-notes)
+
+---
 
 ## Installation
 
@@ -56,6 +62,8 @@ make
     * Add `-I...pathto/MultiTouch/gesturelibrary/include` to your compile command.
     * Add `...pathto/MultiTouch/build/libGestureLibrary.a` to your compile targets.
 
+---
+
 ## Usage
 
 1. Configure any gesture recognition parameters before [building with CMake](#installation) by modifying
@@ -77,11 +85,88 @@ make
 
 ### Listeners
 
-This section will be filled in later.
+Listeners are single functions that accept gesture-specific data and have a void return type. They are called whenever a
+recognizer's state machine updates its internal state. A listener should be registered after calling
+`init_gesturelib()`.
 
-## Design Considerations
+Example:
+```c
+// main.c
+#include <stdio.h>
+#include <gesturelib.h>
+#include <tap.h>
 
-This section will be filled in later.
+void tap_listener(tap_t event) {
+    if (event.type == RECOGNIZER_STATE_COMPLETED) {
+        printf("Tap received at (%.3f, %.3f)!", event.x, event.y);
+    }
+}
+
+int main(int argc, char *argv[]) {
+    init_gesturelib();
+    
+    // register the new listener
+    set_on_tap(tap_listener);
+    
+    // rest of program
+}
+```
+
+---
+
+## Design
+
+### Touch Preprocessing
+
+After touch data has been transformed into a `touch_event_t` and sent to our library, the library will perform some
+additional preprocessing. If the event has its group set to `TOUCH_ID_UNDEFINED`, the library will determine which touch
+group it belongs to. If the device provides a touch group, the library will not assign one.
+
+The touch group represents the finger a touch event was made by. That is, touch group 0 corresponds
+to events created by the first finger pressed, 1 to the second, 2 to the third, and so on.
+
+Touch group assignment is determined by event type:
+
+* If the event is a down event, attempt to assign it to the first unused group. Track this event as the most recent
+event in the group it was assigned to, marking the group as active. If there are no unassigned groups, leave the group
+as unassigned.
+* If the event is a move event, find the active group this event is closest to. Assign it to that group and track this
+event as the most recent in the group. If there are no active groups, leave it unassigned.
+* If the event is an up event, perform the same logic as with a move event. This time when a group is assigned, the
+group is marked as inactive.
+
+> ℹ️ Group assignment ensures that fingers generate the same group as long as they're in contact with the touch device.
+
+After the preprocessing has finished, a touch event is sent to every enabled recognizer in the order in which they were
+added to the library.
+
+### Recognizers
+
+Gesture recognizers are built like state machines. They receive touch events and update their state. When the state is
+updated, they call on the registered event listener, if applicable.
+
+Builtin single-finger gesture recognizers save data about every possible touch group that could be performing the
+gesture they recognize.
+
+Builtin multi-finger recognizers are more complicated and store data about every possible group for every possible user
+id. User id is set by the data adapter and could be determined by factors like which device received the touch or where
+on the screen the touch was received. 
+> ⚠️ All touch events with the same uid will be considered as part of the same multi-finger gesture for recognition purposes.
+
+---
+
+Gesture recognition starts with two base gestures: stroke and drag. Any other gestures can be recognized by composing
+these two gestures and other composite gestures.
+
+#### Stroke
+
+This section to be filled in later.
+
+#### Drag
+
+This section to be filled in later.
+
+---
 
 ## Release Notes
 

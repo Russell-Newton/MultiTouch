@@ -20,7 +20,7 @@
 A lightweight touch gesture recognition library created in C as a part of Georgia Tech's
 Spring-Fall 2022 Junior Design program.
 
-### [See the Demo!](https://russell-newton.github.io/MultiTouch/)
+[**See the Demo!**](https://russell-newton.github.io/MultiTouch/)
 
 ---
 

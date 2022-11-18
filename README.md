@@ -1,7 +1,5 @@
 # MultiTouch
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/librarydemo/public/click-2384-black.svg#gh-light-mode-only">
@@ -17,7 +15,7 @@
 [![Unit Tests](https://img.shields.io/github/workflow/status/Russell-Newton/MultiTouch/Unit%20Tests?label=Unit%20Tests&logo=github&style=flat-square)](https://github.com/Russell-Newton/MultiTouch/actions/workflows/run_tests.yml)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A lightweight touch gesture recognition library created in C as a part of Georgia Tech's

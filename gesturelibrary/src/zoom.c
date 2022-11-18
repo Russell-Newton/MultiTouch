@@ -21,15 +21,24 @@ void recognize_zoom(const touch_event_t* event) {
 
     const multidrag_t* multidrags = get_multidrag();
     for (int index = 0; index < MAX_TOUCHES; index++) {
-        if (zoom_d[index].state != multidrags[index].state || zoom_d[index].uid != multidrags[index].uid ||
-            zoom_d[index].size != multidrags[index].size || zoom_d[index].scale != multidrags[index].scale) {
-            zoom_d[index].state = multidrags[index].state;
-            zoom_d[index].uid   = multidrags[index].uid;
-            zoom_d[index].size  = multidrags[index].size;
-            zoom_d[index].scale = multidrags[index].scale;
-            if (on_zoom) {
-                on_zoom(zoom_d + index);
+        zoom_t previous     = zoom_d[index];
+        zoom_d[index].uid   = multidrags[index].uid;
+        zoom_d[index].size  = multidrags[index].size;
+        zoom_d[index].scale = multidrags[index].scale;
+        if (multidrags[index].state == RECOGNIZER_STATE_COMPLETED) {
+            if (zoom_d[index].state == RECOGNIZER_STATE_IN_PROGRESS) {
+                if (fabsf(1 - multidrags[index].scale) > ZOOM_SCALE_MIN) {
+                    zoom_d[index].state = RECOGNIZER_STATE_COMPLETED;
+                } else {
+                    zoom_d[index].state = RECOGNIZER_STATE_FAILED;
+                }
             }
+        } else {
+            zoom_d[index].state = multidrags[index].state;
+        }
+        if (on_zoom && (previous.uid != zoom_d[index].uid || previous.state != zoom_d[index].state ||
+                        previous.size != zoom_d[index].size || previous.scale != zoom_d[index].scale)) {
+            on_zoom(zoom_d + index);
         }
     }
 }

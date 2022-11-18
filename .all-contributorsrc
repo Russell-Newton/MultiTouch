@@ -29,6 +29,17 @@
         "infra",
         "test"
       ]
+    },
+    {
+      "login": "jrdike",
+      "name": "jrdike",
+      "avatar_url": "https://avatars.githubusercontent.com/u/98774218?v=4",
+      "profile": "https://github.com/jrdike",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,

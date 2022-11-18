@@ -155,14 +155,10 @@ on the screen the touch was received.
 
 ---
 
-Gesture recognition starts with two base gestures: stroke and drag. Any other gestures can be recognized by composing
-these two gestures and other composite gestures.
+Gesture recognition starts with a base gesture: stroke. Any other gestures can be recognized by composing and performing
+additional processing on strokes and other composite gestures.
 
 #### Stroke
-
-This section to be filled in later.
-
-#### Drag
 
 This section to be filled in later.
 

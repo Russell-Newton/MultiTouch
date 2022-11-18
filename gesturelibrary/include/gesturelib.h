@@ -3,17 +3,6 @@
 #include "gestureparams.h"
 #include "stdint.h"
 
-#ifndef SAVED_EVENTS
-#define SAVED_EVENTS 100
-#endif
-#ifndef MAX_TOUCHES
-#define MAX_TOUCHES 5
-#endif
-#ifndef MAX_RECOGNIZERS
-#define MAX_RECOGNIZERS 100
-#endif
-#define TOUCH_ID_UNDEFINED (MAX_TOUCHES + 1)
-
 /// @brief
 typedef enum event_type {
     TOUCH_EVENT_DOWN,

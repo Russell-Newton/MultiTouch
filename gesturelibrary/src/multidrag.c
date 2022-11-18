@@ -61,8 +61,14 @@ static void update_multidrag(multidrag_t* md, int group) {
     if (!md->strokes[group]) {
         switch (md->state) {
         case RECOGNIZER_STATE_NULL:
+        case RECOGNIZER_STATE_POSSIBLE:
         case RECOGNIZER_STATE_COMPLETED:
+        case RECOGNIZER_STATE_FAILED:
             md->strokes[group] = 1;
+            calculate_center(md);
+            if (md->size > 0) {
+                md->state = RECOGNIZER_STATE_POSSIBLE;
+            }
             break;
         default:
             break;
@@ -79,23 +85,29 @@ static void update_multidrag(multidrag_t* md, int group) {
                 }
             }
             break;
-        case RECOGNIZER_STATE_NULL:
-        case RECOGNIZER_STATE_COMPLETED:
+        case RECOGNIZER_STATE_POSSIBLE:
             if (strokes[group].state == RECOGNIZER_STATE_IN_PROGRESS) {
-                zero_multidrag(md);
-                calculate_center(md);
                 if (md->size > 1) {
-                    float dist = SQUARE_SUM(strokes[group].x - strokes[group].x0, strokes[group].y - strokes[group].y0);
+                    float dist = SQUARE_SUM(strokes[group].x - md->px[group], strokes[group].y - md->py[group]);
                     if (dist > SQUARE(DRAG_DIST_MIN)) {
+                        zero_multidrag(md);
+                        calculate_center(md);
                         md->state = RECOGNIZER_STATE_IN_PROGRESS;
                     }
                 }
             } else {
                 md->strokes[group] = 0;
                 calculate_center(md);
+                if (md->size < 1) {
+                    md->state = RECOGNIZER_STATE_FAILED;
+                }
             }
             break;
         default:
+            if (strokes[group].state == RECOGNIZER_STATE_COMPLETED) {
+                md->strokes[group] = 0;
+                calculate_center(md);
+            }
             break;
         }
     }
@@ -122,7 +134,9 @@ static void calculate_center(multidrag_t* md) {
     float y           = 0;
     for (int i = 0; i < MAX_TOUCHES; i++) {
         if (md->strokes[i]) {
+            md->px[i] = strokes[i].x;
             x += strokes[i].x;
+            md->py[i] = strokes[i].y;
             y += strokes[i].y;
             md->size++;
         }

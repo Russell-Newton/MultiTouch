@@ -29,6 +29,9 @@ typedef struct multidrag {
     float rotation0;
     // last scaling
     float scale0;
+    // last positions
+    float px[MAX_TOUCHES];
+    float py[MAX_TOUCHES];
     // center position of time of last touch change
     float cx;
     float cy;

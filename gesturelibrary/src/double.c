@@ -69,12 +69,8 @@ static void update_double_taps(double_tap_t* double_tap, stroke_t* stroke, tap_t
 
             if (double_tap->t - stroke->t > DOUBLE_DIFF) {  // if t_diff too big, this dTap has failed
                 double_tap->state = RECOGNIZER_STATE_FAILED;
-                break;
-            } else if (dist > DOUBLE_DISTANCE) {
-                break;
-            } else {
+            } else if (dist < DOUBLE_DISTANCE) {
                 double_tap->state = RECOGNIZER_STATE_COMPLETED;
-                break;
             }
         }
         if (on_double_tap) {

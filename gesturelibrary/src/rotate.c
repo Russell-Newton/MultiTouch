@@ -23,15 +23,24 @@ gesture_event_t* recognize_rotate(touch_event_t* event) {
 
     multidrag_t* multidrags = get_multidrag();
     for (int index = 0; index < MAX_TOUCHES; index++) {
-        if (rotate_d[index].state != multidrags[index].state || rotate_d[index].uid != multidrags[index].uid ||
-            rotate_d[index].size != multidrags[index].size || rotate_d[index].rotation != multidrags[index].rotation) {
-            rotate_d[index].state    = multidrags[index].state;
-            rotate_d[index].uid      = multidrags[index].uid;
-            rotate_d[index].size     = multidrags[index].size;
-            rotate_d[index].rotation = multidrags[index].rotation;
-            if (on_rotate) {
-                on_rotate(rotate_d + index);
+        rotate_t previous        = rotate_d[index];
+        rotate_d[index].uid      = multidrags[index].uid;
+        rotate_d[index].size     = multidrags[index].size;
+        rotate_d[index].rotation = multidrags[index].rotation;
+        if (multidrags[index].state == RECOGNIZER_STATE_COMPLETED) {
+            if (rotate_d[index].state == RECOGNIZER_STATE_IN_PROGRESS) {
+                if (fabsf(multidrags[index].rotation) > ROTATE_ANGLE_MIN) {
+                    rotate_d[index].state = RECOGNIZER_STATE_COMPLETED;
+                } else {
+                    rotate_d[index].state = RECOGNIZER_STATE_FAILED;
+                }
             }
+        } else {
+            rotate_d[index].state = multidrags[index].state;
+        }
+        if (on_rotate && (previous.uid != rotate_d[index].uid || previous.state != rotate_d[index].state ||
+                          previous.size != rotate_d[index].size || previous.rotation != rotate_d[index].rotation)) {
+            on_rotate(rotate_d + index);
         }
     }
 

@@ -1,0 +1,27 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "deborahsrcho",
+      "name": "deborahsrcho",
+      "avatar_url": "https://avatars.githubusercontent.com/u/84360441?v=4",
+      "profile": "https://github.com/deborahsrcho",
+      "contributions": [
+        "code",
+        "design",
+        "content"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "MultiTouch",
+  "projectOwner": "Russell-Newton"
+}

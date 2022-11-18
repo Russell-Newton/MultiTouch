@@ -1,4 +1,7 @@
 # MultiTouch
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/librarydemo/public/click-2384-black.svg#gh-light-mode-only">
@@ -291,6 +294,20 @@ N/A
 ## Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center"><a href="https://www.linkedin.com/in/russellnewton01/"><img src="https://avatars.githubusercontent.com/u/18690062?v=4?s=100" width="100px;" alt="Russell Newton"/><br /><sub><b>Russell Newton</b></sub></a><br /><a href="https://github.com/Russell-Newton/MultiTouch/commits?author=Russell-Newton" title="Code">💻</a> <a href="https://github.com/Russell-Newton/MultiTouch/commits?author=Russell-Newton" title="Documentation">📖</a> <a href="#infra-Russell-Newton" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#maintenance-Russell-Newton" title="Maintenance">🚧</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 

@@ -108,7 +108,7 @@ static unsigned int assign_group(touch_event_t* touch_event) {
     return closest_group;
 }
 
-int add_recognizer(void (*recognize)(touch_event_t*), void (*init)(void)) {
+int add_recognizer(void (*recognize)(const touch_event_t*), void (*init)(void)) {
     if (num_recognizers == MAX_RECOGNIZERS) {
         return -1;
     }

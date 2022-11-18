@@ -35,7 +35,7 @@ protected:
         }
         for (touch_event_t event : touchEvents) {
             process_touch_event(&event);
-            drag_t* drags = get_drag();
+            const drag_t* drags = get_drag();
             for (size_t index = 0; index < MAX_TOUCHES; index++) {
                 // if (drags[index].state != RECOGNIZER_STATE_NULL) {
                 //     float dx = drags[index].x - drags[index].x0;

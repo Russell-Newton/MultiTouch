@@ -29,9 +29,9 @@ ostream& operator<<(ostream& stream, const MultidragTestParams& params) {
 class TestMultidrag : public TestFlutter, public testing::WithParamInterface<MultidragTestParams> {
 protected:
     void testStates(int num) {
-        int completed           = 0;
-        multidrag_t* multidrags = get_multidrag();
-        state_t* states         = new state_t[MAX_TOUCHES];
+        int completed                 = 0;
+        const multidrag_t* multidrags = get_multidrag();
+        state_t* states               = new state_t[MAX_TOUCHES];
         for (size_t index = 0; index < MAX_TOUCHES; index++) {
             states[index] = multidrags[index].state;
         }

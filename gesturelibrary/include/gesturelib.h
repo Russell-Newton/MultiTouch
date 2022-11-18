@@ -40,7 +40,7 @@ typedef struct gesture_recognizer {
     // The library uses this flag to track whether a recognizer is enabled.
     char enabled;
     // This is the recognizer function itself.
-    void (*recognize)(touch_event_t*);
+    void (*recognize)(const touch_event_t*);
     // This is the recognizer initialization function. This function is invoked when a recognizer is added and when the
     // library is initialized.
     void (*init)(void);
@@ -65,7 +65,7 @@ void process_touch_event(touch_event_t* touch_event);
 /// @param recognize The recognition function to add.
 /// @param init Recognizer initialization function, pass 0 or NULL for none.
 /// @return Which index the recognizer is saved to. -1 if the recognizer could not be saved.
-int add_recognizer(void (*recognizer)(touch_event_t*), void (*init)(void));
+int add_recognizer(void (*recognizer)(const touch_event_t*), void (*init)(void));
 
 /// @brief Remove a recognizer in the library.
 /// @param recognizer Index of the recognizer to remove.

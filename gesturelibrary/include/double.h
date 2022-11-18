@@ -27,11 +27,11 @@ void init_double_tap();
 
 /// @brief reads the last tap and stroke data and determines whethers this new stroke is part of a double_tap event
 /// @param event touch event
-void recognize_double_tap(touch_event_t* event);
+void recognize_double_tap(const touch_event_t* event);
 
 /// @brief returns an array of the ongoing double_touch data for each finger
 /// @return
-double_tap_t* get_double_tap();
+const double_tap_t* get_double_tap();
 
 /// @brief Listen to double_tap events
 /// @param listener accepts a const double_tap_t*

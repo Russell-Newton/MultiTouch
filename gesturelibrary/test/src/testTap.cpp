@@ -35,7 +35,7 @@ protected:
         }
         for (touch_event_t event : touchEvents) {
             process_touch_event(&event);
-            tap_t* taps = get_tap();
+            const tap_t* taps = get_tap();
             for (size_t index = 0; index < MAX_TOUCHES; index++) {
                 switch (states[index]) {
                 case RECOGNIZER_STATE_NULL:

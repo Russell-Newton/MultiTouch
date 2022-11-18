@@ -20,11 +20,11 @@ void init_rotate();
 
 /// @brief Recognize rotate gesture. This gesture locks the number of fingers once any finger starts moving.
 /// @param event touch event to recognize
-void recognize_rotate(touch_event_t* event);
+void recognize_rotate(const touch_event_t* event);
 
 /// @brief Access array of rotate_t of size MAX_TOUCHES
 /// @return Pointer to first element of array of rotate_t of size MAX_TOUCHES
-rotate_t* get_rotate();
+const rotate_t* get_rotate();
 
 /// @brief Subscribe listener to rotate gesture updates
 /// @param listener accepts a const rotate_t*

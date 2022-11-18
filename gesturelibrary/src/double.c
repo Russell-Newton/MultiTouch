@@ -18,13 +18,13 @@ void init_double_tap() {
 
 // static touch_event_t* prev_event;
 
-static void update_double_taps(double_tap_t* double_tap, stroke_t* stroke, tap_t* tap);
+static void update_double_taps(double_tap_t* double_tap, const stroke_t* stroke, const tap_t* tap);
 
-void recognize_double_tap(touch_event_t* event) {
+void recognize_double_tap(const touch_event_t* event) {
     (void)event;  // do we need the touch event
 
-    stroke_t* strokes = get_stroke();
-    tap_t* taps       = get_tap();
+    const stroke_t* strokes = get_stroke();
+    const tap_t* taps       = get_tap();
 
     for (int i = 0; i < MAX_TOUCHES; i++) {
         update_double_taps(double_tap_d + i, strokes + i, taps + i);
@@ -41,7 +41,7 @@ int set_on_double_tap(void (*listener)(const double_tap_t*)) {
     }
 }
 
-static void update_double_taps(double_tap_t* double_tap, stroke_t* stroke, tap_t* tap) {
+static void update_double_taps(double_tap_t* double_tap, const stroke_t* stroke, const tap_t* tap) {
     double_tap->x = stroke->x;
     double_tap->y = stroke->y;
     double_tap->t = stroke->t;
@@ -80,6 +80,6 @@ static void update_double_taps(double_tap_t* double_tap, stroke_t* stroke, tap_t
     }
 }
 
-double_tap_t* get_double_tap() {
+const double_tap_t* get_double_tap() {
     return double_tap_d;
 }

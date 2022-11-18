@@ -24,11 +24,11 @@ void init_hold();
 
 /// @brief Recognize hold gesture
 /// @param event touch event to recognize
-void recognize_hold(touch_event_t* event);
+void recognize_hold(const touch_event_t* event);
 
 /// @brief Access hold data array of size MAX_TOUCHES
 /// @return Address of first element of hold data array of size MAX_TOUCHES
-hold_t* get_hold();
+const hold_t* get_hold();
 
 /// @brief Listen to hold events
 /// @param listener accepts a const hold_t*

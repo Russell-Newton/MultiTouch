@@ -15,11 +15,11 @@ void init_zoom() {
     }
 }
 
-void recognize_zoom(touch_event_t* event) {
+void recognize_zoom(const touch_event_t* event) {
     // let multidrag process the event
     (void)event;
 
-    multidrag_t* multidrags = get_multidrag();
+    const multidrag_t* multidrags = get_multidrag();
     for (int index = 0; index < MAX_TOUCHES; index++) {
         if (zoom_d[index].state != multidrags[index].state || zoom_d[index].uid != multidrags[index].uid ||
             zoom_d[index].size != multidrags[index].size || zoom_d[index].scale != multidrags[index].scale) {
@@ -34,7 +34,7 @@ void recognize_zoom(touch_event_t* event) {
     }
 }
 
-zoom_t* get_zoom() {
+const zoom_t* get_zoom() {
     return zoom_d;
 }
 

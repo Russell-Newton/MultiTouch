@@ -23,18 +23,18 @@ void init_hold_and_drag() {
     on_hold_and_drag = 0;
 }
 
-static void update_hold_and_drag(hold_and_drag_t* hold_and_drag, hold_t* hold, drag_t* drag);
+static void update_hold_and_drag(hold_and_drag_t* hold_and_drag, const hold_t* hold, const drag_t* drag);
 
-void recognize_hold_and_drag(touch_event_t* event) {
+void recognize_hold_and_drag(const touch_event_t* event) {
     (void)event;
-    hold_t* hold_d = get_hold();
-    drag_t* drag_d = get_drag();
+    const hold_t* hold_d = get_hold();
+    const drag_t* drag_d = get_drag();
     for (int index = 0; index < MAX_TOUCHES; index++) {
         update_hold_and_drag(hold_and_drag_d + index, hold_d + index, drag_d + index);
     }
 }
 
-hold_and_drag_t* get_hold_and_drag() {
+const hold_and_drag_t* get_hold_and_drag() {
     return hold_and_drag_d;
 }
 
@@ -48,7 +48,7 @@ int set_on_hold_and_drag(void (*listener)(const hold_and_drag_t*)) {
     }
 }
 
-static void update_hold_and_drag(hold_and_drag_t* hold_and_drag, hold_t* hold, drag_t* drag) {
+static void update_hold_and_drag(hold_and_drag_t* hold_and_drag, const hold_t* hold, const drag_t* drag) {
     if (hold_and_drag->state == RECOGNIZER_STATE_IN_PROGRESS) {
         hold_and_drag->state = drag->state;
         hold_and_drag->x     = drag->x;

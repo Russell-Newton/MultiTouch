@@ -22,10 +22,10 @@ void init_hold() {
     on_hold = 0;
 }
 
-static void update_hold(hold_t* hold, stroke_t* stroke, char down);
+static void update_hold(hold_t* hold, const stroke_t* stroke, char down);
 
-void recognize_hold(touch_event_t* event) {
-    stroke_t* strokes = get_stroke();
+void recognize_hold(const touch_event_t* event) {
+    const stroke_t* strokes = get_stroke();
     for (int index = 0; index < MAX_TOUCHES; index++) {
         update_hold(hold_d + index, strokes + index, event->type == TOUCH_EVENT_DOWN);
     }
@@ -41,11 +41,11 @@ int set_on_hold(void (*listener)(const hold_t*)) {
     }
 }
 
-hold_t* get_hold() {
+const hold_t* get_hold() {
     return hold_d;
 }
 
-static void update_hold(hold_t* hold, stroke_t* stroke, char down) {
+static void update_hold(hold_t* hold, const stroke_t* stroke, char down) {
     // hold->x0 = stroke->x0;
     // hold->y0 = stroke->y0;
     // hold->t0 = stroke->t0;

@@ -28,9 +28,9 @@ ostream& operator<<(ostream& stream, const MultistrokeTestParams& params) {
 class TestMultistroke : public TestFlutter, public testing::WithParamInterface<MultistrokeTestParams> {
 protected:
     void testStates(int num) {
-        int completed               = 0;
-        multistroke_t* multistrokes = get_multistroke();
-        state_t* states             = new state_t[MAX_TOUCHES];
+        int completed                     = 0;
+        const multistroke_t* multistrokes = get_multistroke();
+        state_t* states                   = new state_t[MAX_TOUCHES];
         for (size_t index = 0; index < MAX_TOUCHES; index++) {
             states[index] = multistrokes[index].state;
         }

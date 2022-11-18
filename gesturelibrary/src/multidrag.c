@@ -34,9 +34,9 @@ static void zero_multidrag(multidrag_t* md);
 static void calculate_center(multidrag_t* md);
 static void calculate_transform(multidrag_t* md);
 
-void recognize_multidrag(touch_event_t* event) {
-    int free_index    = -1;
-    stroke_t* strokes = get_stroke();
+void recognize_multidrag(const touch_event_t* event) {
+    int free_index          = -1;
+    const stroke_t* strokes = get_stroke();
     for (int i = 0; i < MAX_TOUCHES; i++) {
         if (multidrag_d[i].uid == strokes[event->group].uid && multidrag_d[i].size) {
             update_multidrag(multidrag_d + i, event->group);
@@ -50,13 +50,13 @@ void recognize_multidrag(touch_event_t* event) {
     }
 }
 
-multidrag_t* get_multidrag() {
+const multidrag_t* get_multidrag() {
     return multidrag_d;
 }
 
 static void update_multidrag(multidrag_t* md, int group) {
-    stroke_t* strokes = get_stroke();
-    md->uid           = strokes[group].uid;
+    const stroke_t* strokes = get_stroke();
+    md->uid                 = strokes[group].uid;
     if (!md->strokes[group]) {
         switch (md->state) {
         case RECOGNIZER_STATE_NULL:
@@ -127,10 +127,10 @@ static void calculate_center(multidrag_t* md) {
     md->scale0    = md->scale;
 
     // calculate new center
-    stroke_t* strokes = get_stroke();
-    md->size          = 0;
-    float x           = 0;
-    float y           = 0;
+    const stroke_t* strokes = get_stroke();
+    md->size                = 0;
+    float x                 = 0;
+    float y                 = 0;
     for (int i = 0; i < MAX_TOUCHES; i++) {
         if (md->strokes[i]) {
             md->px[i] = strokes[i].x;
@@ -164,9 +164,9 @@ static void calculate_center(multidrag_t* md) {
 
 static void calculate_transform(multidrag_t* md) {
     // calculate current center
-    stroke_t* strokes = get_stroke();
-    float cx          = 0;
-    float cy          = 0;
+    const stroke_t* strokes = get_stroke();
+    float cx                = 0;
+    float cy                = 0;
     for (int i = 0; i < MAX_TOUCHES; i++) {
         if (md->strokes[i]) {
             cx += strokes[i].x;

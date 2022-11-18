@@ -15,11 +15,11 @@ void init_rotate() {
     }
 }
 
-void recognize_rotate(touch_event_t* event) {
+void recognize_rotate(const touch_event_t* event) {
     // let multidrag process the event
     (void)event;
 
-    multidrag_t* multidrags = get_multidrag();
+    const multidrag_t* multidrags = get_multidrag();
     for (int index = 0; index < MAX_TOUCHES; index++) {
         if (rotate_d[index].state != multidrags[index].state || rotate_d[index].uid != multidrags[index].uid ||
             rotate_d[index].size != multidrags[index].size || rotate_d[index].rotation != multidrags[index].rotation) {
@@ -34,7 +34,7 @@ void recognize_rotate(touch_event_t* event) {
     }
 }
 
-rotate_t* get_rotate() {
+const rotate_t* get_rotate() {
     return rotate_d;
 }
 

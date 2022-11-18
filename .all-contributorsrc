@@ -17,6 +17,18 @@
         "infra",
         "maintenance"
       ]
+    },
+    {
+      "login": "xorbit3024",
+      "name": "Wenjun Wang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52808406?v=4",
+      "profile": "https://github.com/xorbit3024",
+      "contributions": [
+        "code",
+        "doc",
+        "infra",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,

@@ -47,31 +47,31 @@ protected:
                         switch (states[index]) {
 
                         case RECOGNIZER_STATE_NULL:
-                            // EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_NULL ||
-                            //             taps[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                            EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_NULL ||
+                                        taps[index].state == RECOGNIZER_STATE_IN_PROGRESS);
                             break;
 
                         case RECOGNIZER_STATE_IN_PROGRESS:
-                            // EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_IN_PROGRESS ||
-                            //             taps[index].state == RECOGNIZER_STATE_FAILED ||
-                            //             taps[index].state == RECOGNIZER_STATE_COMPLETED);
+                            EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_IN_PROGRESS ||
+                                        taps[index].state == RECOGNIZER_STATE_FAILED ||
+                                        taps[index].state == RECOGNIZER_STATE_COMPLETED);
                             if (taps[index].state == RECOGNIZER_STATE_COMPLETED) {
                                 completed++;
                             }
                             break;
 
                         case RECOGNIZER_STATE_COMPLETED:
-                            // EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_COMPLETED ||
-                            //             taps[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                            EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_COMPLETED ||
+                                        taps[index].state == RECOGNIZER_STATE_IN_PROGRESS);
                             break;
 
                         case RECOGNIZER_STATE_FAILED:
-                            // EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_FAILED ||
-                            //             taps[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                            EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_FAILED ||
+                                        taps[index].state == RECOGNIZER_STATE_IN_PROGRESS);
                             break;
 
                         default:
-                            // EXPECT_EQ(to_string(states[index]), "incorrect double tap state found");
+                            EXPECT_EQ(to_string(states[index]), "incorrect double tap state found");
                             break;
                         }
 

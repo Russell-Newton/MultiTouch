@@ -1,4 +1,7 @@
 # MultiTouch
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Deploy Artifacts to GitHub Pages](https://github.com/Russell-Newton/MultiTouch/actions/workflows/pages_deploy.yml/badge.svg)](https://russell-newton.github.io/MultiTouch/)
 [![Checks: pre-commit](https://github.com/Russell-Newton/MultiTouch/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/Russell-Newton/MultiTouch/actions/workflows/pre-commit.yml)
 [![Unit Tests](https://github.com/Russell-Newton/MultiTouch/actions/workflows/run_tests.yml/badge.svg)](https://github.com/Russell-Newton/MultiTouch/actions/workflows/run_tests.yml)
@@ -81,3 +84,25 @@ N/A
 ### Research Done
 * Specified input/output format for data
 * Specified library and architecture structure
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center"><a href="https://github.com/xorbit3024"><img src="https://avatars.githubusercontent.com/u/52808406?v=4?s=100" width="100px;" alt="Wenjun Wang"/><br /><sub><b>Wenjun Wang</b></sub></a><br /><a href="https://github.com/Russell-Newton/MultiTouch/commits?author=xorbit3024" title="Code">💻</a> <a href="https://github.com/Russell-Newton/MultiTouch/commits?author=xorbit3024" title="Documentation">📖</a> <a href="#infra-xorbit3024" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/Russell-Newton/MultiTouch/commits?author=xorbit3024" title="Tests">⚠️</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

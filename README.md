@@ -153,7 +153,7 @@ id. User id is set by the data adapter and could be determined by factors like w
 on the screen the touch was received. 
 > ⚠️ All touch events with the same uid will be considered as part of the same multi-finger gesture for recognition purposes.
 
----
+### Gestures
 
 Gesture recognition starts with a base gesture: stroke. Any other gestures can be recognized by composing and performing
 additional processing on strokes and other composite gestures.

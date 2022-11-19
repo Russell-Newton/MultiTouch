@@ -1,0 +1,73 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "Russell-Newton",
+      "name": "Russell Newton",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18690062?v=4",
+      "profile": "https://www.linkedin.com/in/russellnewton01/",
+      "contributions": [
+        "code",
+        "doc",
+        "infra",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "xorbit3024",
+      "name": "Wenjun Wang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52808406?v=4",
+      "profile": "https://github.com/xorbit3024",
+      "contributions": [
+        "code",
+        "doc",
+        "infra",
+        "test"
+      ]
+    },
+    {
+      "login": "jrdike",
+      "name": "jrdike",
+      "avatar_url": "https://avatars.githubusercontent.com/u/98774218?v=4",
+      "profile": "https://github.com/jrdike",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
+    },
+    {
+      "login": "ocean-ift",
+      "name": "Iftekherul Karim",
+      "avatar_url": "https://avatars.githubusercontent.com/u/69494796?v=4",
+      "profile": "https://github.com/ocean-ift",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
+    },
+    {
+      "login": "deborahsrcho",
+      "name": "deborahsrcho",
+      "avatar_url": "https://avatars.githubusercontent.com/u/84360441?v=4",
+      "profile": "https://github.com/deborahsrcho",
+      "contributions": [
+        "code",
+        "design",
+        "content"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "MultiTouch",
+  "projectOwner": "Russell-Newton"
+}

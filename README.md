@@ -1,5 +1,6 @@
 # MultiTouch
 
+
 <p align="center">
 <img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/librarydemo/public/click-2384-black.svg#gh-light-mode-only">
 <img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/librarydemo/public/click-2384-white.svg#gh-dark-mode-only">
@@ -14,7 +15,7 @@
 [![Unit Tests](https://img.shields.io/github/workflow/status/Russell-Newton/MultiTouch/Unit%20Tests?label=Unit%20Tests&logo=github&style=flat-square)](https://github.com/Russell-Newton/MultiTouch/actions/workflows/run_tests.yml)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A lightweight touch gesture recognition library created in C as a part of Georgia Tech's
@@ -96,7 +97,7 @@ Example:
 #include <gesturelib.h>
 #include <tap.h>
 
-void tap_listener(tap_t event) {
+void tap_listener(const tap_t* event) {
     if (event.type == RECOGNIZER_STATE_COMPLETED) {
         printf("Tap received at (%.3f, %.3f)!", event.x, event.y);
     }
@@ -291,6 +292,24 @@ N/A
 ## Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center"><a href="https://www.linkedin.com/in/russellnewton01/"><img src="https://avatars.githubusercontent.com/u/18690062?v=4?s=100" width="100px;" alt="Russell Newton"/><br /><sub><b>Russell Newton</b></sub></a><br /><a href="https://github.com/Russell-Newton/MultiTouch/commits?author=Russell-Newton" title="Code">💻</a> <a href="https://github.com/Russell-Newton/MultiTouch/commits?author=Russell-Newton" title="Documentation">📖</a> <a href="#infra-Russell-Newton" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#maintenance-Russell-Newton" title="Maintenance">🚧</a></td>
+      <td align="center"><a href="https://github.com/xorbit3024"><img src="https://avatars.githubusercontent.com/u/52808406?v=4?s=100" width="100px;" alt="Wenjun Wang"/><br /><sub><b>Wenjun Wang</b></sub></a><br /><a href="https://github.com/Russell-Newton/MultiTouch/commits?author=xorbit3024" title="Code">💻</a> <a href="https://github.com/Russell-Newton/MultiTouch/commits?author=xorbit3024" title="Documentation">📖</a> <a href="#infra-xorbit3024" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/Russell-Newton/MultiTouch/commits?author=xorbit3024" title="Tests">⚠️</a></td>
+      <td align="center"><a href="https://github.com/jrdike"><img src="https://avatars.githubusercontent.com/u/98774218?v=4?s=100" width="100px;" alt="jrdike"/><br /><sub><b>jrdike</b></sub></a><br /><a href="https://github.com/Russell-Newton/MultiTouch/commits?author=jrdike" title="Code">💻</a> <a href="https://github.com/Russell-Newton/MultiTouch/commits?author=jrdike" title="Documentation">📖</a> <a href="https://github.com/Russell-Newton/MultiTouch/commits?author=jrdike" title="Tests">⚠️</a></td>
+      <td align="center"><a href="https://github.com/ocean-ift"><img src="https://avatars.githubusercontent.com/u/69494796?v=4?s=100" width="100px;" alt="Iftekherul Karim"/><br /><sub><b>Iftekherul Karim</b></sub></a><br /><a href="https://github.com/Russell-Newton/MultiTouch/commits?author=ocean-ift" title="Code">💻</a> <a href="https://github.com/Russell-Newton/MultiTouch/commits?author=ocean-ift" title="Documentation">📖</a> <a href="https://github.com/Russell-Newton/MultiTouch/commits?author=ocean-ift" title="Tests">⚠️</a></td>
+      <td align="center"><a href="https://github.com/deborahsrcho"><img src="https://avatars.githubusercontent.com/u/84360441?v=4?s=100" width="100px;" alt="deborahsrcho"/><br /><sub><b>deborahsrcho</b></sub></a><br /><a href="https://github.com/Russell-Newton/MultiTouch/commits?author=deborahsrcho" title="Code">💻</a> <a href="#design-deborahsrcho" title="Design">🎨</a> <a href="#content-deborahsrcho" title="Content">🖋</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 

@@ -26,7 +26,7 @@ ostream& operator<<(ostream& stream, const StrokeTestParams& params) {
 
 class TestStroke : public TestFlutter, public testing::WithParamInterface<StrokeTestParams> {
 protected:
-    void checkVelocity(stroke_t* stroke) {
+    void checkVelocity(const stroke_t* stroke) {
         if (stroke->cache_size > 0) {
             float vx = 0;
             float vy = 0;
@@ -49,8 +49,8 @@ protected:
             states[index] = RECOGNIZER_STATE_NULL;
         }
         for (touch_event_t event : touchEvents) {
-            process_touch_event(&event, 0, 0);
-            stroke_t* strokes = get_stroke();
+            process_touch_event(&event);
+            const stroke_t* strokes = get_stroke();
             for (size_t index = 0; index < MAX_TOUCHES; index++) {
                 checkVelocity(strokes + index);
                 switch (states[index]) {

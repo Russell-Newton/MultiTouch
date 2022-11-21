@@ -24,7 +24,7 @@ gesture_event_t double_tap = {.type = GESTURE_TYPE_DOUBLE_TAP, .get_data = (void
 
 // static touch_event_t* prev_event;
 
-static void update_double_taps(tap_t* tap);
+static void update_double_taps(tap_t* tap, touch_event_t* event);
 
 gesture_event_t* recognize_double_tap(touch_event_t* event) {
     // pass in the event and the taps incrementally
@@ -50,7 +50,7 @@ gesture_event_t* recognize_double_tap(touch_event_t* event) {
     for (int i = 0; i < MAX_TOUCHES; i++) {
         if ((taps + i)->t == event->t && (taps + i)->x == event->x &&
             (taps + i)->y == event->y) {  // make sure we're not looking at an old completed tap
-            update_double_taps(taps + i);  // we don't even need event i think
+            update_double_taps(taps + i, event);  // we don't even need event i think
         }
     }
 
@@ -67,7 +67,7 @@ int set_on_double_tap(void (*listener)(const double_tap_t*)) {
     }
 }
 
-static void update_double_taps(tap_t* tap) {
+static void update_double_taps(tap_t* tap, touch_event_t* event) {
     int null_index  = -1;  // first null or complete double_d spot
     int group_index = -1;  // double tap with the closest time the completed tap, will group with this tap
     // int group_number;
@@ -89,9 +89,13 @@ static void update_double_taps(tap_t* tap) {
 
                 // checking tap position to double tap position
 
-                x_diff    = (tap->x - d_tap.x0) < 0 ? (tap->x - d_tap.x0) * -1 : (tap->x - d_tap.x0);
-                y_diff    = (tap->y - d_tap.y0) < 0 ? (tap->y - d_tap.y0) * -1 : (tap->y - d_tap.y0);
-                time_diff = (tap->t - d_tap.t0) < 0 ? (tap->t - d_tap.t0) * -1 : (tap->t - d_tap.t0);
+                x_diff    = (event->x - d_tap.x0) < 0 ? (event->x - d_tap.x0) * -1 : (event->x - d_tap.x0);
+                y_diff    = (event->y - d_tap.y0) < 0 ? (event->y - d_tap.y0) * -1 : (event->y - d_tap.y0);
+                time_diff = (event->t - d_tap.t0) < 0 ? (event->t - d_tap.t0) * -1 : (event->t - d_tap.t0);
+
+                printf("Printing printing possible case: x = %f\n", d_tap.x0);
+                printf("Printing tap data: x = %f\n", tap->x);
+                printf("Printing distances: x_diff = %f, y_diff = %f, time_diff = %f\n", x_diff, y_diff, time_diff);
 
                 if (x_diff < DOUBLE_MAX_X && y_diff < DOUBLE_MAX_Y) {
                     if (time_diff < DOUBLE_TIME_DIFF) {
@@ -99,9 +103,9 @@ static void update_double_taps(tap_t* tap) {
                         double_tap_d[i].state = RECOGNIZER_STATE_COMPLETED;
 
                         // update data fields
-                        double_tap_d[i].x = tap->x;
-                        double_tap_d[i].y = tap->y;
-                        double_tap_d[i].t = tap->t;
+                        double_tap_d[i].x = event->x;
+                        double_tap_d[i].y = event->y;
+                        double_tap_d[i].t = event->t;
                     } else {
                         double_tap_d[i].state = RECOGNIZER_STATE_FAILED;
                     }
@@ -132,9 +136,9 @@ static void update_double_taps(tap_t* tap) {
 
         if (null_index != -1) {
             double_tap_d[null_index].state = RECOGNIZER_STATE_POSSIBLE;
-            double_tap_d[null_index].x0    = tap->x;
-            double_tap_d[null_index].y0    = tap->y;
-            double_tap_d[null_index].t0    = tap->t;
+            double_tap_d[null_index].x0    = event->x;
+            double_tap_d[null_index].y0    = event->y;
+            double_tap_d[null_index].t0    = event->t;
 
             if (group_index != -1) {
                 double_tap_d[null_index].group = double_tap_d[group_index].group;

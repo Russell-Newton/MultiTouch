@@ -105,6 +105,10 @@ protected:
                     // completed is 4
                     // in progress is 2
                     cout << "printing state: " << double_taps[index].state << endl;
+                    cout << "data: x = " << double_taps[index].x0 << endl;
+                    if (double_taps[index].state == RECOGNIZER_STATE_COMPLETED) {
+                        cout << "finish data: " << double_taps[index].x << endl;
+                    }
                 }
             }
         }
@@ -134,4 +138,5 @@ INSTANTIATE_TEST_SUITE_P(DoubleTapTests,
                                          /* */
                                          DoubleTapTestParams{"double/phone_8", 1},
                                          DoubleTapTestParams{"double/phone_9", 1},
-                                         DoubleTapTestParams{"double/fail_case", 0}));
+                                         DoubleTapTestParams{"double/fail_case", 0},
+                                         DoubleTapTestParams{"double/fail_case_2", 0}));

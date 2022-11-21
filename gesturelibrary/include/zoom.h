@@ -13,6 +13,8 @@ typedef struct zoom {
     int size;
     // scale factor
     float scale;
+    // has zoomed at some point during the gesture
+    char zoomed;
 } zoom_t;
 
 /// @brief Initialize zoom data structures

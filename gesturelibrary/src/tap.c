@@ -49,13 +49,13 @@ static void update_tap(tap_t* tap, const stroke_t* stroke, char down) {
     switch (tap->state) {
     case RECOGNIZER_STATE_NULL:
         if (stroke->state == RECOGNIZER_STATE_IN_PROGRESS) {
-            tap->state = RECOGNIZER_STATE_IN_PROGRESS;
+            tap->state = RECOGNIZER_STATE_POSSIBLE;
             if (on_tap) {
                 on_tap(tap);
             }
         }
         break;
-    case RECOGNIZER_STATE_IN_PROGRESS:
+    case RECOGNIZER_STATE_POSSIBLE:
         if (stroke->state == RECOGNIZER_STATE_IN_PROGRESS) {
             float dt = stroke->t - stroke->t0;
             float dx = stroke->x - stroke->x0;
@@ -80,7 +80,7 @@ static void update_tap(tap_t* tap, const stroke_t* stroke, char down) {
     case RECOGNIZER_STATE_COMPLETED:
     case RECOGNIZER_STATE_FAILED:
         if (down && stroke->state == RECOGNIZER_STATE_IN_PROGRESS) {
-            tap->state = RECOGNIZER_STATE_IN_PROGRESS;
+            tap->state = RECOGNIZER_STATE_POSSIBLE;
             if (on_tap) {
                 on_tap(tap);
             }

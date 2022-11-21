@@ -29,7 +29,10 @@ export default {
         setDumpData: Function,
     },
     created() {
-      document.addEventListener("emscriptenready", this.initLib);  
+      document.addEventListener("emscriptenready", this.initLib);
+    },
+    destroyed() {
+      document.removeEventListener("emscriptenready", this.initLib);
     },
     mounted() {
       let canvas = this.$el;
@@ -63,11 +66,15 @@ export default {
             // https://stackoverflow.com/a/59259174
             // to invert transform matrix
             let canvas = this.$el;
+            let style = canvas.currentStyle || window.getComputedStyle(canvas, null)
+            let borderLeftWidth = parseInt(style['borderLeftWidth'], 10);
+            let borderTopWidth = parseInt(style['borderTopWidth'], 10);
             let bounds = canvas.getBoundingClientRect();
-            let x = event.x - bounds.left;
-            let y = event.y - bounds.top;
-            x = x / bounds.width * canvas.width;
-            y = y / bounds.height * canvas.height;
+            let x = event.x - borderLeftWidth - bounds.left;
+            let y = event.y - borderTopWidth - bounds.top;
+            x = x * canvas.width / canvas.clientWidth;
+            y = y * canvas.height / canvas.clientHeight;
+            y = canvas.height - y;
             return {x, y};
         },
         checkDragging(group) {
@@ -110,7 +117,7 @@ export default {
                     //console.log(gesture);
                 //}
             } else {
-                this.setParentText("No gestures caught from this event.");
+                this.setParentText("No gestures caught from this event.", "");
             }
             //this.setParentText(`Caught ${type} touch_event at time ${t}: (${x}, ${y})`);
         },

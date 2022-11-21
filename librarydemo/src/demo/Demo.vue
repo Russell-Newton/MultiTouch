@@ -5,33 +5,39 @@ import {test, testStruct} from "./assets/api_wrapper";
 </script>
 
 <template>
+    <h1 class="text-center">MultiTouch Demo</h1>
     <MDBContainer xxl>
         <MDBRow>
-            <MDBCol md="3">
+            <MDBCol md="3" class="d-none d-md-table-cell">
                 <div class="p-3">
                     <a href="../index.html">
                         <MDBBtn color="light" size="sm" rounded>Home</MDBBtn>
                     </a>
-                    <br />
-                    <MDBBtn @click="test" color="light" size="sm" rounded>Square 3 in C! (Check console output)</MDBBtn>
-                    <br />
-                    <MDBBtn @click="testStruct" color="light" size="sm" rounded>C Struct test</MDBBtn>
+                    <h3 style="white-space: pre-wrap">
+                      {{ simpleText }}
+                    </h3>
                 </div>
             </MDBCol>
             <MDBCol md="6" class="text-center">
-                <GestureCanvas :setParentText="setText" :setDumpData="setDumpData"/>
+                <GestureCanvas :setParentText="setText" :setDumpData="setDumpData" :width="300" :height="300"/>
                 <br />
               <MDBBtn @click="runDumpData" color="light" size="sm" rounded>Dump Data</MDBBtn>
             </MDBCol>
-            <MDBCol md="3">
+            <MDBCol md="3" class="d-md-none">
+              <div class="p-3">
+                <a href="../index.html">
+                  <MDBBtn color="light" size="sm" rounded>Home</MDBBtn>
+                </a>
+                <h3 style="white-space: pre-wrap">
+                  {{ simpleText }}
+                </h3>
+              </div>
+            </MDBCol>
+            <MDBCol md="3" class="order-last">
                 <div class="p-3">
-                    Click to Change Text:
-                    <MDBBtn @click="setTextSquare3()" color="light" size="sm" rounded>Square 3 in C!</MDBBtn>
-                    <MDBBtn @click="setText('Gesture A')" color="light" size="sm" rounded>A</MDBBtn>
-                    <MDBBtn @click="setText('Gesture B')" color="light" size="sm" rounded>B</MDBBtn>
-                    <h3 style="white-space: pre-wrap">
-                        {{ myText }}
-                    </h3>
+                  <p style="white-space: pre-wrap">
+                    {{ advancedText }}
+                  </p>
                 </div>
             </MDBCol>
         </MDBRow>
@@ -42,16 +48,16 @@ import {test, testStruct} from "./assets/api_wrapper";
 export default {
   data() {
     return {
-      myText: "Perform a Gesture",
+      simpleText: "Perform a Gesture",
+      advancedText: "",
       dumpData: null
     }
   },
   methods: {
     setText(newText) {
-      this.myText = newText;
-    },
-    setTextSquare3() {
-      this.setText(Module._square(3));
+      let {simple: simple, advanced: advanced} = newText
+      this.simpleText = simple;
+      this.advancedText = advanced;
     },
     setDumpData(dumpData) {
       this.dumpData = dumpData;

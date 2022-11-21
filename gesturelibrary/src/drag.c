@@ -18,19 +18,16 @@ void init_drag() {
     on_drag = 0;
 }
 
-gesture_event_t drag = {.type = GESTURE_TYPE_DRAG, .get_data = (void* (*)(void))get_drag};
+static void update_drag(drag_t* drag, const stroke_t* stroke, char down);
 
-static void update_drag(drag_t* drag, stroke_t* stroke, char down);
-
-gesture_event_t* recognize_drag(touch_event_t* event) {
-    stroke_t* strokes = get_stroke();
+void recognize_drag(const touch_event_t* event) {
+    const stroke_t* strokes = get_stroke();
     for (int index = 0; index < MAX_TOUCHES; index++) {
         update_drag(drag_d + index, strokes + index, event->type == TOUCH_EVENT_DOWN);
     }
-    return &drag;
 }
 
-drag_t* get_drag() {
+const drag_t* get_drag() {
     return drag_d;
 }
 
@@ -44,7 +41,7 @@ int set_on_drag(void (*listener)(const drag_t*)) {
     }
 }
 
-static void update_drag(drag_t* drag, stroke_t* stroke, char down) {
+static void update_drag(drag_t* drag, const stroke_t* stroke, char down) {
     drag->group = stroke->group;
     drag->x0    = stroke->x0;
     drag->y0    = stroke->y0;

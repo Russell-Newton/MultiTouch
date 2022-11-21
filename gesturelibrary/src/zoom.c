@@ -15,13 +15,11 @@ void init_zoom() {
     }
 }
 
-gesture_event_t zoom = {.type = GESTURE_TYPE_ZOOM, .get_data = (void* (*)(void))get_zoom};
-
-gesture_event_t* recognize_zoom(touch_event_t* event) {
+void recognize_zoom(const touch_event_t* event) {
     // let multidrag process the event
     (void)event;
 
-    multidrag_t* multidrags = get_multidrag();
+    const multidrag_t* multidrags = get_multidrag();
     for (int index = 0; index < MAX_TOUCHES; index++) {
         zoom_t previous     = zoom_d[index];
         zoom_d[index].uid   = multidrags[index].uid;
@@ -43,11 +41,9 @@ gesture_event_t* recognize_zoom(touch_event_t* event) {
             on_zoom(zoom_d + index);
         }
     }
-
-    return &zoom;
 }
 
-zoom_t* get_zoom() {
+const zoom_t* get_zoom() {
     return zoom_d;
 }
 

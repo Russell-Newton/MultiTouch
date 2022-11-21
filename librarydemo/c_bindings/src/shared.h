@@ -36,14 +36,11 @@ typedef union out_data_structs {
 } out_data_t;
 
 typedef enum gesture_type {
-    GESTURE_TYPE_STROKE,
     GESTURE_TYPE_TAP,
     GESTURE_TYPE_HOLD,
     GESTURE_TYPE_HOLD_AND_DRAG,
     GESTURE_TYPE_DOUBLE_TAP,
     GESTURE_TYPE_DRAG,
-    GESTURE_TYPE_MULTISTROKE,
-    GESTURE_TYPE_MULTIDRAG,
     GESTURE_TYPE_ZOOM,
     GESTURE_TYPE_ROTATE
 } out_type_t;

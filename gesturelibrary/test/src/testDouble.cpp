@@ -104,7 +104,7 @@ protected:
 
                     // completed is 4
                     // in progress is 2
-                    //  cout << "printing state: " << double_taps[index].state << endl;
+                    cout << "printing state: " << double_taps[index].state << endl;
                 }
             }
         }
@@ -133,4 +133,5 @@ INSTANTIATE_TEST_SUITE_P(DoubleTapTests,
                                          DoubleTapTestParams{"double/phone_7", 3},
                                          /* */
                                          DoubleTapTestParams{"double/phone_8", 1},
-                                         DoubleTapTestParams{"double/phone_9", 1}));
+                                         DoubleTapTestParams{"double/phone_9", 1},
+                                         DoubleTapTestParams{"double/fail_case", 0}));

@@ -27,7 +27,7 @@
 #define DOUBLE_GROUP_TIME_DIFF 0.02  // in phone_6, the difference reaches a max of 0.015
 #define DOUBLE_MAX_X           10
 #define DOUBLE_MAX_Y           10
-#define DOUBLE_TIME_DIFF       0.2  // phone six had a diff of 0.175
+#define DOUBLE_TIME_DIFF       2
 
 // Euclidean distance for longest tap/hold and shortest drag.
 #define TAP_DIST_MAX  10

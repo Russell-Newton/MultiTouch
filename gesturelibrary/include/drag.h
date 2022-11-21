@@ -29,11 +29,11 @@ void init_drag();
 
 /// @brief Recognize drag gesture
 /// @param event touch event to recognize
-gesture_event_t* recognize_drag(touch_event_t* event);
+void recognize_drag(const touch_event_t* event);
 
 /// @brief Access drag data array of size MAX_TOUCHES
 /// @return Address of first element of drag data array of size MAX_TOUCHES
-drag_t* get_drag();
+const drag_t* get_drag();
 
 /// @brief Subscribe listener to drag gesture updates
 /// @param listener accepts a const drag_t*

@@ -42,8 +42,8 @@ void init_multistroke();
 
 /// @brief Recognize multistroke gesture. This gesture allows the number of fingers to change.
 /// @param event touch event to recognize
-gesture_event_t* recognize_multistroke(touch_event_t* event);
+void recognize_multistroke(const touch_event_t* event);
 
 /// @brief Access array of multistroke_t of size MAX_TOUCHES
 /// @return Pointer to first element of array of multistroke_t of size MAX_TOUCHES
-multistroke_t* get_multistroke();
+const multistroke_t* get_multistroke();

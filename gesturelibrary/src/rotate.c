@@ -15,13 +15,11 @@ void init_rotate() {
     }
 }
 
-gesture_event_t rotate = {.type = GESTURE_TYPE_ROTATE, .get_data = (void* (*)(void))get_rotate};
-
-gesture_event_t* recognize_rotate(touch_event_t* event) {
+void recognize_rotate(const touch_event_t* event) {
     // let multidrag process the event
     (void)event;
 
-    multidrag_t* multidrags = get_multidrag();
+    const multidrag_t* multidrags = get_multidrag();
     for (int index = 0; index < MAX_TOUCHES; index++) {
         rotate_t previous        = rotate_d[index];
         rotate_d[index].uid      = multidrags[index].uid;
@@ -43,11 +41,9 @@ gesture_event_t* recognize_rotate(touch_event_t* event) {
             on_rotate(rotate_d + index);
         }
     }
-
-    return &rotate;
 }
 
-rotate_t* get_rotate() {
+const rotate_t* get_rotate() {
     return rotate_d;
 }
 

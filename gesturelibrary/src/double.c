@@ -25,6 +25,7 @@ gesture_event_t double_tap = {.type = GESTURE_TYPE_DOUBLE_TAP, .get_data = (void
 // static touch_event_t* prev_event;
 
 static void update_double_taps(tap_t* tap, touch_event_t* event);
+static void update_data0_fields(int index, int group_index, touch_event_t* event);
 
 gesture_event_t* recognize_double_tap(touch_event_t* event) {
     // pass in the event and the taps incrementally
@@ -37,14 +38,6 @@ gesture_event_t* recognize_double_tap(touch_event_t* event) {
     // new in_progress double tap
     // change all in_progress to possible
 
-    // printf("touch event information: %f, %f, %f\n", event->x, event->y, event->t);
-
-    // stroke_t* strokes       = get_stroke();
-    // printf("printing strokes: ");
-    // for (size_t i = 0; i < MAX_TOUCHES; i++) {
-    //     printf("%f, ", strokes[i].x);
-    // }
-    // printf("\n");
     tap_t* taps = get_tap();
 
     for (int i = 0; i < MAX_TOUCHES; i++) {
@@ -68,19 +61,25 @@ int set_on_double_tap(void (*listener)(const double_tap_t*)) {
 }
 
 static void update_double_taps(tap_t* tap, touch_event_t* event) {
-    int null_index  = -1;  // first null or complete double_d spot
-    int group_index = -1;  // double tap with the closest time the completed tap, will group with this tap
+    int null_index     = -1;  // last seen null or failed double_d spot
+    int complete_index = -1;  // last seen complete spot
+    int update         = 1;
+    int group_index    = -1;  // double tap with the closest time the completed tap, will group with this tap
     // int group_number;
 
     float x_diff;
     float y_diff;
     float time_diff;
 
+    // printf("printing tap_state: %d\n", tap->state);
+
     if (tap->state == RECOGNIZER_STATE_COMPLETED) {
+        // printf("entered with tap x = %f\n", tap->x);
         // if completed, compare it to all double_taps in double_d
         // look for any possible ones and compare time and position
 
         for (int i = 0; i < MAX_TOUCHES; i++) {
+            // printf("entered for loop with tap x = %f\n", tap->x);
             double_tap_t d_tap = double_tap_d[i];
 
             switch (d_tap.state) {
@@ -93,14 +92,16 @@ static void update_double_taps(tap_t* tap, touch_event_t* event) {
                 y_diff    = (event->y - d_tap.y0) < 0 ? (event->y - d_tap.y0) * -1 : (event->y - d_tap.y0);
                 time_diff = (event->t - d_tap.t0) < 0 ? (event->t - d_tap.t0) * -1 : (event->t - d_tap.t0);
 
-                printf("Printing printing possible case: x = %f\n", d_tap.x0);
-                printf("Printing tap data: x = %f\n", tap->x);
-                printf("Printing distances: x_diff = %f, y_diff = %f, time_diff = %f\n", x_diff, y_diff, time_diff);
+                // printf("Printing possible case: x = %f\n", d_tap.x0);
+                // printf("Printing tap data: x = %f\n", tap->x);
+                // printf("Printing distances: x_diff = %f, y_diff = %f, time_diff = %f\n", x_diff, y_diff, time_diff);
 
                 if (x_diff < DOUBLE_MAX_X && y_diff < DOUBLE_MAX_Y) {
                     if (time_diff < DOUBLE_TIME_DIFF) {
                         // found the corresponding d_tap
                         double_tap_d[i].state = RECOGNIZER_STATE_COMPLETED;
+                        null_index            = -1;
+                        update                = 0;
 
                         // update data fields
                         double_tap_d[i].x = event->x;
@@ -125,29 +126,49 @@ static void update_double_taps(tap_t* tap, touch_event_t* event) {
 
                 break;
             case RECOGNIZER_STATE_FAILED:
-            case RECOGNIZER_STATE_COMPLETED:
             case RECOGNIZER_STATE_NULL:
+                // printf("entered null with tap x = %f\n", tap->x);
                 // save the index (need to replace)
-                null_index = i;
+                null_index = i;  // we want to prioritize null spots and failed spots over completed ones
+                break;
+            case RECOGNIZER_STATE_COMPLETED:
+                complete_index = i;
             default:
                 break;
             }
         }
 
-        if (null_index != -1) {
-            double_tap_d[null_index].state = RECOGNIZER_STATE_POSSIBLE;
-            double_tap_d[null_index].x0    = event->x;
-            double_tap_d[null_index].y0    = event->y;
-            double_tap_d[null_index].t0    = event->t;
-
-            if (group_index != -1) {
-                double_tap_d[null_index].group = double_tap_d[group_index].group;
-            }
-
-            if (on_double_tap) {  // listener
-                on_double_tap(&double_tap_d[null_index]);
+        if (update) {
+            if (null_index != -1) {
+                // printf("entered null_index if with tap x = %f and index = %d\n", tap->x, null_index);
+                update_data0_fields(null_index, group_index, event);
+            } else if (complete_index != -1) {
+                update_data0_fields(complete_index, group_index, event);
             }
         }
+
+        for (int j = 0; j < MAX_TOUCHES; j++) {
+            printf("Printing state: %d, x: %f, x0: %f, group: %d\n",
+                   double_tap_d[j].state,
+                   double_tap_d[j].x,
+                   double_tap_d[j].x0,
+                   double_tap_d[j].group);
+        }
+    }
+}
+
+static void update_data0_fields(int index, int group_index, touch_event_t* event) {
+    double_tap_d[index].state = RECOGNIZER_STATE_POSSIBLE;
+    double_tap_d[index].x0    = event->x;
+    double_tap_d[index].y0    = event->y;
+    double_tap_d[index].t0    = event->t;
+
+    if (group_index != -1) {
+        double_tap_d[index].group = double_tap_d[group_index].group;
+    }
+
+    if (on_double_tap) {  // listener
+        on_double_tap(&double_tap_d[index]);
     }
 }
 

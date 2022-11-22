@@ -8,7 +8,7 @@
 
 // This is the maximum number of gesture recognizers supported.
 // Each recognizer may recognize multiple instances of the same gesture simultaneously.
-#define MAX_RECOGNIZERS 100
+#define MAX_RECOGNIZERS 100  // do we wanna reduce this?
 
 // Touch events passed into the library should set their group field to this unless
 // the user wants to specify a particular group. The touch event struct is defined in
@@ -25,8 +25,8 @@
 
 // Shortest possible time difference and shortest euclidean distance for double taps.
 #define DOUBLE_GROUP_TIME_DIFF 0.02  // in phone_6, the difference reaches a max of 0.015
-#define DOUBLE_MAX_X           10
-#define DOUBLE_MAX_Y           10
+#define DOUBLE_MAX_X           20
+#define DOUBLE_MAX_Y           20
 #define DOUBLE_TIME_DIFF       0.5
 
 // Euclidean distance for longest tap/hold and shortest drag.

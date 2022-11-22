@@ -13,10 +13,12 @@ using namespace std;
 struct DoubleTapTestParams {
     string path;
     size_t num;
+    size_t groups;
 
-    DoubleTapTestParams(const string& path, size_t num) {
-        this->path = path;
-        this->num  = num;
+    DoubleTapTestParams(const string& path, size_t num, size_t groups) {
+        this->path   = path;
+        this->num    = num;
+        this->groups = groups;
     }
 };
 
@@ -27,7 +29,7 @@ ostream& operator<<(ostream& stream, const DoubleTapTestParams& params) {
 
 class TestDouble : public TestFlutter, public testing::WithParamInterface<DoubleTapTestParams> {
 protected:
-    void testDouble(size_t num) {
+    void testDouble(size_t num, size_t groups) {
         int completed   = 0;
         state_t* states = new state_t[MAX_TOUCHES];
 
@@ -36,6 +38,7 @@ protected:
         }
 
         gesture_event_t* gestures;
+        double_tap_t* taps;
 
         int event_num = 1;
 
@@ -45,7 +48,7 @@ protected:
 
             for (size_t i = 0; i < MAX_RECOGNIZERS; i++) {
                 if (gestures[i].type == GESTURE_TYPE_DOUBLE_TAP) {
-                    double_tap_t* taps = ((double_tap_t * (*)(void)) gestures[i].get_data)();
+                    taps = ((double_tap_t * (*)(void)) gestures[i].get_data)();
 
                     for (size_t index = 0; index < MAX_TOUCHES; index++) {
                         switch (states[index]) {
@@ -79,13 +82,6 @@ protected:
                         states[index] = taps[index].state;
                     }
 
-                    // cout << "Data array after this event " << event_num << ": " << endl;
-                    // for (size_t index = 0; index < MAX_TOUCHES; index++) {
-                    //     //completed is 4
-                    //     //in progress is 2
-                    //     cout << "printing state: " << taps[index].state << endl;
-                    // }
-
                     break;
                 }
             }
@@ -94,49 +90,56 @@ protected:
             delete[] gestures;
         }
 
-        for (size_t i = 0; i < MAX_RECOGNIZERS; i++) {
-            if (gestures[i].type == GESTURE_TYPE_DOUBLE_TAP) {
-                double_tap_t* double_taps = ((double_tap_t * (*)(void)) gestures[i].get_data)();
-                for (size_t index = 0; index < MAX_TOUCHES; index++) {
-                    if (double_taps[index].state == RECOGNIZER_STATE_COMPLETED) {
-                        completed++;
-                    }
-
-                    // completed is 4
-                    // in progress is 2
-                    cout << "printing state: " << double_taps[index].state << endl;
-                    cout << "data: x = " << double_taps[index].x0 << endl;
-                    if (double_taps[index].state == RECOGNIZER_STATE_COMPLETED) {
-                        cout << "finish data: " << double_taps[index].x << endl;
-                    }
-                }
+        for (int i = 0; i < MAX_TOUCHES; i++) {
+            if (taps[i].state == RECOGNIZER_STATE_COMPLETED) {
+                completed++;
             }
         }
 
         // cout << "num completed : " + completed << endl;
         EXPECT_EQ(completed, num);
+
+        int g1 = 0;
+        int g2 = 0;
+        int g3 = 0;
+        int g4 = 0;
+        int g5 = 0;
+
+        if (taps[0].group == 1)
+            g1 = 1;
+        if (taps[1].group == 2)
+            g2 = 1;
+        if (taps[2].group == 3)
+            g3 = 1;
+        if (taps[3].group == 4)
+            g4 = 1;
+        if (taps[4].group == 5)
+            g5 = 1;
+
+        int num_groups = g1 + g2 + g3 + g4 + g5;
+
+        EXPECT_EQ(num_groups, groups);
         delete[] states;
     }
 };
 
 TEST_P(TestDouble, States) {
     readTouchEvents("res/" + GetParam().path + ".csv");
-    testDouble(GetParam().num);
+    testDouble(GetParam().num, GetParam().groups);
 }
 
 INSTANTIATE_TEST_SUITE_P(DoubleTapTests,
                          TestDouble,
-                         testing::Values(DoubleTapTestParams{"double/phone_1", 1},
-                                         DoubleTapTestParams{"double/phone_2", 1},
-                                         DoubleTapTestParams{"double/phone_3", 1},
+                         testing::Values(DoubleTapTestParams{"double/phone_1", 1, 5},
+                                         DoubleTapTestParams{"double/phone_2", 1, 5},
+                                         DoubleTapTestParams{"double/phone_3", 1, 5},
                                          /* Check this data */
-                                         DoubleTapTestParams{"double/phone_4",
-                                                             2},  // still need to implement the grouping logic
-                                         DoubleTapTestParams{"double/phone_5", 2},
-                                         DoubleTapTestParams{"double/phone_6", 2},
-                                         DoubleTapTestParams{"double/phone_7", 3},
+                                         DoubleTapTestParams{"double/phone_4", 2, 4},
+                                         DoubleTapTestParams{"double/phone_5", 2, 4},
+                                         DoubleTapTestParams{"double/phone_6", 2, 4},
+                                         DoubleTapTestParams{"double/phone_7", 3, 3},
                                          /* */
-                                         DoubleTapTestParams{"double/phone_8", 1},
-                                         DoubleTapTestParams{"double/phone_9", 1},
-                                         DoubleTapTestParams{"double/fail_case", 0},
-                                         DoubleTapTestParams{"double/fail_case_2", 0}));
+                                         DoubleTapTestParams{"double/phone_8", 1, 5},
+                                         DoubleTapTestParams{"double/phone_9", 1, 5},
+                                         DoubleTapTestParams{"double/fail_case", 0, 5},
+                                         DoubleTapTestParams{"double/fail_case_2", 0, 5}));

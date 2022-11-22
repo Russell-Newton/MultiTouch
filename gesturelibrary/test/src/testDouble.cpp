@@ -32,62 +32,45 @@ protected:
     void testDouble(size_t num, size_t groups) {
         int completed   = 0;
         state_t* states = new state_t[MAX_TOUCHES];
-
         for (size_t index = 0; index < MAX_TOUCHES; index++) {
             states[index] = RECOGNIZER_STATE_NULL;
         }
-
-        gesture_event_t* gestures;
-        double_tap_t* taps;
-
-        int event_num = 1;
+        const double_tap_t* taps;
 
         for (touch_event_t event : touchEvents) {
-            gestures = new gesture_event_t[MAX_RECOGNIZERS];
-            process_touch_event(&event, gestures, MAX_RECOGNIZERS);
+            process_touch_event(&event);
+            taps = get_double_tap();
 
-            for (size_t i = 0; i < MAX_RECOGNIZERS; i++) {
-                if (gestures[i].type == GESTURE_TYPE_DOUBLE_TAP) {
-                    taps = ((double_tap_t * (*)(void)) gestures[i].get_data)();
+            for (size_t index = 0; index < MAX_TOUCHES; index++) {
+                switch (states[index]) {
+                case RECOGNIZER_STATE_NULL:
+                    EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_NULL ||
+                                taps[index].state == RECOGNIZER_STATE_POSSIBLE);
+                    break;
 
-                    for (size_t index = 0; index < MAX_TOUCHES; index++) {
-                        switch (states[index]) {
+                case RECOGNIZER_STATE_POSSIBLE:
+                    EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_POSSIBLE ||
+                                taps[index].state == RECOGNIZER_STATE_FAILED ||
+                                taps[index].state == RECOGNIZER_STATE_COMPLETED);
+                    break;
 
-                        case RECOGNIZER_STATE_NULL:
-                            EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_NULL ||
-                                        taps[index].state == RECOGNIZER_STATE_POSSIBLE);
-                            break;
+                case RECOGNIZER_STATE_COMPLETED:
+                    EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_COMPLETED ||
+                                taps[index].state == RECOGNIZER_STATE_POSSIBLE);
+                    break;
 
-                        case RECOGNIZER_STATE_POSSIBLE:
-                            EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_POSSIBLE ||
-                                        taps[index].state == RECOGNIZER_STATE_FAILED ||
-                                        taps[index].state == RECOGNIZER_STATE_COMPLETED);
-                            break;
+                case RECOGNIZER_STATE_FAILED:
+                    EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_FAILED ||
+                                taps[index].state == RECOGNIZER_STATE_POSSIBLE);
+                    break;
 
-                        case RECOGNIZER_STATE_COMPLETED:
-                            EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_COMPLETED ||
-                                        taps[index].state == RECOGNIZER_STATE_POSSIBLE);
-                            break;
-
-                        case RECOGNIZER_STATE_FAILED:
-                            EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_FAILED ||
-                                        taps[index].state == RECOGNIZER_STATE_POSSIBLE);
-                            break;
-
-                        default:
-                            EXPECT_EQ(to_string(states[index]), "incorrect double tap state found");
-                            break;
-                        }
-
-                        states[index] = taps[index].state;
-                    }
-
+                default:
+                    EXPECT_EQ(to_string(states[index]), "incorrect double tap state found");
                     break;
                 }
-            }
-            event_num++;
 
-            delete[] gestures;
+                states[index] = taps[index].state;
+            }
         }
 
         for (int i = 0; i < MAX_TOUCHES; i++) {
@@ -96,7 +79,6 @@ protected:
             }
         }
 
-        // cout << "num completed : " + completed << endl;
         EXPECT_EQ(completed, num);
 
         int g1 = 0;

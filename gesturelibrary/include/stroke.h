@@ -44,8 +44,8 @@ void init_stroke();
 
 /// @brief Recognize stroke gesture
 /// @param event touch event to recognize
-gesture_event_t* recognize_stroke(touch_event_t* event);
+void recognize_stroke(const touch_event_t* event);
 
 /// @brief Access array of stroke_t of size MAX_TOUCHES
 /// @return Pointer to first element of array of stroke_t of size MAX_TOUCHES
-stroke_t* get_stroke();
+const stroke_t* get_stroke();

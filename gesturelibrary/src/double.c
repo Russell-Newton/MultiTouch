@@ -20,14 +20,14 @@ void init_double_tap() {
     on_double_tap = 0;
 }
 
-gesture_event_t double_tap = {.type = GESTURE_TYPE_DOUBLE_TAP, .get_data = (void* (*)(void))get_double_tap};
+// gesture_event_t double_tap = {.type = GESTURE_TYPE_DOUBLE_TAP, .get_data = (void* (*)(void))get_double_tap};
 
 // static touch_event_t* prev_event;
 
-static void update_double_taps(tap_t* tap, touch_event_t* event);
-static void update_data0_fields(int index, int group_index, touch_event_t* event);
+static void update_double_taps(const tap_t* tap, const touch_event_t* event);
+static void update_data0_fields(int index, int group_index, const touch_event_t* event);
 
-gesture_event_t* recognize_double_tap(touch_event_t* event) {
+void recognize_double_tap(const touch_event_t* event) {
     // pass in the event and the taps incrementally
     // if a tap is completed, compare it to all of the double taps in the double data array
     // and check if for any in_progress ones (if it's null or complete, save that index cuz
@@ -38,16 +38,14 @@ gesture_event_t* recognize_double_tap(touch_event_t* event) {
     // new in_progress double tap
     // change all in_progress to possible
 
-    tap_t* taps = get_tap();
+    const tap_t* taps = get_tap();
 
     for (int i = 0; i < MAX_TOUCHES; i++) {
         if ((taps + i)->t == event->t && (taps + i)->x == event->x &&
             (taps + i)->y == event->y) {  // make sure we're not looking at an old completed tap
-            update_double_taps(taps + i, event);  // we don't even need event i think
+            update_double_taps(taps + i, event);  // we don't need event, but it was for the sake of security
         }
     }
-
-    return &double_tap;
 }
 
 int set_on_double_tap(void (*listener)(const double_tap_t*)) {
@@ -60,7 +58,7 @@ int set_on_double_tap(void (*listener)(const double_tap_t*)) {
     }
 }
 
-static void update_double_taps(tap_t* tap, touch_event_t* event) {
+static void update_double_taps(const tap_t* tap, const touch_event_t* event) {
     int null_index     = -1;  // last seen null or failed double_d spot
     int complete_index = -1;  // last seen complete spot
     int update         = 1;
@@ -157,7 +155,7 @@ static void update_double_taps(tap_t* tap, touch_event_t* event) {
     }
 }
 
-static void update_data0_fields(int index, int group_index, touch_event_t* event) {
+static void update_data0_fields(int index, int group_index, const touch_event_t* event) {
     double_tap_d[index].state = RECOGNIZER_STATE_POSSIBLE;
     double_tap_d[index].x0    = event->x;
     double_tap_d[index].y0    = event->y;
@@ -253,6 +251,6 @@ static void update_data0_fields(int index, int group_index, touch_event_t* event
 //     }
 // }
 
-double_tap_t* get_double_tap() {
+const double_tap_t* get_double_tap() {
     return double_tap_d;
 }

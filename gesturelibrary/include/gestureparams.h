@@ -13,7 +13,7 @@
 // Touch events passed into the library should set their group field to this unless
 // the user wants to specify a particular group. The touch event struct is defined in
 // gesturelib.h
-#define TOUCH_ID_UNDEFINED (MAX_TOUCHES + 1)
+#define TOUCH_GROUP_UNDEFINED (MAX_TOUCHES + 1)
 
 // When using the library to assign touch event groups, two touch events more than this
 // distance apart will never be assigned the same group.
@@ -33,3 +33,9 @@
 #define TAP_DIST_MAX  10
 #define HOLD_DIST_MAX TAP_DIST_MAX
 #define DRAG_DIST_MIN TAP_DIST_MAX
+
+// Minimum scale factor difference from 1 to be a zoom.
+#define ZOOM_SCALE_MIN 0.15f
+
+// Minimum rotation angle in radians to be a rotate.
+#define ROTATE_ANGLE_MIN (M_PI / 12)

@@ -17,7 +17,7 @@ int num_recognizers = 0;
 
 /// @brief set containing most recent touch within finger group
 touch_event_t latest_touch_events[MAX_TOUCHES];
-touch_event_t empty_touch_event = {.type = TOUCH_EVENT_UP, .x = 0, .y = 0, .t = 0, .group = TOUCH_ID_UNDEFINED};
+touch_event_t empty_touch_event = {.type = TOUCH_EVENT_UP, .x = 0, .y = 0, .t = 0, .group = TOUCH_GROUP_UNDEFINED};
 
 /// @brief assign a group ID to this touch_event. Update group_heads to reflect this. If this is not a DOWN event
 ///        and there are no groups being tracked, do not assign an ID. If this is a DOWN event but MAX_TOUCHES groups
@@ -48,23 +48,18 @@ int init_gesturelib() {
     return 0;
 }
 
-int process_touch_event(touch_event_t* touch_event, gesture_event_t* gestures, int max_gestures) {
-    int size = 0;
-    if (touch_event->group == TOUCH_ID_UNDEFINED) {
+void process_touch_event(touch_event_t* touch_event) {
+    if (touch_event->group == TOUCH_GROUP_UNDEFINED) {
         assign_group(touch_event);
     }
     for (int index = 0; index < num_recognizers; index++) {
         if (recognizers[index].enabled) {
-            gesture_event_t* gesture = recognizers[index].recognize(touch_event);
-            if (gesture && size < max_gestures) {
-                gestures[size++] = *gesture;
-            }
+            recognizers[index].recognize(touch_event);
         }
     }
     if (touch_event->group < MAX_TOUCHES) {
         latest_touch_events[touch_event->group] = *touch_event;
     }
-    return size;
 }
 
 static unsigned int assign_group(touch_event_t* touch_event) {
@@ -80,7 +75,7 @@ static unsigned int assign_group(touch_event_t* touch_event) {
 
         // return early if no free groups
         if (free_group == MAX_TOUCHES) {
-            return TOUCH_ID_UNDEFINED;
+            return TOUCH_GROUP_UNDEFINED;
         }
 
         touch_event->group = free_group;
@@ -88,7 +83,7 @@ static unsigned int assign_group(touch_event_t* touch_event) {
     }
 
     // Find the closest tracked group
-    unsigned int closest_group = TOUCH_ID_UNDEFINED;
+    unsigned int closest_group = TOUCH_GROUP_UNDEFINED;
     float closest_dist         = -1;
     for (unsigned int i = 0; i < MAX_TOUCHES; i++) {
         // skip untracked groups
@@ -98,22 +93,22 @@ static unsigned int assign_group(touch_event_t* touch_event) {
 
         float dist = SQUARED_DIST(&latest_touch_events[i], touch_event);
         if (dist <= EVENT_GROUPING_DIST_MAX * EVENT_GROUPING_DIST_MAX &&
-            (closest_group == TOUCH_ID_UNDEFINED || dist < closest_dist)) {
+            (closest_group == TOUCH_GROUP_UNDEFINED || dist < closest_dist)) {
             closest_group = i;
             closest_dist  = dist;
         }
     }
 
     // return if all groups are untracked
-    if (closest_group == TOUCH_ID_UNDEFINED) {
-        return TOUCH_ID_UNDEFINED;
+    if (closest_group == TOUCH_GROUP_UNDEFINED) {
+        return TOUCH_GROUP_UNDEFINED;
     }
 
     touch_event->group = closest_group;
     return closest_group;
 }
 
-int add_recognizer(gesture_event_t* (*recognize)(touch_event_t*), void (*init)(void)) {
+int add_recognizer(void (*recognize)(const touch_event_t*), void (*init)(void)) {
     if (num_recognizers == MAX_RECOGNIZERS) {
         return -1;
     }
@@ -127,7 +122,7 @@ int add_recognizer(gesture_event_t* (*recognize)(touch_event_t*), void (*init)(v
 
 gesture_recognizer_t remove_recognizer(int recognizer) {
     if (recognizer < 0 || recognizer >= num_recognizers) {
-        gesture_recognizer_t null_recognizer = {.recognize = 0, .enabled = 0};
+        gesture_recognizer_t null_recognizer = {.recognize = 0, .enabled = 0, .init = 0};
         return null_recognizer;
     }
     gesture_recognizer_t out = recognizers[recognizer];

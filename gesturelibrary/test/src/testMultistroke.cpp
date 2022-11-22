@@ -28,14 +28,14 @@ ostream& operator<<(ostream& stream, const MultistrokeTestParams& params) {
 class TestMultistroke : public TestFlutter, public testing::WithParamInterface<MultistrokeTestParams> {
 protected:
     void testStates(int num) {
-        int completed               = 0;
-        multistroke_t* multistrokes = get_multistroke();
-        state_t* states             = new state_t[MAX_TOUCHES];
+        int completed                     = 0;
+        const multistroke_t* multistrokes = get_multistroke();
+        state_t* states                   = new state_t[MAX_TOUCHES];
         for (size_t index = 0; index < MAX_TOUCHES; index++) {
             states[index] = multistrokes[index].state;
         }
         for (touch_event_t event : touchEvents) {
-            process_touch_event(&event, 0, 0);
+            process_touch_event(&event);
             for (size_t index = 0; index < MAX_TOUCHES; index++) {
                 if (multistrokes[index].state != RECOGNIZER_STATE_NULL) {
                     cout << "uid_" << index << ": " << multistrokes[index].uid << ",\t"

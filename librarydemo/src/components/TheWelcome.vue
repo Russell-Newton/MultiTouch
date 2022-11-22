@@ -15,7 +15,7 @@ import { MDBBtn } from "mdb-vue-ui-kit";
     </template>
     <template #heading>About</template>
     
-    Our gesture library features over 15 touch gestures with up to 5-finger capabilities. Each of these gestures are completely customizable
+    Our gesture library features a variety of common gestures with up to 5-finger capabilities. Each of these gestures are completely customizable
     using the library and can be incorporated into any application.
 
     <br />
@@ -41,7 +41,7 @@ import { MDBBtn } from "mdb-vue-ui-kit";
     </template>
     
     <a href="./demo/index.html">
-      <MDBBtn color="light" size="sm" rounded>Demo</MDBBtn>
+      <MDBBtn color="primary" size="sm" rounded>Demo</MDBBtn>
     </a>
     Test out different gestures.
   </WelcomeItem>

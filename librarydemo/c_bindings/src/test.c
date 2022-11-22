@@ -42,7 +42,7 @@ void print_breakdown_touch_event(touch_event_t* ptr) {
 
 EMSCRIPTEN_KEEPALIVE
 unsigned long test_create_touch_event(touch_event_t* outptr) {
-    static touch_event_t default_out = {.type = TOUCH_EVENT_UP, .x = 1, .y = 2, .t = 5, .group = TOUCH_ID_UNDEFINED};
+    static touch_event_t default_out = {.type = TOUCH_EVENT_UP, .x = 1, .y = 2, .t = 5, .group = TOUCH_GROUP_UNDEFINED};
     print_breakdown_touch_event(outptr);
     // print_memory(outptr, sizeof(touch_event_t));
     *outptr = default_out;

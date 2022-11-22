@@ -34,13 +34,13 @@ static void zero_multistroke(multistroke_t* ms);
 static void calculate_center(multistroke_t* ms);
 static void calculate_transform(multistroke_t* ms);
 
-gesture_event_t* recognize_multistroke(touch_event_t* event) {
-    int free_index    = -1;
-    stroke_t* strokes = get_stroke();
+void recognize_multistroke(const touch_event_t* event) {
+    int free_index          = -1;
+    const stroke_t* strokes = get_stroke();
     for (int i = 0; i < MAX_TOUCHES; i++) {
         if (multistroke_d[i].uid == strokes[event->group].uid && multistroke_d[i].size) {
             update_multistroke(multistroke_d + i, event->group);
-            return 0;
+            return;
         } else if (free_index < 0 && !multistroke_d[i].size) {
             free_index = i;
         }
@@ -48,16 +48,15 @@ gesture_event_t* recognize_multistroke(touch_event_t* event) {
     if (free_index >= 0 && strokes[event->group].state == RECOGNIZER_STATE_IN_PROGRESS) {
         update_multistroke(multistroke_d + free_index, event->group);
     }
-    return 0;
 }
 
-multistroke_t* get_multistroke() {
+const multistroke_t* get_multistroke() {
     return multistroke_d;
 }
 
 static void update_multistroke(multistroke_t* ms, int group) {
-    stroke_t* strokes = get_stroke();
-    ms->uid           = strokes[group].uid;
+    const stroke_t* strokes = get_stroke();
+    ms->uid                 = strokes[group].uid;
     if (!ms->strokes[group]) {
         switch (ms->state) {
         case RECOGNIZER_STATE_NULL:
@@ -108,10 +107,10 @@ static void calculate_center(multistroke_t* ms) {
     ms->scale0    = ms->scale;
 
     // calculate new center
-    stroke_t* strokes = get_stroke();
-    ms->size          = 0;
-    float x           = 0;
-    float y           = 0;
+    const stroke_t* strokes = get_stroke();
+    ms->size                = 0;
+    float x                 = 0;
+    float y                 = 0;
     for (int i = 0; i < MAX_TOUCHES; i++) {
         if (ms->strokes[i]) {
             x += strokes[i].x;
@@ -143,9 +142,9 @@ static void calculate_center(multistroke_t* ms) {
 
 static void calculate_transform(multistroke_t* ms) {
     // calculate current center
-    stroke_t* strokes = get_stroke();
-    float cx          = 0;
-    float cy          = 0;
+    const stroke_t* strokes = get_stroke();
+    float cx                = 0;
+    float cy                = 0;
     for (int i = 0; i < MAX_TOUCHES; i++) {
         if (ms->strokes[i]) {
             cx += strokes[i].x;

@@ -24,11 +24,11 @@ void init_hold_and_drag();
 
 /// @brief Recognize hold and drag gesture
 /// @param event touch event to recognize
-gesture_event_t* recognize_hold_and_drag(touch_event_t* event);
+void recognize_hold_and_drag(const touch_event_t* event);
 
 /// @brief Access hold and drag data array of size MAX_TOUCHES
 /// @return Address of first element of hold data array of size MAX_TOUCHES
-hold_and_drag_t* get_hold_and_drag();
+const hold_and_drag_t* get_hold_and_drag();
 
 /// @brief Subscribe listener to hold and drag gesture updates
 /// @param listener accepts a const hold_and_drag_t*

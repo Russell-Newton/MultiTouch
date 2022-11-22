@@ -25,12 +25,12 @@ void init_stroke() {
     }
 }
 
-static void begin_stroke(touch_event_t* event);
-static void update_stroke(touch_event_t* event, char up);
+static void begin_stroke(const touch_event_t* event);
+static void update_stroke(const touch_event_t* event, char up);
 
 static void update_velocity(stroke_t* stroke, float vx, float vy);
 
-gesture_event_t* recognize_stroke(touch_event_t* event) {
+void recognize_stroke(const touch_event_t* event) {
     switch (event->type) {
     case TOUCH_EVENT_DOWN:
         begin_stroke(event);
@@ -42,14 +42,13 @@ gesture_event_t* recognize_stroke(touch_event_t* event) {
         update_stroke(event, 1);
         break;
     }
-    return 0;
 }
 
-stroke_t* get_stroke() {
+const stroke_t* get_stroke() {
     return stroke_d;
 }
 
-static void begin_stroke(touch_event_t* event) {
+static void begin_stroke(const touch_event_t* event) {
     if (event->group < MAX_TOUCHES && (stroke_d[event->group].state == RECOGNIZER_STATE_NULL ||
                                        stroke_d[event->group].state == RECOGNIZER_STATE_COMPLETED)) {
 
@@ -69,7 +68,7 @@ static void begin_stroke(touch_event_t* event) {
     }
 }
 
-static void update_stroke(touch_event_t* event, char up) {
+static void update_stroke(const touch_event_t* event, char up) {
     if (event->group < MAX_TOUCHES && stroke_d[event->group].state == RECOGNIZER_STATE_IN_PROGRESS) {
         touch_event_t* last = &latest_touch_events[event->group];
         if (event->t > last->t) {

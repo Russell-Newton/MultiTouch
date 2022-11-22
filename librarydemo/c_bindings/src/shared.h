@@ -35,7 +35,15 @@ typedef union out_data_structs {
 #undef X
 } out_data_t;
 
-typedef gesture_type_t out_type_t;
+typedef enum gesture_type {
+    GESTURE_TYPE_TAP,
+    GESTURE_TYPE_HOLD,
+    GESTURE_TYPE_HOLD_AND_DRAG,
+    GESTURE_TYPE_DOUBLE_TAP,
+    GESTURE_TYPE_DRAG,
+    GESTURE_TYPE_ZOOM,
+    GESTURE_TYPE_ROTATE
+} out_type_t;
 
 extern out_data_t out_data[];
 extern out_type_t out_types[];

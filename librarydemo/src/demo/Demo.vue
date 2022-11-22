@@ -19,7 +19,9 @@ import {test, testStruct} from "./assets/api_wrapper";
                 </div>
             </MDBCol>
             <MDBCol md="6" class="text-center">
-                <GestureCanvas :setParentText="setText" />
+                <GestureCanvas :setParentText="setText" :setDumpData="setDumpData"/>
+                <br />
+              <MDBBtn @click="runDumpData" color="light" size="sm" rounded>Dump Data</MDBBtn>
             </MDBCol>
             <MDBCol md="3">
                 <div class="p-3">
@@ -40,7 +42,8 @@ import {test, testStruct} from "./assets/api_wrapper";
 export default {
   data() {
     return {
-      myText: "Perform a Gesture"
+      myText: "Perform a Gesture",
+      dumpData: null
     }
   },
   methods: {
@@ -49,6 +52,14 @@ export default {
     },
     setTextSquare3() {
       this.setText(Module._square(3));
+    },
+    setDumpData(dumpData) {
+      this.dumpData = dumpData;
+    },
+    runDumpData() {
+      if (this.dumpData) {
+        this.dumpData();
+      }
     }
   }
 }

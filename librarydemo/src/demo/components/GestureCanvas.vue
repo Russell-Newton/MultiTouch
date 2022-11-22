@@ -18,13 +18,15 @@ export default {
     data() {
       return {
           dragging: {},
-          initialized: false
+          initialized: false,
+          capturedEvents: [],
       }  
     },
     props: {
         width: Number,
         height: Number,
         setParentText: Function,
+        setDumpData: Function,
     },
     created() {
       document.addEventListener("emscriptenready", this.initLib);  
@@ -35,6 +37,9 @@ export default {
       ctx.globalCompositeOperation = 'destination-over';
       ctx.fillStyle = "lightgrey";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      this.setDumpData(this.dumpCaptured);
+      this.initCapture();
     },
     methods: {
         initLib() {
@@ -46,6 +51,11 @@ export default {
             registerListeners();
             console.log("Library ready!");
             this.initialized = true;
+        },
+        initCapture() {
+            this.capturedEvents = [
+                "type,position.dx,position.dy,timeStamp,width,height,pressure"
+            ]
         },
         eventToCanvasCoordinate(event) {
             // need to use getBoundingClientRect for responsive <canvas> sizing
@@ -89,6 +99,7 @@ export default {
             this.logEvent(event, "up");
         },
         logEvent(event, type) {
+            this.captureEvent(event, type);
             let {x, y} = this.eventToCanvasCoordinate(event);
             let t = event.timeStamp / 1000;   // in ms by default
             let processed_gestures = processPointerEvent({ x, y, t }, type);
@@ -102,6 +113,29 @@ export default {
                 this.setParentText("No gestures caught from this event.");
             }
             //this.setParentText(`Caught ${type} touch_event at time ${t}: (${x}, ${y})`);
+        },
+        captureEvent(event, type) {
+            let {x, y} = this.eventToCanvasCoordinate(event);
+            this.capturedEvents.push(
+                `${type},${x},${y},0:00:${(event.timeStamp / 1000).toFixed(6)},${event.width},${event.height},${event.pressure}`
+            )
+        },
+        dumpCaptured() {
+          let filename = "capture.csv";
+
+          let contents = `${this.capturedEvents.join("\n")}\n`;
+
+          let element = document.createElement('a');
+          element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(contents));
+          element.setAttribute('download', filename);
+
+          element.style.display = 'none';
+          document.body.appendChild(element);
+
+          element.click();
+
+          document.body.removeChild(element);
+          this.initCapture();
         }
     }
 }

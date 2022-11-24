@@ -6,7 +6,7 @@ import {test, testStruct} from "./assets/api_wrapper";
 
 <template>
     <h1 class="text-center">MultiTouch Demo</h1>
-    <MDBContainer xxl>
+    <MDBContainer xxl style="height: 90vh; max-height: 90vh; overflow-y: auto; vertical-align: center">
         <MDBRow>
             <MDBCol md="3" class="d-none d-md-table-cell">
                 <div class="p-3">

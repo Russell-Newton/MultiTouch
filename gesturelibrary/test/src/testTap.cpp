@@ -40,10 +40,10 @@ protected:
                 switch (states[index]) {
                 case RECOGNIZER_STATE_NULL:
                     EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_NULL ||
-                                taps[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                                taps[index].state == RECOGNIZER_STATE_POSSIBLE);
                     break;
-                case RECOGNIZER_STATE_IN_PROGRESS:
-                    EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_IN_PROGRESS ||
+                case RECOGNIZER_STATE_POSSIBLE:
+                    EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_POSSIBLE ||
                                 taps[index].state == RECOGNIZER_STATE_FAILED ||
                                 taps[index].state == RECOGNIZER_STATE_COMPLETED);
                     if (taps[index].state == RECOGNIZER_STATE_COMPLETED) {
@@ -52,11 +52,11 @@ protected:
                     break;
                 case RECOGNIZER_STATE_COMPLETED:
                     EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_COMPLETED ||
-                                taps[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                                taps[index].state == RECOGNIZER_STATE_POSSIBLE);
                     break;
                 case RECOGNIZER_STATE_FAILED:
                     EXPECT_TRUE(taps[index].state == RECOGNIZER_STATE_FAILED ||
-                                taps[index].state == RECOGNIZER_STATE_IN_PROGRESS);
+                                taps[index].state == RECOGNIZER_STATE_POSSIBLE);
                     break;
                 default:
                     EXPECT_EQ(to_string(states[index]), "incorrect tap state found");

@@ -61,7 +61,7 @@ void recognize_ktap(const touch_event_t* event) {
     ktap_d[data_head].y = event->y;
     ktap_d[data_head].t = event->t;
     ktap_d[data_head].count = 1;
-    ktap_d[data_head].state = RECOGNIZER_STATE_POSSIBLE;
+    ktap_d[data_head].state = RECOGNIZER_STATE_COMPLETED;
     if (on_ktap) {
         on_ktap(ktap_d + data_head);
     }

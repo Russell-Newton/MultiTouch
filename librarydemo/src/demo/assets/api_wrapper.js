@@ -7,13 +7,13 @@ const GESTURE_TYPES_BACKWARD = {
   5 : "Zoom",
   6 : "Rotate",
   7 : "KTap"
-};
+}
 
 const TOUCH_TYPES_FORWARD = {
   down : 0,
   move : 1,
   up : 2
-};
+}
 
 const RECOGNIZER_STATES_BACKWARD = {
   0 : "null",
@@ -65,12 +65,12 @@ function convertGestureData(type, data_ptr) {
 function test() {
   let square = Module.cwrap('square', 'number', [ 'number' ]);
   console.log(square(3));
-};
+}
 
 function convertTouchEvent(pointer) {
   const fields = [ "type", "x", "y", "t", "group" ];
   return convertStruct(pointer, "touch_event", fields);
-};
+}
 
 function registerListeners() { Module._register_listeners(); }
 
@@ -98,33 +98,64 @@ function processPointerEvent(event, type) {
   Module._free(touch_ptr);
 
   return unpackOutData(nOutData);
-};
+}
+
+function jsonFormatter(key, val) {
+  return val.toFixed ? Number(val.toFixed(6)) : val;
+}
+
+const DATA_CONVERTERS = {
+  "Tap": (data) => JSON.stringify({x: data.x, y: data.y}, jsonFormatter, 2),
+  "Hold": (data) => JSON.stringify({x: data.x, y: data.y}, jsonFormatter, 2),
+  "Hold & Drag": (data) => JSON.stringify({x: data.x, y: data.y, vx: data.vx, vy: data.vy}, jsonFormatter, 2),
+  "Double-Tap": (data) => JSON.stringify({x: data.x, y: data.y}, jsonFormatter, 2),
+  "Drag": (data) => JSON.stringify({x: data.x, y: data.y, vx: data.vx, vy: data.vy}, jsonFormatter, 2),
+  "Zoom": (data) => JSON.stringify({size: data.size, scale: data.scale}, jsonFormatter, 2),
+  "Rotate": (data) => JSON.stringify({size: data.size, rotation: data.rotation}, jsonFormatter, 2),
+  "KTap": (data) => JSON.stringify({x: data.x, y: data.y, count: data.count}, jsonFormatter, 2),
+}
 
 function outDataToString(outData) {
   let inProgress = "Gestures in progress:\n";
   let completed = "Gestures completed:\n";
+  let dataText = "";
+  let dataCounts = {};
   let bullet = String.fromCodePoint(8226);
   for (let data of outData) {
     if (data.data.state == "in progress") {
       inProgress += `  ${bullet} ${data.event}
 `;
+      if (!(data.event in dataCounts)) {
+        dataCounts[data.event] = 1;
+      } else {
+        dataCounts[data.event] += 1;
+      }
+      dataText += `${data.event} ${dataCounts[data.event]}: ${DATA_CONVERTERS[data.event](data.data)}
+`;
     }
     if (data.data.state == "completed") {
       completed += `  ${bullet} ${data.event}
+`;
+      if (!(data.event in dataCounts)) {
+        dataCounts[data.event] = 1;
+      } else {
+        dataCounts[data.event] += 1;
+      }
+      dataText += `${data.event} ${dataCounts[data.event]}: ${DATA_CONVERTERS[data.event](data.data)}
 `;
     }
   }
 
   if (inProgress && completed) {
-    return `${inProgress}\n${completed}`;
+    return {simple: `${inProgress}\n${completed}`, advanced: dataText};
   }
   if (inProgress) {
-    return `${inProgress}`;
+    return {simple: `${inProgress}`, advanced: dataText};
   }
   if (completed) {
-    return `${completed}`;
+    return {simple: `${completed}`, advanced: dataText};
   }
-  return "No gestures recognized."
+  return {simple: "No gestures recognized.", advanced: dataText}
 }
 
 function testStruct() {
@@ -133,12 +164,8 @@ function testStruct() {
   Module._free(ptr);
 
   console.log(out);
-};
+}
 
 export {
-  test,
-  testStruct,
-  processPointerEvent,
-  registerListeners,
-  outDataToString
+  test, testStruct, processPointerEvent, registerListeners, outDataToString
 }

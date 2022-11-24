@@ -4,6 +4,7 @@
 #include "drag.h"
 #include "hold.h"
 #include "hold_and_drag.h"
+#include "ktap.h"
 #include "multidrag.h"
 #include "multistroke.h"
 #include "rotate.h"
@@ -36,6 +37,7 @@ int init_gesturelib() {
 
     add_recognizer(recognize_stroke, init_stroke);
     add_recognizer(recognize_multistroke, init_multistroke);
+    add_recognizer(recognize_ktap, init_ktap);
     add_recognizer(recognize_tap, init_tap);
     add_recognizer(recognize_double_tap, 0);
     add_recognizer(recognize_hold, init_hold);

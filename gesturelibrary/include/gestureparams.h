@@ -37,3 +37,7 @@
 
 // Minimum rotation angle in radians to be a rotate.
 #define ROTATE_ANGLE_MIN (M_PI / 12)
+
+#define KTAP_DTIME_MIN 0.1
+#define KTAP_DTIME_MAX 0.75
+#define KTAP_DIST_MAX TAP_DIST_MAX

@@ -5,6 +5,7 @@
 #include "gesturelib.h"
 #include "hold.h"
 #include "hold_and_drag.h"
+#include "ktap.h"
 #include "recognizer.h"
 #include "rotate.h"
 #include "tap.h"
@@ -27,7 +28,8 @@
     X(double_tap, DOUBLE_TAP)                                                                                          \
     X(drag, DRAG)                                                                                                      \
     X(zoom, ZOOM)                                                                                                      \
-    X(rotate, ROTATE)
+    X(rotate, ROTATE)                                                                                                  \
+    X(ktap, KTAP)
 
 typedef union out_data_structs {
 #define X(type, ...) CAT(type, _t) type;
@@ -42,7 +44,8 @@ typedef enum gesture_type {
     GESTURE_TYPE_DOUBLE_TAP,
     GESTURE_TYPE_DRAG,
     GESTURE_TYPE_ZOOM,
-    GESTURE_TYPE_ROTATE
+    GESTURE_TYPE_ROTATE,
+    GESTURE_TYPE_KTAP
 } out_type_t;
 
 extern out_data_t out_data[];

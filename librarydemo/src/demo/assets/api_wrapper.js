@@ -5,7 +5,8 @@ const GESTURE_TYPES_BACKWARD = {
   3 : "Double-Tap",
   4 : "Drag",
   5 : "Zoom",
-  6 : "Rotate"
+  6 : "Rotate",
+  7 : "KTap"
 };
 
 const TOUCH_TYPES_FORWARD = {
@@ -29,7 +30,8 @@ const GESTURE_DATA_NAMES_BACKWARD = {
   3 : "double_tap",
   4 : "drag",
   5 : "zoom",
-  6 : "rotate"
+  6 : "rotate",
+  7 : "ktap"
 }
 
 const GESTURE_DATA_FIELDS_BACKWARD =
@@ -40,7 +42,8 @@ const GESTURE_DATA_FIELDS_BACKWARD =
       3 : [ "state", "x", "y", "t" ],
       4 : [ "state", "group", "x0", "y0", "x", "y", "vx", "vy" ],
       5 : [ "state", "uid", "size", "scale" ],
-      6 : [ "state", "uid", "size", "rotation" ]
+      6 : [ "state", "uid", "size", "rotation" ],
+      7 : [ "state", "x", "y", "t", "count" ]
     }
 
 function convertStruct(pointer, struct_name, fields) {

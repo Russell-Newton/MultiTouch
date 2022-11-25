@@ -1,9 +1,10 @@
 # MultiTouch
 
+<p style="color: red">TODO - switch image branch links to main</p>
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/librarydemo/public/click-2384-black.svg#gh-light-mode-only">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/librarydemo/public/click-2384-white.svg#gh-dark-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/click-2384-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/click-2384-white.svg#gh-dark-mode-only">
 </p>
 
 [![Built with CMake](https://img.shields.io/badge/Built%20with-CMake-blue?style=flat-square&logo=cmake&color=064F8C)](#installation)
@@ -30,8 +31,8 @@ Spring-Fall 2022 Junior Design program.
 * [Installation](#installation)
 * [Usage](#usage)
 * [Design](#design)
-  * [Touch Preprocessing](#touch-preprocessing)
-  * [Recognizers](#recognizers)
+    * [Touch Preprocessing](#touch-preprocessing)
+    * [Recognizers](#recognizers)
 * [Release Notes](#release-notes)
 
 ---
@@ -67,11 +68,7 @@ make
 
 ## Usage
 
-1. Configure any gesture recognition parameters before [building with CMake](#installation) by modifying
-   [gestureparams.h](gesturelibrary/include/gestureparams.h). A full list of configurable parameters can be found in
-   [the documentation for `gestureparams.h`](https://russell-newton.github.io/MultiTouch/docs/gestureparams_8h.html).
-   <br>
-   Example configuration:
+1. <p style="color: red">TODO - explain configuration [blocked by #211]</p>
 2. Create an adapter for your touch input device. Adapters transform device input data into `touch_event_t`s.
 3. Include `<gesturelib.h>`.
 4. At program startup, run `init_gesturelib()`.
@@ -91,25 +88,29 @@ recognizer's state machine updates its internal state. A listener should be regi
 `init_gesturelib()`.
 
 Example:
+
 ```c
 // main.c
-#include <stdio.h>
-#include <gesturelib.h>
-#include <tap.h>
+#include
+<stdio.h>
+#include
+<gesturelib.h>
+#include
+<tap.h>
 
 void tap_listener(const tap_t* event) {
-    if (event.type == RECOGNIZER_STATE_COMPLETED) {
-        printf("Tap received at (%.3f, %.3f)!", event.x, event.y);
-    }
+if (event.type == RECOGNIZER_STATE_COMPLETED) {
+printf("Tap received at (%.3f, %.3f)!", event.x, event.y);
+}
 }
 
 int main(int argc, char *argv[]) {
-    init_gesturelib();
-    
-    // register the new listener
-    set_on_tap(tap_listener);
-    
-    // rest of program
+init_gesturelib();
+
+// register the new listener
+set_on_tap(tap_listener);
+
+// rest of program
 }
 ```
 
@@ -129,12 +130,12 @@ to events created by the first finger pressed, 1 to the second, 2 to the third, 
 Touch group assignment is determined by event type:
 
 * If the event is a down event, attempt to assign it to the first unused group. Track this event as the most recent
-event in the group it was assigned to, marking the group as active. If there are no unassigned groups, leave the group
-as unassigned.
+  event in the group it was assigned to, marking the group as active. If there are no unassigned groups, leave the group
+  as unassigned.
 * If the event is a move event, find the active group this event is closest to. Assign it to that group and track this
-event as the most recent in the group. If there are no active groups, leave it unassigned.
+  event as the most recent in the group. If there are no active groups, leave it unassigned.
 * If the event is an up event, perform the same logic as with a move event. This time when a group is assigned, the
-group is marked as inactive.
+  group is marked as inactive.
 
 > ℹ️ Group assignment ensures that fingers generate the same group as long as they're in contact with the touch device.
 
@@ -151,8 +152,9 @@ gesture they recognize.
 
 Builtin multi-finger recognizers are more complicated and store data about every possible group for every possible user
 id. User id is set by the data adapter and could be determined by factors like which device received the touch or where
-on the screen the touch was received. 
-> ⚠️ All touch events with the same uid will be considered as part of the same multi-finger gesture for recognition purposes.
+on the screen the touch was received.
+> ⚠️ All touch events with the same uid will be considered as part of the same multi-finger gesture for recognition
+> purposes.
 
 ### Gestures
 
@@ -161,9 +163,36 @@ additional processing on strokes and other composite gestures.
 
 #### Stroke
 
-This section to be filled in later.
+Stroke is a simple gesture with a simple state machine:
+<p align="center">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/stroke-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/stroke-sm-white.svg#gh-dark-mode-only">
+</p>
+
+The state updates are less important than the data that stroke collects. Stroke collects data on:
+
+* Initial down event position and time
+* Current move/up event position and time
+* Move event speed (as a moving average with configurable window size)
+* Touch group and user
+
+When creating more complicated gestures, having access to this data can be incredibly useful.
+
+#### Multistroke
+
+Multistroke is a multi-finger counterpart to stroke. All strokes with the same user id get grouped into the same
+multistroke. The first down event starts a multistroke, and the last up event for the user id ends the gesture. In
+addition to the information contained in each stroke, a multistroke also tracks:
+
+* Current centroid position
+* Centroid instantaneous displacement
+* Least-squares estimated rotation and zoom information
+
+<p style="color: red">TODO - add more</p>
 
 ---
+
+<p style="color: red">TODO - add issue links</p>
 
 ## Release Notes
 

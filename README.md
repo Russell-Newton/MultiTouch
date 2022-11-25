@@ -33,11 +33,15 @@ Spring-Fall 2022 Junior Design program.
 * [Design](#design)
     * [Touch Preprocessing](#touch-preprocessing)
     * [Recognizers](#recognizers)
+    * [Listeners](#listeners)
+    * [Gestures](#gestures)
 * [Release Notes](#release-notes)
 
 ---
 
 ## Installation
+
+<p style="color: red">TODO - build from source, include in project, pre-built release</p>
 
 1. Clone the repo.
 
@@ -155,6 +159,10 @@ id. User id is set by the data adapter and could be determined by factors like w
 on the screen the touch was received.
 > ⚠️ All touch events with the same uid will be considered as part of the same multi-finger gesture for recognition
 > purposes.
+
+### Listeners
+
+<p style="color: red">TODO - Populate</p>
 
 ### Gestures
 

@@ -25,12 +25,17 @@ void recognize_double_tap(const touch_event_t* event) {
     const repeat_tap_t* check = get_repeat_tap() + repeat_tap_idx;
 
     if (check->count % 2 == 0) {
-        double_tap_d[repeat_tap_idx].state = check->state;
-        double_tap_d[repeat_tap_idx].x     = check->x;
-        double_tap_d[repeat_tap_idx].y     = check->y;
-        double_tap_d[repeat_tap_idx].t     = check->t;
+        int state_changed = 0;
+        if (double_tap_d[repeat_tap_idx].state != check->state) {
+            double_tap_d[repeat_tap_idx].state = check->state;
+            state_changed                      = 1;
+        }
 
-        if (on_double_tap) {
+        double_tap_d[repeat_tap_idx].x = check->x;
+        double_tap_d[repeat_tap_idx].y = check->y;
+        double_tap_d[repeat_tap_idx].t = check->t;
+
+        if (state_changed && on_double_tap) {
             on_double_tap(double_tap_d + repeat_tap_idx);
         }
     }

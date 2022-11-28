@@ -35,19 +35,22 @@ void update_ktap(event_type_t event_type, const stroke_t* stroke) {
         check->x = stroke->x;
         check->y = stroke->y;
         check->t = stroke->t;
-        check->count++;
         check->group = stroke->group;
 
         if (stroke_squared_disp > SQUARE(TAP_DIST_MAX) || stroke_dtime > TAP_TIME_MAX) {
             check->state = RECOGNIZER_STATE_FAILED;
+
+            if (on_ktap) {
+                on_ktap(check);
+            }
         } else if (event_type == TOUCH_EVENT_UP) {
             check->state = RECOGNIZER_STATE_COMPLETED;
+
+            if (on_ktap) {
+                on_ktap(check);
+            }
         } else {
             check->state = RECOGNIZER_STATE_POSSIBLE;
-        }
-
-        if (on_ktap) {
-            on_ktap(check);
         }
     }
 }
@@ -89,6 +92,7 @@ void new_ktap(const stroke_t* stroke) {
     ktap_d[data_head].t     = stroke->t;
     ktap_d[data_head].count = 1;
     ktap_d[data_head].state = RECOGNIZER_STATE_POSSIBLE;
+    ktap_d[data_head].group = stroke->group;
     if (on_ktap) {
         on_ktap(ktap_d + data_head);
     }

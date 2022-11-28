@@ -1,0 +1,5 @@
+type,down,position.dx,position.dy,timeStamp,distance,distanceMax,distanceMin,kind,orientation,pressure,pressureMax,pressureMin,radiusMajor,radiusMinor,radiusMax,radiusMin,size,tilt
+down,true,705,357,0:00:17.092699,0,0,0,PointerDeviceKind.mouse,0,0.5,1,0,0,0,0,0,0,0
+up,false,705,357,0:00:17.160899,0,0,0,PointerDeviceKind.mouse,0,0,1,0,0,0,0,0,0,0
+down,true,812,339,0:00:17.276500,0,0,0,PointerDeviceKind.mouse,0,0.5,1,0,0,0,0,0,0,0
+up,false,813,333,0:00:17.362799,0,0,0,PointerDeviceKind.mouse,0,0,1,0,0,0,0,0,0,0

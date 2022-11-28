@@ -17,7 +17,7 @@ void init_double_tap(void) {
 }
 
 void recognize_double_tap(const touch_event_t* event) {
-    (void) event;
+    (void)event;
     int repeat_tap_idx = get_updated_repeat_tap();
     if (repeat_tap_idx == -1) {
         return;

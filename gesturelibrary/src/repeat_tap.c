@@ -1,14 +1,14 @@
-#include "ktap.h"
+#include "repeat_tap.h"
 
 #include "gestureparams.h"
 #include "stroke.h"
 #include "utils.h"
 
 // implemented as a circular queue of limited size
-ktap_t ktap_d[MAX_TOUCHES];
-void (*on_ktap)(const ktap_t*) = 0;
+repeat_tap_t ktap_d[MAX_TOUCHES];
+void (*on_ktap)(const repeat_tap_t*) = 0;
 
-void init_ktap(void) {
+void init_repeat_tap(void) {
     for (int i = 0; i < MAX_TOUCHES; i++) {
         ktap_d[i].state = RECOGNIZER_STATE_NULL;
         ktap_d[i].t     = 0;
@@ -20,11 +20,11 @@ void init_ktap(void) {
     on_ktap = 0;
 }
 
-void update_ktap(event_type_t event_type, const stroke_t* stroke) {
+void update_repeat_tap(event_type_t event_type, const stroke_t* stroke) {
     float stroke_squared_disp = SQUARE_SUM(stroke->x - stroke->x0, stroke->y - stroke->y0) > SQUARE(TAP_DIST_MAX);
     float stroke_dtime        = stroke->t - stroke->t0;
     for (int i = 0; i < MAX_TOUCHES; i++) {
-        ktap_t* check = ktap_d + i;
+        repeat_tap_t* check = ktap_d + i;
 
         // only update the slot this tap is modifying
         if (check->state != RECOGNIZER_STATE_POSSIBLE || check->group != stroke->group) {
@@ -54,9 +54,9 @@ void update_ktap(event_type_t event_type, const stroke_t* stroke) {
     }
 }
 
-void new_ktap(const stroke_t* stroke) {
+void new_repeat_tap(const stroke_t* stroke) {
     for (int i = 0; i < MAX_TOUCHES; i++) {
-        ktap_t* check = ktap_d + i;
+        repeat_tap_t* check = ktap_d + i;
 
         // can't associate a new tap to an in-progress slot
         if (check->state == RECOGNIZER_STATE_POSSIBLE || check->state == RECOGNIZER_STATE_FAILED) {
@@ -109,22 +109,21 @@ void new_ktap(const stroke_t* stroke) {
     }
 }
 
-void recognize_ktap(const touch_event_t* event) {
+void recognize_repeat_tap(const touch_event_t* event) {
     // grab the now completed stroke associated with this event
     const stroke_t* stroke = get_stroke() + event->group;
     if (event->type == TOUCH_EVENT_DOWN) {
-        new_ktap(stroke);
+        new_repeat_tap(stroke);
         return;
     }
-    update_ktap(event->type, stroke);
-    return;
+    update_repeat_tap(event->type, stroke);
 }
 
-const ktap_t* get_ktap(void) {
+const repeat_tap_t* get_ktap(void) {
     return ktap_d;
 }
 
-int set_on_ktap(void (*listener)(const ktap_t*)) {
+int set_on_ktap(void (*listener)(const repeat_tap_t*)) {
     if (on_ktap) {
         on_ktap = listener;
         return 0;

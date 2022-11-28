@@ -5,7 +5,7 @@
 #include "gesturelib.h"
 #include "hold.h"
 #include "hold_and_drag.h"
-#include "ktap.h"
+#include "repeat_tap.h"
 #include "recognizer.h"
 #include "rotate.h"
 #include "tap.h"

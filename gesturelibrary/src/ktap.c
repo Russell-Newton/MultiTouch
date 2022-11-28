@@ -6,7 +6,7 @@
 
 // implemented as a circular queue of limited size
 ktap_t ktap_d[MAX_TOUCHES];
-int data_head = 0;
+int data_head                  = 0;
 void (*on_ktap)(const ktap_t*) = 0;
 
 void init_ktap(void) {
@@ -16,28 +16,53 @@ void init_ktap(void) {
         ktap_d[i].x     = 0;
         ktap_d[i].y     = 0;
         ktap_d[i].count = 0;
+        ktap_d[i].group = TOUCH_GROUP_UNDEFINED;
     }
     on_ktap = 0;
 }
 
-void recognize_ktap(const touch_event_t* event) {
-    // break if this event isn't an up event (we really don't care about anything else with taps)
-    if (event->type != TOUCH_EVENT_UP) {
-        return;
-    }
-
-    // grab the now completed stroke associated with this event
-    const stroke_t* stroke = get_stroke() + event->group;
-
-    // break if this stroke wasn't a tap
-    if (SQUARE_SUM(stroke->x - stroke->x0, stroke->y - stroke->y0) > SQUARE(TAP_DIST_MAX)) {
-        return;
-    }
-
+void update_ktap(event_type_t event_type, const stroke_t* stroke) {
+    float stroke_squared_disp = SQUARE_SUM(stroke->x - stroke->x0, stroke->y - stroke->y0) > SQUARE(TAP_DIST_MAX);
+    float stroke_dtime        = stroke->t - stroke->t0;
     for (int i = 0; i < MAX_TOUCHES; i++) {
         ktap_t* check = ktap_d + i;
+
+        // only update the slot this tap is modifying
+        if (check->state != RECOGNIZER_STATE_IN_PROGRESS || check->group != stroke->group) {
+            continue;
+        }
+
+        check->x = stroke->x;
+        check->y = stroke->y;
+        check->t = stroke->t;
+        check->count++;
+        check->group = stroke->group;
+
+        if (stroke_squared_disp > SQUARE(TAP_DIST_MAX) || stroke_dtime > TAP_TIME_MAX) {
+            check->state = RECOGNIZER_STATE_FAILED;
+        } else if (event_type == TOUCH_EVENT_UP) {
+            check->state = RECOGNIZER_STATE_COMPLETED;
+        } else {
+            check->state = RECOGNIZER_STATE_IN_PROGRESS;
+        }
+
+        if (on_ktap) {
+            on_ktap(check);
+        }
+    }
+}
+
+void new_ktap(const stroke_t* stroke) {
+    for (int i = 0; i < MAX_TOUCHES; i++) {
+        ktap_t* check = ktap_d + i;
+
+        // can't associate a new tap to an in-progress slot
+        if (check->state == RECOGNIZER_STATE_IN_PROGRESS || check->state == RECOGNIZER_STATE_FAILED) {
+            continue;
+        }
+
         float squared_dist = SQUARED_DIST(check, stroke);
-        float dtime = stroke->t - check->t;
+        float dtime        = stroke->t - check->t;
 
         // if the tap can't be associated to this slot, go to next one
         if (squared_dist > SQUARE(KTAP_DIST_MAX) || dtime < KTAP_DTIME_MIN || dtime > KTAP_DTIME_MAX) {
@@ -45,11 +70,13 @@ void recognize_ktap(const touch_event_t* event) {
         }
 
         // if a valid slot has been found, associate with this one
-        check->x = event->x;
-        check->y = event->y;
-        check->t = event->t;
+        check->x = stroke->x;
+        check->y = stroke->y;
+        check->t = stroke->t;
         check->count++;
-        check->state = RECOGNIZER_STATE_COMPLETED;
+        check->state = RECOGNIZER_STATE_IN_PROGRESS;
+        check->group = stroke->group;
+
         if (on_ktap) {
             on_ktap(check);
         }
@@ -57,15 +84,26 @@ void recognize_ktap(const touch_event_t* event) {
     }
 
     // if no valid slot was found, replace the oldest slot
-    ktap_d[data_head].x = event->x;
-    ktap_d[data_head].y = event->y;
-    ktap_d[data_head].t = event->t;
+    ktap_d[data_head].x     = stroke->x;
+    ktap_d[data_head].y     = stroke->y;
+    ktap_d[data_head].t     = stroke->t;
     ktap_d[data_head].count = 1;
-    ktap_d[data_head].state = RECOGNIZER_STATE_COMPLETED;
+    ktap_d[data_head].state = RECOGNIZER_STATE_IN_PROGRESS;
     if (on_ktap) {
         on_ktap(ktap_d + data_head);
     }
     data_head = (data_head + 1) % MAX_TOUCHES;
+    return;
+}
+
+void recognize_ktap(const touch_event_t* event) {
+    // grab the now completed stroke associated with this event
+    const stroke_t* stroke = get_stroke() + event->group;
+    if (event->type == TOUCH_EVENT_DOWN) {
+        new_ktap(stroke);
+        return;
+    }
+    update_ktap(event->type, stroke);
     return;
 }
 

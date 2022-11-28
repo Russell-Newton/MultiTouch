@@ -9,6 +9,8 @@ typedef struct ktap {
     float y;
     float t;
     int count;
+
+    unsigned int group;
 } ktap_t;
 
 void init_ktap(void);

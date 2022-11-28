@@ -16,9 +16,8 @@ void init_tap(void) {
     on_tap = 0;
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-parameter"
 void recognize_tap(const touch_event_t* event) {
+    (void) event;
     int repeat_tap_idx = get_updated_repeat_tap();
     if (repeat_tap_idx == -1) {
         return;

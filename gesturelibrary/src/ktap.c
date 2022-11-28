@@ -6,7 +6,6 @@
 
 // implemented as a circular queue of limited size
 ktap_t ktap_d[MAX_TOUCHES];
-int data_head                  = 0;
 void (*on_ktap)(const ktap_t*) = 0;
 
 void init_ktap(void) {
@@ -86,18 +85,28 @@ void new_ktap(const stroke_t* stroke) {
         return;
     }
 
-    // if no valid slot was found, replace the oldest slot
-    ktap_d[data_head].x     = stroke->x;
-    ktap_d[data_head].y     = stroke->y;
-    ktap_d[data_head].t     = stroke->t;
-    ktap_d[data_head].count = 1;
-    ktap_d[data_head].state = RECOGNIZER_STATE_POSSIBLE;
-    ktap_d[data_head].group = stroke->group;
-    if (on_ktap) {
-        on_ktap(ktap_d + data_head);
+    // if no valid slot was found, replace the oldest not in-progress slot
+    int grab_slot = -1;
+    for (int i = 0; i < MAX_TOUCHES; i++) {
+        if (ktap_d[i].state == RECOGNIZER_STATE_POSSIBLE) {
+            continue;
+        }
+        if (grab_slot == -1 || ktap_d[i].t < ktap_d[grab_slot].t) {
+            grab_slot = i;
+        }
     }
-    data_head = (data_head + 1) % MAX_TOUCHES;
-    return;
+    if (grab_slot == -1) {
+        return;
+    }
+    ktap_d[grab_slot].x     = stroke->x;
+    ktap_d[grab_slot].y     = stroke->y;
+    ktap_d[grab_slot].t     = stroke->t;
+    ktap_d[grab_slot].count = 1;
+    ktap_d[grab_slot].state = RECOGNIZER_STATE_POSSIBLE;
+    ktap_d[grab_slot].group = stroke->group;
+    if (on_ktap) {
+        on_ktap(ktap_d + grab_slot);
+    }
 }
 
 void recognize_ktap(const touch_event_t* event) {

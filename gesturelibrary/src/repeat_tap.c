@@ -67,7 +67,7 @@ void new_repeat_tap(const stroke_t* stroke) {
         float dtime        = stroke->t - check->t;
 
         // if the tap can't be associated to this slot, go to next one
-        if (squared_dist > SQUARE(KTAP_DIST_MAX) || dtime < KTAP_DTIME_MIN || dtime > KTAP_DTIME_MAX) {
+        if (squared_dist > SQUARE(REPEAT_TAP_DIST_MAX) || dtime < REPEAT_TAP_DTIME_MIN || dtime > REPEAT_TAP_DTIME_MAX) {
             continue;
         }
 

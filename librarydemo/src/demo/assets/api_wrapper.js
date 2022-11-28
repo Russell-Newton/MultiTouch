@@ -43,7 +43,7 @@ const GESTURE_DATA_FIELDS_BACKWARD =
       4 : [ "state", "group", "x0", "y0", "x", "y", "vx", "vy" ],
       5 : [ "state", "uid", "size", "scale" ],
       6 : [ "state", "uid", "size", "rotation" ],
-      7 : [ "state", "x", "y", "t", "count" ]
+      7 : [ "state", "x", "y", "t", "count", "group" ]
     }
 
 function convertStruct(pointer, struct_name, fields) {

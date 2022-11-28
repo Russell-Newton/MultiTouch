@@ -28,7 +28,7 @@ void update_ktap(event_type_t event_type, const stroke_t* stroke) {
         ktap_t* check = ktap_d + i;
 
         // only update the slot this tap is modifying
-        if (check->state != RECOGNIZER_STATE_IN_PROGRESS || check->group != stroke->group) {
+        if (check->state != RECOGNIZER_STATE_POSSIBLE || check->group != stroke->group) {
             continue;
         }
 
@@ -43,7 +43,7 @@ void update_ktap(event_type_t event_type, const stroke_t* stroke) {
         } else if (event_type == TOUCH_EVENT_UP) {
             check->state = RECOGNIZER_STATE_COMPLETED;
         } else {
-            check->state = RECOGNIZER_STATE_IN_PROGRESS;
+            check->state = RECOGNIZER_STATE_POSSIBLE;
         }
 
         if (on_ktap) {
@@ -57,7 +57,7 @@ void new_ktap(const stroke_t* stroke) {
         ktap_t* check = ktap_d + i;
 
         // can't associate a new tap to an in-progress slot
-        if (check->state == RECOGNIZER_STATE_IN_PROGRESS || check->state == RECOGNIZER_STATE_FAILED) {
+        if (check->state == RECOGNIZER_STATE_POSSIBLE || check->state == RECOGNIZER_STATE_FAILED) {
             continue;
         }
 
@@ -74,7 +74,7 @@ void new_ktap(const stroke_t* stroke) {
         check->y = stroke->y;
         check->t = stroke->t;
         check->count++;
-        check->state = RECOGNIZER_STATE_IN_PROGRESS;
+        check->state = RECOGNIZER_STATE_POSSIBLE;
         check->group = stroke->group;
 
         if (on_ktap) {
@@ -88,7 +88,7 @@ void new_ktap(const stroke_t* stroke) {
     ktap_d[data_head].y     = stroke->y;
     ktap_d[data_head].t     = stroke->t;
     ktap_d[data_head].count = 1;
-    ktap_d[data_head].state = RECOGNIZER_STATE_IN_PROGRESS;
+    ktap_d[data_head].state = RECOGNIZER_STATE_POSSIBLE;
     if (on_ktap) {
         on_ktap(ktap_d + data_head);
     }

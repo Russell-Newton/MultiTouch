@@ -1,5 +1,6 @@
 #include "testFlutter.hpp"
 
+#include <cmath>
 #include <iostream>
 
 extern "C" {

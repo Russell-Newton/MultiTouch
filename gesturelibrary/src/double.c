@@ -3,7 +3,7 @@
 #include "gestureparams.h"
 #include "utils.h"
 
-// #include <stdio.h>
+#include <stdio.h>
 
 double_tap_t double_tap_d[MAX_TOUCHES];
 void (*on_double_tap)(const double_tap_t*) = 0;
@@ -46,7 +46,6 @@ void recognize_double_tap(const touch_event_t* event) {
     //         update_double_taps(taps + i, event);  // we don't need event, but it was for the sake of security
     //     }
     // }
-
     update_double_taps(taps + event->group, event);
 }
 
@@ -66,6 +65,8 @@ static void update_double_taps(const tap_t* tap, const touch_event_t* event) {
     int update         = 1;
     int group_index    = -1;  // double tap with the closest time the completed tap, will group with this tap
     // int group_number;
+
+    int found = 0;
 
     // float x_diff;
     // float y_diff;
@@ -102,6 +103,7 @@ static void update_double_taps(const tap_t* tap, const touch_event_t* event) {
                     if (time_diff < DOUBLE_TIME_DIFF) {
                         // found the corresponding d_tap
                         double_tap_d[i].state = RECOGNIZER_STATE_COMPLETED;
+                        found                 = 1;
                         null_index            = -1;
                         update                = 0;
 
@@ -138,6 +140,9 @@ static void update_double_taps(const tap_t* tap, const touch_event_t* event) {
             default:
                 break;
             }
+
+            if (found)
+                break;
         }
 
         if (update) {
@@ -149,13 +154,13 @@ static void update_double_taps(const tap_t* tap, const touch_event_t* event) {
             }
         }
 
-        // for (int j = 0; j < MAX_TOUCHES; j++) {
-        //     printf("Printing state: %d, x: %f, x0: %f, group: %d\n",
-        //            double_tap_d[j].state,
-        //            double_tap_d[j].x,
-        //            double_tap_d[j].x0,
-        //            double_tap_d[j].group);
-        // }
+        for (int j = 0; j < MAX_TOUCHES; j++) {
+            printf("Printing state: %d, x: %f, x0: %f, group: %d\n",
+                   double_tap_d[j].state,
+                   double_tap_d[j].x,
+                   double_tap_d[j].x0,
+                   double_tap_d[j].group);
+        }
     }
 }
 

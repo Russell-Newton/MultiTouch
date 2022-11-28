@@ -124,4 +124,5 @@ INSTANTIATE_TEST_SUITE_P(DoubleTapTests,
                                          DoubleTapTestParams{"double/phone_8", 1, 5},
                                          DoubleTapTestParams{"double/phone_9", 1, 5},
                                          DoubleTapTestParams{"double/fail_case", 0, 5},
-                                         DoubleTapTestParams{"double/fail_case_2", 0, 5}));
+                                         DoubleTapTestParams{"double/fail_case_2", 0, 5},
+                                         DoubleTapTestParams{"double/phone_10", 1, 4}));

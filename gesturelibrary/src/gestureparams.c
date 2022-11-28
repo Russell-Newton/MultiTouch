@@ -18,5 +18,5 @@ float ZOOM_SCALE_MIN = 0.15f;
 
 float ROTATE_ANGLE_MIN = M_PI / 12;
 
-float KTAP_DTIME_MIN = 0.1;
-float KTAP_DTIME_MAX =  0.75;
+float REPEAT_TAP_DTIME_MIN = 0.1;
+float REPEAT_TAP_DTIME_MAX =  0.75;

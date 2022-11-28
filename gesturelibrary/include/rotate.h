@@ -13,6 +13,8 @@ typedef struct rotate {
     int size;
     // rotation counterclockwise in radians
     float rotation;
+    // has rotated at some point during the gesture
+    char rotated;
 } rotate_t;
 
 /// @brief Initialize rotate data structures

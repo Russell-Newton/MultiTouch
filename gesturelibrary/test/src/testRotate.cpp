@@ -105,4 +105,8 @@ INSTANTIATE_TEST_SUITE_P(RotateParamTests,
 
                              // 2 finger rotates
                              RotateTestParams("res/rotate/phone_1.csv", 1),
-                             RotateTestParams("res/rotate/phone_2.csv", 1)));
+                             RotateTestParams("res/rotate/phone_2.csv", 1),
+
+                             // 2 finger rotate but 1 finger is still
+                             // ending position has 0 rotation
+                             RotateTestParams("res/rotate/phone_3.csv", 1)));

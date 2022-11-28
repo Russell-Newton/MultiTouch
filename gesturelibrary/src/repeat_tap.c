@@ -7,6 +7,7 @@
 // implemented as a circular queue of limited size
 repeat_tap_t ktap_d[MAX_TOUCHES];
 void (*on_ktap)(const repeat_tap_t*) = 0;
+int updated_repeat_tap;
 
 void init_repeat_tap(void) {
     for (int i = 0; i < MAX_TOUCHES; i++) {
@@ -20,7 +21,7 @@ void init_repeat_tap(void) {
     on_ktap = 0;
 }
 
-void update_repeat_tap(event_type_t event_type, const stroke_t* stroke) {
+static void update_repeat_tap(event_type_t event_type, const stroke_t* stroke) {
     float stroke_squared_disp = SQUARE_SUM(stroke->x - stroke->x0, stroke->y - stroke->y0) > SQUARE(TAP_DIST_MAX);
     float stroke_dtime        = stroke->t - stroke->t0;
     for (int i = 0; i < MAX_TOUCHES; i++) {
@@ -51,10 +52,12 @@ void update_repeat_tap(event_type_t event_type, const stroke_t* stroke) {
         } else {
             check->state = RECOGNIZER_STATE_POSSIBLE;
         }
+
+        updated_repeat_tap = i;
     }
 }
 
-void new_repeat_tap(const stroke_t* stroke) {
+static void new_repeat_tap(const stroke_t* stroke) {
     for (int i = 0; i < MAX_TOUCHES; i++) {
         repeat_tap_t* check = ktap_d + i;
 
@@ -82,6 +85,8 @@ void new_repeat_tap(const stroke_t* stroke) {
         if (on_ktap) {
             on_ktap(check);
         }
+
+        updated_repeat_tap = i;
         return;
     }
 
@@ -107,9 +112,12 @@ void new_repeat_tap(const stroke_t* stroke) {
     if (on_ktap) {
         on_ktap(ktap_d + grab_slot);
     }
+
+    updated_repeat_tap = grab_slot;
 }
 
 void recognize_repeat_tap(const touch_event_t* event) {
+    updated_repeat_tap = -1;
     // grab the now completed stroke associated with this event
     const stroke_t* stroke = get_stroke() + event->group;
     if (event->type == TOUCH_EVENT_DOWN) {
@@ -117,6 +125,10 @@ void recognize_repeat_tap(const touch_event_t* event) {
         return;
     }
     update_repeat_tap(event->type, stroke);
+}
+
+int get_updated_repeat_tap(void) {
+    return updated_repeat_tap;
 }
 
 const repeat_tap_t* get_repeat_tap(void) {

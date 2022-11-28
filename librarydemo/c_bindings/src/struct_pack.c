@@ -16,9 +16,6 @@ UNPACKER_FUNCTION(float, t)
 //////////////////////////////////////////////////////////////////////
 #define TYPE_NAME tap
 UNPACKER_FUNCTION(state_t, state)
-UNPACKER_FUNCTION(float, x0)
-UNPACKER_FUNCTION(float, y0)
-UNPACKER_FUNCTION(float, t0)
 UNPACKER_FUNCTION(float, x)
 UNPACKER_FUNCTION(float, y)
 UNPACKER_FUNCTION(float, t)

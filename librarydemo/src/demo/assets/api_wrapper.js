@@ -36,7 +36,7 @@ const GESTURE_DATA_NAMES_BACKWARD = {
 
 const GESTURE_DATA_FIELDS_BACKWARD =
     {
-      0 : [ "state", "x0", "y0", "t0", "x", "y", "t" ],
+      0 : [ "state", "x", "y", "t" ],
       1 : [ "state", "x0", "y0", "t0", "x", "y", "t" ],
       2 : [ "state", "x0", "y0", "x", "y", "vx", "vy" ],
       3 : [ "state", "x", "y", "t" ],

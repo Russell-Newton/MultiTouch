@@ -40,6 +40,6 @@ extern float ZOOM_SCALE_MIN;
 // Minimum rotation angle in radians to be a rotate. Must call init_gesturelib after modifying this variable.
 extern float ROTATE_ANGLE_MIN;
 
-extern float REPEAT_TAP_DTIME_MIN; // 0.1
-extern float REPEAT_TAP_DTIME_MAX; // 0.75
-#define REPEAT_TAP_DIST_MAX TAP_DIST_MAX
+extern float REPEAT_TAP_DTIME_MIN;
+extern float REPEAT_TAP_DTIME_MAX;
+extern float REPEAT_TAP_DIST_MAX;

@@ -22,7 +22,7 @@ void init_repeat_tap(void) {
 }
 
 static void update_repeat_tap(event_type_t event_type, const stroke_t* stroke) {
-    float stroke_squared_disp = SQUARE_SUM(stroke->x - stroke->x0, stroke->y - stroke->y0) > SQUARE(TAP_DIST_MAX);
+    float stroke_squared_disp = SQUARE_SUM(stroke->x - stroke->x0, stroke->y - stroke->y0);
     float stroke_dtime        = stroke->t - stroke->t0;
     for (int i = 0; i < MAX_TOUCHES; i++) {
         repeat_tap_t* check = ktap_d + i;
@@ -32,9 +32,9 @@ static void update_repeat_tap(event_type_t event_type, const stroke_t* stroke) {
             continue;
         }
 
-        check->x = stroke->x;
-        check->y = stroke->y;
-        check->t = stroke->t;
+        check->x     = stroke->x;
+        check->y     = stroke->y;
+        check->t     = stroke->t;
         check->group = stroke->group;
 
         if (stroke_squared_disp > SQUARE(TAP_DIST_MAX) || stroke_dtime > TAP_TIME_MAX) {
@@ -70,7 +70,8 @@ static void new_repeat_tap(const stroke_t* stroke) {
         float dtime        = stroke->t - check->t;
 
         // if the tap can't be associated to this slot, go to next one
-        if (squared_dist > SQUARE(REPEAT_TAP_DIST_MAX) || dtime < REPEAT_TAP_DTIME_MIN || dtime > REPEAT_TAP_DTIME_MAX) {
+        if (squared_dist > SQUARE(REPEAT_TAP_DIST_MAX) || dtime < REPEAT_TAP_DTIME_MIN ||
+            dtime > REPEAT_TAP_DTIME_MAX) {
             continue;
         }
 

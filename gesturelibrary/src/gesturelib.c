@@ -39,7 +39,7 @@ int init_gesturelib() {
     add_recognizer(recognize_multistroke, init_multistroke);
     add_recognizer(recognize_ktap, init_ktap);
     add_recognizer(recognize_tap, init_tap);
-    add_recognizer(recognize_double_tap, 0);
+    add_recognizer(recognize_double_tap, init_double_tap);
     add_recognizer(recognize_hold, init_hold);
     add_recognizer(recognize_drag, init_drag);
     add_recognizer(recognize_hold_and_drag, init_hold_and_drag);

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "math.h"
-
 // This is the maximum number of simultaneous touches supported.
 // Processing more simultaneous gestures requires more memory and execution time.
 #define MAX_TOUCHES 5
@@ -16,28 +14,32 @@
 #define TOUCH_GROUP_UNDEFINED (MAX_TOUCHES + 1)
 
 // When using the library to assign touch event groups, two touch events more than this
-// distance apart will never be assigned the same group.
-#define EVENT_GROUPING_DIST_MAX 150
+// distance apart will never be assigned the same group. Must call init_gesturelib after modifying this variable.
+extern float EVENT_GROUPING_DIST_MAX;
 
-// Time in seconds for longest tap and shortest hold.
-#define TAP_TIME_MAX  0.5f
+// Time in seconds for longest tap and shortest hold. Must call init_gesturelib after modifying any of these variables.
+extern float TAP_TIME_MAX;
 #define HOLD_TIME_MIN TAP_TIME_MAX
 
-// Shortest possible time difference and shortest euclidean distance for double taps.
-#define DOUBLE_DIFF     5
-#define DOUBLE_DISTANCE 0.2
+// Shortest possible time difference and shortest euclidean distance for double taps. Must call init_gesturelib after
+// modifying any of these variables.
+extern float DOUBLE_GROUP_TIME_DIFF;
+extern float DOUBLE_GROUP_DIST_DIFF;
+extern float DOUBLE_DIST;
+extern float DOUBLE_TIME_DIFF;
 
-// Euclidean distance for longest tap/hold and shortest drag.
-#define TAP_DIST_MAX  10
+// Euclidean distance for longest tap/hold and shortest drag. Must call init_gesturelib after modifying any of these
+// variables.
+extern float TAP_DIST_MAX;
 #define HOLD_DIST_MAX TAP_DIST_MAX
 #define DRAG_DIST_MIN TAP_DIST_MAX
 
-// Minimum scale factor difference from 1 to be a zoom.
-#define ZOOM_SCALE_MIN 0.15f
+// Minimum scale factor difference from 1 to be a zoom. Must call init_gesturelib after modifying this variable.
+extern float ZOOM_SCALE_MIN;
 
-// Minimum rotation angle in radians to be a rotate.
-#define ROTATE_ANGLE_MIN (M_PI / 12)
+// Minimum rotation angle in radians to be a rotate. Must call init_gesturelib after modifying this variable.
+extern float ROTATE_ANGLE_MIN;
 
-#define KTAP_DTIME_MIN 0.1
-#define KTAP_DTIME_MAX 0.75
+extern float KTAP_DTIME_MIN; // 0.1
+extern float KTAP_DTIME_MAX; // 0.75
 #define KTAP_DIST_MAX TAP_DIST_MAX

@@ -25,10 +25,12 @@
 
 // Shortest possible time difference and shortest euclidean distance for double taps.
 #define DOUBLE_GROUP_TIME_DIFF 0.02  // in phone_6, the difference reaches a max of 0.015
-#define DOUBLE_MAX_X           16  // greatest x_diff I got from testing
-#define DOUBLE_MAX_Y           19  // greatest y_diff I got from testing
-#define DOUBLE_DIST            362  // using 19**2 + 0 + 1
-#define DOUBLE_TIME_DIFF       0.5
+#define DOUBLE_GROUP_DIST_DIFF                                                                                         \
+    25000  // largest diff between any two points I saw was in phone_7 with a diff of 147**2 + 51**2
+#define DOUBLE_MAX_X     16  // greatest x_diff I got from testing
+#define DOUBLE_MAX_Y     19  // greatest y_diff I got from testing
+#define DOUBLE_DIST      362  // using 19**2 + 0 + 1
+#define DOUBLE_TIME_DIFF 0.5
 
 // Euclidean distance for longest tap/hold and shortest drag.
 #define TAP_DIST_MAX  10

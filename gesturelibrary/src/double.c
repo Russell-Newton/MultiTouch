@@ -3,7 +3,7 @@
 #include "gestureparams.h"
 #include "utils.h"
 
-#include <stdio.h>
+// #include <stdio.h>
 
 double_tap_t double_tap_d[MAX_TOUCHES];
 void (*on_double_tap)(const double_tap_t*) = 0;
@@ -66,6 +66,7 @@ static void update_double_taps(const tap_t* tap, const touch_event_t* event) {
     int group_index    = -1;  // double tap with the closest time the completed tap, will group with this tap
     // int group_number;
 
+    // this is used to prevent double triggers
     int found = 0;
 
     // float x_diff;
@@ -119,10 +120,13 @@ static void update_double_taps(const tap_t* tap, const touch_event_t* event) {
                         on_double_tap(&double_tap_d[i]);
                     }
                 } else {  // grouping method needs to change
-                    float group_time_diff = (tap->t - d_tap.t0) < 0 ? (tap->t - d_tap.t0) * -1 : (tap->t - d_tap.t0);
+                    float group_time_diff = tap->t - d_tap.t0;  // time shouldn't be negative
+                    float group_dist_diff = SQU_DIST(tap->x, tap->y, d_tap.x0, d_tap.y0);
 
-                    if (group_time_diff <
-                        DOUBLE_GROUP_TIME_DIFF) {  // if not it, we need to check if this is part of the same group
+                    if (group_time_diff < DOUBLE_GROUP_TIME_DIFF &&
+                        group_dist_diff <
+                            DOUBLE_GROUP_DIST_DIFF) {  // if not it, we need to check if this is part of the same group
+                        // distance makes sure its close to a finger in the group
                         group_index = i;
                         // group_number = d_tap.group; //set this one's group to this if group_index dne -1
                     }
@@ -154,13 +158,13 @@ static void update_double_taps(const tap_t* tap, const touch_event_t* event) {
             }
         }
 
-        for (int j = 0; j < MAX_TOUCHES; j++) {
-            printf("Printing state: %d, x: %f, x0: %f, group: %d\n",
-                   double_tap_d[j].state,
-                   double_tap_d[j].x,
-                   double_tap_d[j].x0,
-                   double_tap_d[j].group);
-        }
+        // for (int j = 0; j < MAX_TOUCHES; j++) {
+        //     printf("Printing state: %d, x: %f, x0: %f, group: %d\n",
+        //            double_tap_d[j].state,
+        //            double_tap_d[j].x,
+        //            double_tap_d[j].x0,
+        //            double_tap_d[j].group);
+        // }
     }
 }
 

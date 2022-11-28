@@ -119,11 +119,11 @@ void recognize_repeat_tap(const touch_event_t* event) {
     update_repeat_tap(event->type, stroke);
 }
 
-const repeat_tap_t* get_ktap(void) {
+const repeat_tap_t* get_repeat_tap(void) {
     return ktap_d;
 }
 
-int set_on_ktap(void (*listener)(const repeat_tap_t*)) {
+int set_on_repeat_tap(void (*listener)(const repeat_tap_t*)) {
     if (on_ktap) {
         on_ktap = listener;
         return 0;

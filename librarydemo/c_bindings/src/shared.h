@@ -29,7 +29,7 @@
     X(drag, DRAG)                                                                                                      \
     X(zoom, ZOOM)                                                                                                      \
     X(rotate, ROTATE)                                                                                                  \
-    X(ktap, KTAP)
+    X(repeat_tap, REPEAT_TAP)
 
 typedef union out_data_structs {
 #define X(type, ...) CAT(type, _t) type;
@@ -45,7 +45,7 @@ typedef enum gesture_type {
     GESTURE_TYPE_DRAG,
     GESTURE_TYPE_ZOOM,
     GESTURE_TYPE_ROTATE,
-    GESTURE_TYPE_KTAP
+    GESTURE_TYPE_REPEAT_TAP
 } out_type_t;
 
 extern out_data_t out_data[];

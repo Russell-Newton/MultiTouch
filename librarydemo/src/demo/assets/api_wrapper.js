@@ -6,7 +6,7 @@ const GESTURE_TYPES_BACKWARD = {
   4 : "Drag",
   5 : "Zoom",
   6 : "Rotate",
-  7 : "KTap"
+  7 : "Repeat-Tap"
 }
 
 const TOUCH_TYPES_FORWARD = {
@@ -31,7 +31,7 @@ const GESTURE_DATA_NAMES_BACKWARD = {
   4 : "drag",
   5 : "zoom",
   6 : "rotate",
-  7 : "ktap"
+  7 : "repeat_tap"
 }
 
 const GESTURE_DATA_FIELDS_BACKWARD =
@@ -112,7 +112,7 @@ const DATA_CONVERTERS = {
   "Drag": (data) => JSON.stringify({x: data.x, y: data.y, vx: data.vx, vy: data.vy}, jsonFormatter, 2),
   "Zoom": (data) => JSON.stringify({size: data.size, scale: data.scale}, jsonFormatter, 2),
   "Rotate": (data) => JSON.stringify({size: data.size, rotation: data.rotation}, jsonFormatter, 2),
-  "KTap": (data) => JSON.stringify({x: data.x, y: data.y, count: data.count}, jsonFormatter, 2),
+  "Repeat-Tap": (data) => JSON.stringify({x: data.x, y: data.y, count: data.count}, jsonFormatter, 2),
 }
 
 function outDataToString(outData) {

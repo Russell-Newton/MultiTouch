@@ -97,7 +97,7 @@ UNPACKER_FUNCTION(float, rotation)
 //////////////////////////////////////////////////////////////////////
 // ktap_t unpacking functions
 //////////////////////////////////////////////////////////////////////
-#define TYPE_NAME ktap
+#define TYPE_NAME repeat_tap
 UNPACKER_FUNCTION(state_t, state)
 UNPACKER_FUNCTION(float, x)
 UNPACKER_FUNCTION(float, y)

@@ -17,6 +17,6 @@ void init_repeat_tap(void);
 
 void recognize_repeat_tap(const touch_event_t* event);
 
-const repeat_tap_t* get_ktap(void);
+const repeat_tap_t* get_repeat_tap(void);
 
-int set_on_ktap(void (*listener)(const repeat_tap_t*));
+int set_on_repeat_tap(void (*listener)(const repeat_tap_t*));

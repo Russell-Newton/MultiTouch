@@ -103,6 +103,7 @@ UNPACKER_FUNCTION(float, x)
 UNPACKER_FUNCTION(float, y)
 UNPACKER_FUNCTION(float, t)
 UNPACKER_FUNCTION(int, count)
+UNPACKER_FUNCTION(unsigned int, group)
 #undef TYPE_NAME
 
 //////////////////////////////////////////////////////////////////////

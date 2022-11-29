@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "mdb-vue-ui-kit": "^3.0.0",
-    "vue": "^3.2.38"
+    "vue": "^3.2.38",
+    "vue-toastification": "^2.0.0-rc.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.3",

@@ -14,13 +14,16 @@
 </template>
 
 <script>
+import { useToast } from "vue-toastification";
+
 export default {
     data() {
       return {
           dragging: {},
           initialized: false,
           capturedEvents: [],
-      }  
+          toast: useToast(),
+      }
     },
     props: {
         width: Number,
@@ -116,6 +119,7 @@ export default {
                 //for (let gesture of processed_gestures) {
                     //console.log(gesture);
                 //}
+                this.toast.info("Received Gestures!")
             } else {
                 this.setParentText("No gestures caught from this event.", "");
             }

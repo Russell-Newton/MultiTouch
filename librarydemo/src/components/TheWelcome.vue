@@ -8,6 +8,7 @@ import SupportIcon from './icons/IconSupport.vue'
 import { MDBBtn, MDBIcon } from "mdb-vue-ui-kit";
 import {
   MDBNavbar,
+  MDBNavbarBrand,
   MDBNavbarToggler,
   MDBNavbarNav,
   MDBNavbarItem
@@ -18,7 +19,7 @@ import {
   <header>
     <!-- Navbar -->
     <MDBContainer fluid> 
-    <MDBNavbar position="top" light bg="primary" container classContainer="justify-content-start">
+    <MDBNavbar position="top" dark bg="primary" container classContainer="justify-content-start">
       <img
         src="https://icons-for-free.com/iconfiles/png/512/finger+gesture+hand+one+icon-1320183619867359581.png"
         height="30"
@@ -26,10 +27,8 @@ import {
         loading="lazy"
       />
       &nbsp;
-      <h3>
-      <span class="navbar-text"> Multitouch </span>
+        <MDBNavbarBrand>Multitouch</MDBNavbarBrand>
       &nbsp;
-    </h3>
       <a href="">
         <MDBBtn color="dark">Home</MDBBtn>
       </a>

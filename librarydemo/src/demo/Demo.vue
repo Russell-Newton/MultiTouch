@@ -4,6 +4,7 @@ import {MDBBtn, MDBIcon, MDBCol, MDBRow, MDBContainer} from "mdb-vue-ui-kit";
 import {test, testStruct} from "./assets/api_wrapper";
 import {
   MDBNavbar,
+  MDBNavbarBrand,
   MDBNavbarToggler,
   MDBNavbarNav,
   MDBNavbarItem
@@ -14,7 +15,7 @@ import {
   <header>
     <!-- Navbar -->
     <MDBContainer fluid>
-      <MDBNavbar position="top" light bg="primary" container classContainer="justify-content-start">
+      <MDBNavbar position="top" dark bg="primary" container classContainer="justify-content-start">
         <img
             src="https://icons-for-free.com/iconfiles/png/512/finger+gesture+hand+one+icon-1320183619867359581.png"
             height="30"
@@ -22,9 +23,8 @@ import {
             loading="lazy"
         />
         &nbsp;
-        <h3>
-          <span class="navbar-text"> Multitouch </span>
-        </h3>
+        <MDBNavbarBrand>Multitouch</MDBNavbarBrand>
+        &nbsp;
         <a href="../index.html">
           <MDBBtn color="dark">Home</MDBBtn>
         </a>
@@ -85,7 +85,7 @@ import {
     </MDBRow>
   </MDBContainer>
   <MDBContainer fluid>
-    <MDBNavbar position="bottom" light bg="primary" container classContainer="justify-content-start">
+    <MDBNavbar position="bottom" dark bg="primary" container classContainer="justify-content-start">
       <span class="navbar-text"> Gesture Library created by Russell Newton, Leo Wang, Iftek Kharim, and Jackson Dike. Demo page created by Deborah Cho. </span>
     </MDBNavbar>
   </MDBContainer>

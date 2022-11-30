@@ -16,41 +16,16 @@ import {
 </script>
 
 <template>
-  <header>
-    <!-- Navbar -->
-    <MDBContainer fluid> 
-    <MDBNavbar position="top" dark bg="primary" container classContainer="justify-content-start">
-      <img
-        src="https://icons-for-free.com/iconfiles/png/512/finger+gesture+hand+one+icon-1320183619867359581.png"
-        height="30"
-        alt=""
-        loading="lazy"
-      />
-      &nbsp;
-        <MDBNavbarBrand>Multitouch</MDBNavbarBrand>
-      &nbsp;
-      <a href="">
-        <MDBBtn color="dark">Home</MDBBtn>
-      </a>
-      <a href="./demo/index.html">
-        <MDBBtn color="dark">Demo</MDBBtn>
-      </a>
-      <a href="./docs">
-        <MDBBtn color="dark">Documentation</MDBBtn>
-      </a>
-      <MDBBtn tag="a" color="dark" href="https://github.com/Russell-Newton/Multitouch" style="background-color: rgb(51, 51, 51);">
-      <MDBIcon iconStyle="fab" icon="github"></MDBIcon>
-    </MDBBtn>
-  </MDBNavbar>
-</MDBContainer>
-    <!-- Navbar -->
-  </header>
 
   <WelcomeItem>
     <template #icon>
       <DocumentationIcon />
     </template>
     <template #heading>About</template>
+
+    MultiTouch is a low-level touch gesture recognition library written in C for use on transparent displays in aircraft.
+
+    <br />
     
     Our gesture library features a variety of common gestures with up to 5-finger capabilities. Each of these gestures are completely customizable
     using the library and can be incorporated into any application.
@@ -77,10 +52,11 @@ import {
       <EcosystemIcon />
     </template>
     
-    <a href="./demo/index.html">
-      <MDBBtn color="primary" size="sm">Demo</MDBBtn>
-    </a>
-    Test out different gestures.
+<!--    <a href="./demo/index.html">-->
+<!--      <MDBBtn color="primary" size="sm">Demo</MDBBtn>-->
+<!--    </a>-->
+    Test out different gestures in an <a href="./demo/index.html">interactive demo</a>. To accomplish this, our library has been compiled into
+    WebAssembly and JavaScript with Emscripten.
   </WelcomeItem>
 
   <WelcomeItem>

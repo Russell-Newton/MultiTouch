@@ -1,8 +1,10 @@
 <template>
-  <picture>
-    <source v-bind:srcset="whiteSrc" media="(prefers-color-scheme:dark)">
-    <img v-bind:src="blackSrc" v-bind:height="height">
+  <picture v-bind:hidden="forceBlack || forceWhite">
+    <source srcset="/click-2384-white.svg" media="(prefers-color-scheme:dark)">
+    <img src="/click-2384-black.svg" v-bind:height="height">
   </picture>
+  <img src="/click-2384-white.svg" v-bind:hidden="!forceWhite" v-bind:height="height">
+  <img src="/click-2384-black.svg" v-bind:hidden="!forceBlack" v-bind:height="height">
 </template>
 
 <style scoped>
@@ -18,19 +20,6 @@ export default {
     height: Number,
     forceBlack: Boolean,
     forceWhite: Boolean,
-  },
-  data() {
-    return {
-      blackSrc: "click-2384-black.svg",
-      whiteSrc: "click-2384-white.svg",
-    }
-  },
-  mounted() {
-    if (this.forceBlack) {
-      this.whiteSrc = this.blackSrc;
-    } else if (this.forceWhite) {
-      this.blackSrc = this.whiteSrc;
-    }
   }
 }
 </script>

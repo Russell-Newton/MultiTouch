@@ -1,7 +1,8 @@
 <template>
   <MyNavbar></MyNavbar>
   <MDBContainer fluid
-                style="height: 85vh; max-height: 85vh; max-width: 1500px; overflow-y: hidden; vertical-align: center">
+                style="height: fit-content; max-height: fit-content; max-width: 1500px; overflow-y: hidden; position: fixed; top: 7.5vh; left: 50%; transform: translate(-50%, 0%);"
+  >
     <MDBRow>
       <div class="p-3 mb-2 bg-primary bg-gradient text-white">
         <h3>

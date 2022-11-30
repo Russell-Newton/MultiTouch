@@ -19,12 +19,12 @@ import Logo from "@/components/icons/Logo.vue";
           <MDBNavbarBrand>Multitouch</MDBNavbarBrand>
         </div>
         &nbsp;
-        <MDBBtn tag="a" color="dark" href="index.html">Home</MDBBtn>
+        <MDBBtn tag="a" color="dark" href="/index.html">Home</MDBBtn>
 
-        <MDBBtn tag="a" color="dark" href="demo/index.html">Demo</MDBBtn>
+        <MDBBtn tag="a" color="dark" href="/demo/index.html">Demo</MDBBtn>
 
         <div class="d-none d-md-inline">
-          <MDBBtn tag="a" color="dark" href="docs">Documentation</MDBBtn>
+          <MDBBtn tag="a" color="dark" href="/docs">Documentation</MDBBtn>
         </div>
 
         <div class="d-none d-md-inline">

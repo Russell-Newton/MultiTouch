@@ -52,15 +52,22 @@ export default {
     MDBNavbarBrand,
     Logo,
   },
-  setup() {
-    const homeRef = `${this.base}/index.html`;
-    const demoRef = `${this.base}/demo/index.html`;
-    const docsRef = `${this.base}/docs`;
-
-    return {homeRef, demoRef, docsRef};
-  },
   props: {
     base: String,
+  },
+  data() {
+    return {
+      homeRef: "/index.html",
+      demoRef: "/demo/index.html",
+      docsRef: "/docs",
+    }
+  },
+  mounted() {
+    if (this.base) {
+      this.homeRef = this.base + this.homeRef;
+      this.demoRef = this.base + this.demoRef;
+      this.docsRef = this.base + this.docsRef;
+    }
   }
 }
 </script>

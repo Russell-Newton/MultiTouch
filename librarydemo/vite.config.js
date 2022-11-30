@@ -5,9 +5,11 @@ import path from "path"
 import {defineConfig} from "vite"
 import wasm from "vite-plugin-wasm"
 
+const base = process.env.VITE_BASE || "/";
+
 // https://vitejs.dev/config/
 export default defineConfig({
-  base : "./",
+  base : base,
   root : path.join(__dirname, "src"),
   publicDir : path.join(__dirname, "public"),
   plugins : [ vue(), wasm() ],

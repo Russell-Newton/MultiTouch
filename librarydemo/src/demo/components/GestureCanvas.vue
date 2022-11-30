@@ -1,6 +1,6 @@
 <template>
   <canvas v-bind:width="width" v-bind:height="height"
-          style="touch-action: none; width: 100%; aspect-ratio: 1;"
+          style="touch-action: none; width: 100%; max-height: 70vh; aspect-ratio: 1;"
           @pointerdown.prevent.stop="pointerdown"
           @pointerup.prevent.stop="pointerup"
           @pointermove.prevent.stop="pointermove"

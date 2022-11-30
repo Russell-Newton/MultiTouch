@@ -48,70 +48,92 @@ export default {
       this.$emit("showModal", payload);
     },
     generateScatterTrace(gestures) {
-  let data = [];
-  let colors = [];
+      let data = [];
+      let colors = [];
 
-  for (let gesture of gestures) {
-    data.push({x: gesture.data.x, y: gesture.data.y});
-    colors.push(redBlueLerp(gestures[0].t, gestures[gestures.length - 1].t, gesture.t));
-  }
+      for (let gesture of gestures) {
+        data.push({x: gesture.data.x, y: gesture.data.y});
+        colors.push(redBlueLerp(gestures[0].t, gestures[gestures.length - 1].t, gesture.t));
+      }
 
-  return {
-    data: {
-      datasets: [
-        {
-          data: data,
-          backgroundColor: colors
-        }
-      ]
-    },
-    options: {
-      scales: {
-        x: {
-          min: 0,
-          max: this.plotMaxX
+      return {
+        data: {
+          datasets: [
+            {
+              data: data,
+              backgroundColor: colors
+            }
+          ]
         },
-        y: {
-          min: 0,
-          max: this.plotMaxY
+        options: {
+          scales: {
+            x: {
+              min: 0,
+              max: this.plotMaxX,
+              title: {
+                display: true,
+                text: "x"
+              }
+            },
+            y: {
+              min: 0,
+              max: this.plotMaxY,
+              title: {
+                display: true,
+                text: "y"
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            }
+          }
         }
-      },
-      plugins: {
-        legend: {
-          display: false
-        }
-      }
-    }
-  };
-},
-    generateFieldTrace(gestures, field) {
-  let data = [];
-  let colors = [];
-
-  for (let gesture of gestures) {
-    data.push({x: gesture.t, y: gesture.data[field]});
-    colors.push(redBlueLerp(gestures[0].t, gestures[gestures.length - 1].t, gesture.t));
-  }
-
-  return {
-    data: {
-      datasets: [
-        {
-          data: data,
-          backgroundColor: colors
-        }
-      ]
+      };
     },
-    options: {
-      plugins: {
-        legend: {
-          display: false
-        }
+    generateFieldTrace(gestures, field) {
+      let data = [];
+      let colors = [];
+
+      for (let gesture of gestures) {
+        data.push({x: gesture.t, y: gesture.data[field]});
+        colors.push(redBlueLerp(gestures[0].t, gestures[gestures.length - 1].t, gesture.t));
       }
-    }
-  };
-}
-  },
+
+      return {
+        data: {
+          datasets: [
+            {
+              data: data,
+              backgroundColor: colors
+            }
+          ]
+        },
+        options: {
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "time (s)"
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: field
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
+            }
+          }
+        }
+      };
+    },
+  }
 }
 </script>
 

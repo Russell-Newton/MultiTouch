@@ -28,12 +28,6 @@ typedef struct double_tap {
     float t;
 } double_tap_t;  // single finger double tap data
 
-// /// @brief tuple containing the x and y coordinates of the double_tap event
-// typedef struct coords {
-//     int x;
-//     int y;
-// } coords_t;
-
 /// @brief initializes the data array by setting all field to 0/NULL
 void init_double_tap();
 
@@ -42,7 +36,7 @@ void init_double_tap();
 void recognize_double_tap(const touch_event_t* event);
 
 /// @brief returns an array of the ongoing double_touch data for each finger
-/// @return
+/// @return array of size MAX_TOUCHES of double_touch data
 const double_tap_t* get_double_tap();
 
 /// @brief Listen to double_tap events

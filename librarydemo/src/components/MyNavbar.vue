@@ -1,14 +1,3 @@
-<script setup>
-import {
-  MDBBtn,
-  MDBIcon,
-  MDBContainer,
-  MDBNavbar,
-  MDBNavbarBrand,
-} from 'mdb-vue-ui-kit';
-import Logo from "@/components/icons/Logo.vue";
-</script>
-
 <template>
   <header>
     <MDBContainer fluid>
@@ -19,12 +8,12 @@ import Logo from "@/components/icons/Logo.vue";
           <MDBNavbarBrand>Multitouch</MDBNavbarBrand>
         </div>
         &nbsp;
-        <MDBBtn tag="a" color="dark" href="/index.html">Home</MDBBtn>
+        <MDBBtn tag="a" color="dark" :href="homeRef">Home</MDBBtn>
 
-        <MDBBtn tag="a" color="dark" href="/demo/index.html">Demo</MDBBtn>
+        <MDBBtn tag="a" color="dark" :href="demoRef">Demo</MDBBtn>
 
         <div class="d-none d-md-inline">
-          <MDBBtn tag="a" color="dark" href="/docs">Documentation</MDBBtn>
+          <MDBBtn tag="a" color="dark" :href="docsRef">Documentation</MDBBtn>
         </div>
 
         <div class="d-none d-md-inline">
@@ -45,8 +34,34 @@ import Logo from "@/components/icons/Logo.vue";
 </template>
 
 <script>
+import {
+  MDBBtn,
+  MDBIcon,
+  MDBContainer,
+  MDBNavbar,
+  MDBNavbarBrand,
+} from 'mdb-vue-ui-kit';
+import Logo from "@/components/icons/Logo.vue";
 export default {
-  name: "MyNavbar"
+  name: "MyNavbar",
+  components: {
+    MDBBtn,
+    MDBContainer,
+    MDBIcon,
+    MDBNavbar,
+    MDBNavbarBrand,
+    Logo,
+  },
+  setup() {
+    const homeRef = `${this.base}/index.html`;
+    const demoRef = `${this.base}/demo/index.html`;
+    const docsRef = `${this.base}/docs`;
+
+    return {homeRef, demoRef, docsRef};
+  },
+  props: {
+    base: String,
+  }
 }
 </script>
 

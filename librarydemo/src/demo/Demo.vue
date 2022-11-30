@@ -1,5 +1,5 @@
 <template>
-  <MyNavbar></MyNavbar>
+  <MyNavbar base=".."></MyNavbar>
   <MDBContainer fluid
                 style="height: fit-content; max-height: fit-content; max-width: 1500px; overflow-y: hidden; position: fixed; top: 7.5vh; left: 50%; transform: translate(-50%, 0%);"
   >

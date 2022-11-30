@@ -1,12 +1,13 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
-import { MDBBtn } from "mdb-vue-ui-kit";
+import MyNavbar from "@/components/MyNavbar.vue";
+import Logo from "@/components/icons/Logo.vue";
 </script>
 
 <template>
   <header>
-  <img alt="Vue logo" class="logo" src="./assets/gesture.png" width="125" height="125" />
+    <Logo height="125" class="logo"/>
 
     <div class="wrapper">
       <HelloWorld msg="GT Team 2135 x L3Harris Gesture Library" />
@@ -14,6 +15,7 @@ import { MDBBtn } from "mdb-vue-ui-kit";
   </header>
 
   <main>
+    <MyNavbar />
     <TheWelcome />
   </main>
 </template>
@@ -21,11 +23,14 @@ import { MDBBtn } from "mdb-vue-ui-kit";
 <style scoped>
 header {
   line-height: 1.5;
+  align-content: center;
 }
 
 .logo {
   display: block;
-  margin: 0 auto 2rem;
+  margin-top: 7.5vh;
+  margin-right: 2rem;
+  margin-bottom: 2rem;
 }
 
 @media (min-width: 1024px) {

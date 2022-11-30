@@ -16,35 +16,6 @@ import {
 </script>
 
 <template>
-  <header>
-    <!-- Navbar -->
-    <MDBContainer fluid> 
-    <MDBNavbar position="top" dark bg="primary" container classContainer="justify-content-start">
-      <img
-        src="https://icons-for-free.com/iconfiles/png/512/finger+gesture+hand+one+icon-1320183619867359581.png"
-        height="30"
-        alt=""
-        loading="lazy"
-      />
-      &nbsp;
-        <MDBNavbarBrand>Multitouch</MDBNavbarBrand>
-      &nbsp;
-      <a href="">
-        <MDBBtn color="dark">Home</MDBBtn>
-      </a>
-      <a href="./demo/index.html">
-        <MDBBtn color="dark">Demo</MDBBtn>
-      </a>
-      <a href="./docs">
-        <MDBBtn color="dark">Documentation</MDBBtn>
-      </a>
-      <MDBBtn tag="a" color="dark" href="https://github.com/Russell-Newton/Multitouch" style="background-color: rgb(51, 51, 51);">
-      <MDBIcon iconStyle="fab" icon="github"></MDBIcon>
-    </MDBBtn>
-  </MDBNavbar>
-</MDBContainer>
-    <!-- Navbar -->
-  </header>
 
   <WelcomeItem>
     <template #icon>

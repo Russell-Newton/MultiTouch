@@ -71,7 +71,7 @@ function convertTouchEvent(pointer) {
 
 function registerListeners() { Module._register_listeners(); }
 
-function unpackOutData(nOutData) {
+function unpackOutData(nOutData, t) {
   let out = [];
   for (let i = 0; i < nOutData; i++) {
     let type = Module._get_out_type(i);
@@ -80,7 +80,9 @@ function unpackOutData(nOutData) {
     let convertedDataPtr = Module[`_out_data_as_${struct_name}`](rawDataPtr);
     out.push({
       event : GESTURE_TYPES_BACKWARD[type],
-      data : convertGestureData(type, convertedDataPtr)
+      data : convertGestureData(type, convertedDataPtr),
+      ptr : convertedDataPtr,
+      t : t,
     });
   }
   return out;
@@ -94,7 +96,7 @@ function processPointerEvent(event, type) {
   let nOutData = Module._lib_process_touch_event(touch_ptr);
   Module._free(touch_ptr);
 
-  return unpackOutData(nOutData);
+  return unpackOutData(nOutData, t);
 }
 
 function jsonFormatter(key, val) {

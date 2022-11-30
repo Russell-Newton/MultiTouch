@@ -11,8 +11,10 @@
     "cleanlib": "emscripten --clean c_bindings"
   },
   "dependencies": {
+    "chart.js": "^3.9.1",
     "mdb-vue-ui-kit": "^3.0.0",
     "vue": "^3.2.38",
+    "vue-chartjs": "^4.1.2",
     "vue-toastification": "^2.0.0-rc.5"
   },
   "devDependencies": {

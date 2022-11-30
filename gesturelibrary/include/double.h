@@ -42,7 +42,7 @@ void init_double_tap();
 void recognize_double_tap(const touch_event_t* event);
 
 /// @brief returns an array of the ongoing double_touch data for each finger
-/// @return
+/// @return array of double_touch data
 const double_tap_t* get_double_tap();
 
 /// @brief Listen to double_tap events

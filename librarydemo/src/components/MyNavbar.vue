@@ -63,9 +63,6 @@ export default {
     }
   },
   mounted() {
-    if (!this.base) {
-      this.base = ".";
-    }
     this.homeRef = this.base + this.homeRef;
     this.demoRef = this.base + this.demoRef;
     this.docsRef = this.base + this.docsRef;

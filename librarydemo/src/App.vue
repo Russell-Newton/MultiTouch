@@ -15,7 +15,7 @@ import Logo from "@/components/icons/Logo.vue";
   </header>
 
   <main>
-    <MyNavbar />
+    <MyNavbar base="."/>
     <TheWelcome />
   </main>
 </template>

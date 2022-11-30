@@ -21,8 +21,8 @@ export default {
   },
   data() {
     return {
-      blackSrc: "/click-2384-black.svg",
-      whiteSrc: "/click-2384-white.svg",
+      blackSrc: "click-2384-black.svg",
+      whiteSrc: "click-2384-white.svg",
     }
   },
   mounted() {

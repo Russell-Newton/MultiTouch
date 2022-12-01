@@ -48,8 +48,8 @@ To use the library, there are 2 options:
     ```shell
     git clone https://github.com/Russell-Newton/MultiTouch.git <Destination>
     ```
-    1.  1. If you use CMake, then in a `CMakeLists.txt` of your project, add the `gesturelibrary` folder of the repository as a subdirectory using `add_subdirectory`. Delete the section of `gesturelibrary/CMakeLists.txt` in the `SKIP_TESTS` if statement.
-        1. If you do not use CMake, include the files in the `gesturelibrary/include` folder and add the files in the `gesturelibrary/src` folder to your executable.
+    1.  * If you use CMake, then in a `CMakeLists.txt` of your project, add the `gesturelibrary` folder of the repository as a subdirectory using `add_subdirectory`. Delete the section of `gesturelibrary/CMakeLists.txt` in the `SKIP_TESTS` if statement.
+        * If you do not use CMake, include the files in the `gesturelibrary/include` folder and add the files in the `gesturelibrary/src` folder to your executable.
 1. Build the library statically and link it to your project.
 
     1. Clone the repo.

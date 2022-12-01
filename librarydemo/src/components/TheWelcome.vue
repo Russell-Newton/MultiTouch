@@ -5,15 +5,27 @@ import ToolingIcon from './icons/IconTooling.vue'
 import EcosystemIcon from './icons/IconEcosystem.vue'
 import CommunityIcon from './icons/IconCommunity.vue'
 import SupportIcon from './icons/IconSupport.vue'
-import { MDBBtn } from "mdb-vue-ui-kit";
+import { MDBBtn, MDBIcon } from "mdb-vue-ui-kit";
+import {
+  MDBNavbar,
+  MDBNavbarBrand,
+  MDBNavbarToggler,
+  MDBNavbarNav,
+  MDBNavbarItem
+} from 'mdb-vue-ui-kit';
 </script>
 
 <template>
+
   <WelcomeItem>
     <template #icon>
       <DocumentationIcon />
     </template>
     <template #heading>About</template>
+
+    MultiTouch is a low-level touch gesture recognition library written in C for use on transparent displays in aircraft.
+
+    <br />
     
     Our gesture library features a variety of common gestures with up to 5-finger capabilities. Each of these gestures are completely customizable
     using the library and can be incorporated into any application.
@@ -40,10 +52,11 @@ import { MDBBtn } from "mdb-vue-ui-kit";
       <EcosystemIcon />
     </template>
     
-    <a href="./demo/index.html">
-      <MDBBtn color="primary" size="sm" rounded>Demo</MDBBtn>
-    </a>
-    Test out different gestures.
+<!--    <a href="./demo/index.html">-->
+<!--      <MDBBtn color="primary" size="sm">Demo</MDBBtn>-->
+<!--    </a>-->
+    Test out different gestures in an <a href="./demo/index.html">interactive demo</a>. To accomplish this, our library has been compiled into
+    WebAssembly and JavaScript with Emscripten.
   </WelcomeItem>
 
   <WelcomeItem>

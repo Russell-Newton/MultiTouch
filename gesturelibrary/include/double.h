@@ -8,19 +8,25 @@
 #include "stroke.h"
 #include "tap.h"
 
+// test defines to fix the distance problem
+#define DIST_X 20
+#define DIST_Y 20
+
 /// @brief holds the state, last location, and timestamp of a double tap instance
 typedef struct double_tap {
     state_t state;
-    int x;
-    int y;
-    int t;
-} double_tap_t;  // single finger double tap data
 
-/// @brief tuple containing the x and y coordinates of the double_tap event
-typedef struct coords {
-    int x;
-    int y;
-} coords_t;
+    int group;
+
+    // int num_touches;
+
+    float x0;
+    float y0;
+    float t0;
+    float x;
+    float y;
+    float t;
+} double_tap_t;  // single finger double tap data
 
 /// @brief initializes the data array by setting all field to 0/NULL
 void init_double_tap();
@@ -30,7 +36,7 @@ void init_double_tap();
 void recognize_double_tap(const touch_event_t* event);
 
 /// @brief returns an array of the ongoing double_touch data for each finger
-/// @return
+/// @return array of size MAX_TOUCHES of double_touch data
 const double_tap_t* get_double_tap();
 
 /// @brief Listen to double_tap events

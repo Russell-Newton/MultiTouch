@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-EMSCRIPTEN_KEEPALIVE
-touch_event_t* build_touch_event(event_type_t type, float x, float y, float t, unsigned int group) {
+EMSCRIPTEN_KEEPALIVE touch_event_t*
+build_touch_event(event_type_t type, float x, float y, float t, unsigned int group) {
     touch_event_t* out = malloc(sizeof(touch_event_t));
     out->type          = type;
     out->x             = x;
@@ -21,14 +21,12 @@ int n_out_data;
 
 #define X(type, TYPE)                                                                                                  \
     void CAT(my_on_, type)(const CAT(type, _t) * event) {                                                              \
-        if (event->state == RECOGNIZER_STATE_IN_PROGRESS || event->state == RECOGNIZER_STATE_COMPLETED) {              \
-            out_types[n_out_data]       = CAT(GESTURE_TYPE_, TYPE);                                                    \
-            out_data[n_out_data++].type = *event;                                                                      \
-        }                                                                                                              \
+        out_types[n_out_data]       = CAT(GESTURE_TYPE_, TYPE);                                                        \
+        out_data[n_out_data++].type = event;                                                                           \
     }                                                                                                                  \
     EMSCRIPTEN_KEEPALIVE                                                                                               \
-    CAT(type, _t) * CAT(out_data_as_, type)(out_data_t * data) {                                                       \
-        return &data->type;                                                                                            \
+    const CAT(type, _t) * CAT(out_data_as_, type)(out_data_t * data) {                                                 \
+        return data->type;                                                                                             \
     }
 X_RECOGNIZERS
 #undef X

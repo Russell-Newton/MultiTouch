@@ -41,49 +41,65 @@ Spring-Fall 2022 Junior Design program.
 
 ## Installation
 
-<p style="color: red">TODO - build from source, include in project, pre-built release</p>
+To use the library, there are 2 options:
 
-1. Clone the repo.
+1. Copy the source files to your project and include them in your build.
+    1. Clone the repository into your project.
+    ```shell
+    git clone https://github.com/Russell-Newton/MultiTouch.git <Destination>
+    ```
+    1.  1. If you use CMake, then in a `CMakeLists.txt` of your project, add the `gesturelibrary` folder of the repository as a subdirectory using `add_subdirectory`. Delete the section of `gesturelibrary/CMakeLists.txt` in the `SKIP_TESTS` if statement.
+        1. If you do not use CMake, include the files in the `gesturelibrary/include` folder and add the files in the `gesturelibrary/src` folder to your executable.
+1. Build the library statically and link it to your project.
 
-```shell
-git clone https://github.com/Russell-Newton/MultiTouch.git
-```
+    1. Clone the repo.
 
-2. Build the CMake project.
+   ```shell
+   git clone https://github.com/Russell-Newton/MultiTouch.git
+   ```
 
-```shell
-cd MultiTouch
-cmake -S gesturelibrary -B build -D SKIP_TESTS=true
-```
+   2. Build the CMake project.
 
-3. Compile the library with `make`.
+   ```shell
+   cd MultiTouch
+   cmake -S gesturelibrary -B build -D SKIP_TESTS=true
+   ```
 
-```shell
-cd build
-make
-```
+   3. Compile the library with `make`.
 
-4. Include the library when compiling your program:
+   ```shell
+   cd build
+   make
+   ```
 
-    * Add `-I...pathto/MultiTouch/gesturelibrary/include` to your compile command.
-    * Add `...pathto/MultiTouch/build/libGestureLibrary.a` to your compile targets.
+   4. Include the library when compiling your program:
+
+       * Add `-I...pathto/MultiTouch/gesturelibrary/include` to your compile command.
+       * Add `...pathto/MultiTouch/build/libGestureLibrary.a` to your compile targets.
 
 ---
 
 ## Usage
 
-1. <p style="color: red">TODO - explain configuration [blocked by #211]</p>
-2. Create an adapter for your touch input device. Adapters transform device input data into `touch_event_t`s.
-3. Include `<gesturelib.h>`.
-4. At program startup, run `init_gesturelib()`.
-5. Whenever a touch is received, create a `touch_event_t` with your adapter and send it to `process_touch_event()`.
-6. Processed gesture data can either be collected via the output of `process_touch_event()` or through gesture event
-   listeners (See [listeners section](#listeners))
-7. Create custom listeners or enable/disable built-in listeners with the provided utility functions:
-    * `add_recognizer()`
-    * `remove_recognizer()`
-    * `enable_recognizer()`
-    * `disable_recognizer()`
+1. Include `<gesturelib.h>` and the header files for any estures you are interested in. For example, `<tap.h>` and `<drag.h>`.
+1. Adjust the gesture parameters in `<gestureparams.h>` to your desired values. The variables can be set at runtime, but will require the gesture library to be reinitialized after modification.
+1. Call `init_gesturelib()`.
+1. Create an adapter for your touch input device. Adapters transform device input data into `touch_event_t`s.
+1. Whenever a touch is received, create a `touch_event_t` with your adapter and send it to `process_touch_event()`.
+1. Recognized gestures can be obtained from the library synchronously or asynchronously.
+
+* To synchronously access recognized gestures,
+    1. Call the `get_[gesture]` function of the gesture you are interested in. For example, `get_tap` and `get_drag`.
+    2. This returns an array of gesture structs for the gesture you are interested in. For example, `tap_t` and `drag_t`.
+    3. You can read the data from the array, but if a thread is currently executing the `process_touch_event()` function, then the data in the array may change as you are reading it.
+
+* To asynchronously access recognized gestures,
+   1. Create custom listeners or enable/disable built-in listeners with the provided utility functions:
+       * `add_recognizer()`
+       * `remove_recognizer()`
+       * `enable_recognizer()`
+       * `disable_recognizer()`
+   1. Listeners accept a `const [gesture_t]*` and can read the data from the updated gesture. The gesture data will not change until the next invocation of `process_touch_event`.
 
 ### Listeners
 

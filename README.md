@@ -1,10 +1,8 @@
 # MultiTouch
 
-<p style="color: red">TODO - switch image branch links to main</p>
-
 <p align="center">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/click-2384-black.svg#gh-light-mode-only">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/click-2384-white.svg#gh-dark-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/click-2384-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/click-2384-white.svg#gh-dark-mode-only">
 </p>
 
 [![Built with CMake](https://img.shields.io/badge/Built%20with-CMake-blue?style=flat-square&logo=cmake&color=064F8C)](#installation)
@@ -176,8 +174,6 @@ on the screen the touch was received.
 > ⚠️ All touch events with the same uid will be considered as part of the same multi-finger gesture for recognition
 > purposes.
 
-### Listeners
-
 ### Gestures
 
 Gesture recognition starts with a base gesture: stroke. Any other gestures can be recognized by composing and performing
@@ -187,8 +183,8 @@ additional processing on strokes and other composite gestures.
 
 Stroke is a simple gesture with a simple state machine:
 <p align="center">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/stroke-sm-black.svg#gh-light-mode-only">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/stroke-sm-white.svg#gh-dark-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/stroke-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/stroke-sm-white.svg#gh-dark-mode-only">
 </p>
 
 The state updates are less important than the data that stroke collects. Stroke collects data on:
@@ -215,8 +211,8 @@ addition to the information contained in each stroke, a multistroke also tracks:
 To perform a tap, press down and release within a short time and without moving too much.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/tap-sm-black.svg#gh-light-mode-only">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/tap-sm-white.svg#gh-dark-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/tap-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/tap-sm-white.svg#gh-dark-mode-only">
 </p>
 
 Tap is a simple gesture that contains information about where and when the tap was started and released. If the time
@@ -227,8 +223,8 @@ between start and release is too long or the distance too great, the tap will fa
 To perform a double-tap, tap twice in close succession.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/dtap-sm-black.svg#gh-light-mode-only">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/dtap-sm-white.svg#gh-dark-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/dtap-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/dtap-sm-white.svg#gh-dark-mode-only">
 </p>
 
 Double-tap stores the same information as a tap.
@@ -238,8 +234,8 @@ Double-tap stores the same information as a tap.
 To perform a hold, press down for a longer amount of time before releasing.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/hold-sm-black.svg#gh-light-mode-only">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/hold-sm-white.svg#gh-dark-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/hold-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/hold-sm-white.svg#gh-dark-mode-only">
 </p>
 
 Hold stores the same information as a tap.
@@ -249,8 +245,8 @@ Hold stores the same information as a tap.
 To perform a drag, press down and move your finger across the screen.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/drag-sm-black.svg#gh-light-mode-only">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/drag-sm-white.svg#gh-dark-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/drag-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/drag-sm-white.svg#gh-dark-mode-only">
 </p>
 
 Drag tracks starting position, current position, and current velocity. Current velocity is retrieved in the same fashion
@@ -259,8 +255,8 @@ as stroke.
 #### Hold and Drag
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/holddrag-sm-black.svg#gh-light-mode-only">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/holddrag-sm-white.svg#gh-dark-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/holddrag-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/holddrag-sm-white.svg#gh-dark-mode-only">
 </p>
 
 #### Multidrag
@@ -276,8 +272,8 @@ Multidrag is used for processing zooms and rotates.
 To perform a zoom, press down with at least two fingers and move them closer together or farther apart.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/zoom-sm-black.svg#gh-light-mode-only">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/zoom-sm-white.svg#gh-dark-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/zoom-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/zoom-sm-white.svg#gh-dark-mode-only">
 </p>
 
 Zoom tracks how many fingers are involved in the gesture and an estimated zoom factor.
@@ -287,8 +283,8 @@ Zoom tracks how many fingers are involved in the gesture and an estimated zoom f
 To perform a rotation, press down with a least two fingers and revolve them around a common center point.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/rotate-sm-black.svg#gh-light-mode-only">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/186-readme-part-2/images/rotate-sm-white.svg#gh-dark-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/rotate-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/rotate-sm-white.svg#gh-dark-mode-only">
 </p>
 
 Rotate tracks how many fingers are involved in the gesture and an estimated rotation amount.

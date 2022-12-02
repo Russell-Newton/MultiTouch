@@ -9,6 +9,7 @@
 ```sh
 npm install
 ```
+3. Ensure that `make` and `cmake` are installed.
 
 ## Emscripten:
 In order for emscripten to work (required for `dev` and `build` scripts), you may have to follow some additional setup steps:

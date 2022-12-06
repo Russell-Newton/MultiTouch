@@ -52,6 +52,8 @@ Spring-Fall 2022 Junior Design program.
     ```shell
     sudo apt-get -y install cmake
     ```
+
+> ℹ️ Windows development is possible with tools like Chocolatey.
     
 ### Option 1: Include Source in Your Project
 

@@ -59,8 +59,7 @@
   font-weight: normal;
 }
 
-body {
-  min-height: 100vh;
+body, .modal-content {
   color: var(--color-text);
   background: var(--color-background);
   transition: color 0.5s, background-color 0.5s;
@@ -71,4 +70,8 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
 }

@@ -1,9 +1,8 @@
 # MultiTouch
 
-
 <p align="center">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/librarydemo/public/click-2384-black.svg#gh-light-mode-only">
-<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/librarydemo/public/click-2384-white.svg#gh-dark-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/click-2384-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/click-2384-white.svg#gh-dark-mode-only">
 </p>
 
 [![Built with CMake](https://img.shields.io/badge/Built%20with-CMake-blue?style=flat-square&logo=cmake&color=064F8C)](#installation)
@@ -30,59 +29,75 @@ Spring-Fall 2022 Junior Design program.
 * [Installation](#installation)
 * [Usage](#usage)
 * [Design](#design)
-  * [Touch Preprocessing](#touch-preprocessing)
-  * [Recognizers](#recognizers)
+    * [Touch Preprocessing](#touch-preprocessing)
+    * [Recognizers](#recognizers)
+    * [Listeners](#listeners)
+    * [Gestures](#gestures)
 * [Release Notes](#release-notes)
 
 ---
 
 ## Installation
 
-1. Clone the repo.
+To use the library, there are 2 options:
 
-```shell
-git clone https://github.com/Russell-Newton/MultiTouch.git
-```
+1. Copy the source files to your project and include them in your build.
+    1. Clone the repository into your project.
+    ```shell
+    git clone https://github.com/Russell-Newton/MultiTouch.git <Destination>
+    ```
+    1.  * If you use CMake, then in a `CMakeLists.txt` of your project, add the `gesturelibrary` folder of the repository as a subdirectory using `add_subdirectory`. Delete the section of `gesturelibrary/CMakeLists.txt` in the `SKIP_TESTS` if statement.
+        * If you do not use CMake, include the files in the `gesturelibrary/include` folder and add the files in the `gesturelibrary/src` folder to your executable.
+1. Build the library statically and link it to your project.
 
-2. Build the CMake project.
+    1. Clone the repo.
 
-```shell
-cd MultiTouch
-cmake -S gesturelibrary -B build -D SKIP_TESTS=true
-```
+   ```shell
+   git clone https://github.com/Russell-Newton/MultiTouch.git
+   ```
 
-3. Compile the library with `make`.
+   2. Build the CMake project.
 
-```shell
-cd build
-make
-```
+   ```shell
+   cd MultiTouch
+   cmake -S gesturelibrary -B build -D SKIP_TESTS=true
+   ```
 
-4. Include the library when compiling your program:
+   3. Compile the library with `make`.
 
-    * Add `-I...pathto/MultiTouch/gesturelibrary/include` to your compile command.
-    * Add `...pathto/MultiTouch/build/libGestureLibrary.a` to your compile targets.
+   ```shell
+   cd build
+   make
+   ```
+
+   4. Include the library when compiling your program:
+
+       * Add `-I...pathto/MultiTouch/gesturelibrary/include` to your compile command.
+       * Add `...pathto/MultiTouch/build/libGestureLibrary.a` to your compile targets.
 
 ---
 
 ## Usage
 
-1. Configure any gesture recognition parameters before [building with CMake](#installation) by modifying
-   [gestureparams.h](gesturelibrary/include/gestureparams.h). A full list of configurable parameters can be found in
-   [the documentation for `gestureparams.h`](https://russell-newton.github.io/MultiTouch/docs/gestureparams_8h.html).
-   <br>
-   Example configuration:
-2. Create an adapter for your touch input device. Adapters transform device input data into `touch_event_t`s.
-3. Include `<gesturelib.h>`.
-4. At program startup, run `init_gesturelib()`.
-5. Whenever a touch is received, create a `touch_event_t` with your adapter and send it to `process_touch_event()`.
-6. Processed gesture data can either be collected via the output of `process_touch_event()` or through gesture event
-   listeners (See [listeners section](#listeners))
-7. Create custom listeners or enable/disable built-in listeners with the provided utility functions:
-    * `add_recognizer()`
-    * `remove_recognizer()`
-    * `enable_recognizer()`
-    * `disable_recognizer()`
+1. Include `<gesturelib.h>` and the header files for any estures you are interested in. For example, `<tap.h>` and `<drag.h>`.
+1. Adjust the gesture parameters in `<gestureparams.h>` to your desired values. The variables can be set at runtime, but will require the gesture library to be reinitialized after modification.
+1. Call `init_gesturelib()`.
+1. Create an adapter for your touch input device. Adapters transform device input data into `touch_event_t`s.
+1. Whenever a touch is received, create a `touch_event_t` with your adapter and send it to `process_touch_event()`.
+1. Recognized gestures can be obtained from the library synchronously or asynchronously.
+
+* To synchronously access recognized gestures,
+    1. Call the `get_[gesture]` function of the gesture you are interested in. For example, `get_tap` and `get_drag`.
+    2. This returns an array of gesture structs for the gesture you are interested in. For example, `tap_t` and `drag_t`.
+    3. You can read the data from the array, but if a thread is currently executing the `process_touch_event()` function, then the data in the array may change as you are reading it.
+
+* To asynchronously access recognized gestures,
+   1. Create custom listeners or enable/disable built-in listeners with the provided utility functions:
+       * `add_recognizer()`
+       * `remove_recognizer()`
+       * `enable_recognizer()`
+       * `disable_recognizer()`
+   1. Listeners accept a `const [gesture_t]*` and can read the data from the updated gesture. The gesture data will not change until the next invocation of `process_touch_event`.
 
 ### Listeners
 
@@ -91,25 +106,29 @@ recognizer's state machine updates its internal state. A listener should be regi
 `init_gesturelib()`.
 
 Example:
+
 ```c
 // main.c
-#include <stdio.h>
-#include <gesturelib.h>
-#include <tap.h>
+#include
+<stdio.h>
+#include
+<gesturelib.h>
+#include
+<tap.h>
 
 void tap_listener(const tap_t* event) {
-    if (event.type == RECOGNIZER_STATE_COMPLETED) {
-        printf("Tap received at (%.3f, %.3f)!", event.x, event.y);
-    }
+if (event.type == RECOGNIZER_STATE_COMPLETED) {
+printf("Tap received at (%.3f, %.3f)!", event.x, event.y);
+}
 }
 
 int main(int argc, char *argv[]) {
-    init_gesturelib();
-    
-    // register the new listener
-    set_on_tap(tap_listener);
-    
-    // rest of program
+init_gesturelib();
+
+// register the new listener
+set_on_tap(tap_listener);
+
+// rest of program
 }
 ```
 
@@ -129,12 +148,12 @@ to events created by the first finger pressed, 1 to the second, 2 to the third, 
 Touch group assignment is determined by event type:
 
 * If the event is a down event, attempt to assign it to the first unused group. Track this event as the most recent
-event in the group it was assigned to, marking the group as active. If there are no unassigned groups, leave the group
-as unassigned.
+  event in the group it was assigned to, marking the group as active. If there are no unassigned groups, leave the group
+  as unassigned.
 * If the event is a move event, find the active group this event is closest to. Assign it to that group and track this
-event as the most recent in the group. If there are no active groups, leave it unassigned.
+  event as the most recent in the group. If there are no active groups, leave it unassigned.
 * If the event is an up event, perform the same logic as with a move event. This time when a group is assigned, the
-group is marked as inactive.
+  group is marked as inactive.
 
 > ℹ️ Group assignment ensures that fingers generate the same group as long as they're in contact with the touch device.
 
@@ -151,8 +170,9 @@ gesture they recognize.
 
 Builtin multi-finger recognizers are more complicated and store data about every possible group for every possible user
 id. User id is set by the data adapter and could be determined by factors like which device received the touch or where
-on the screen the touch was received. 
-> ⚠️ All touch events with the same uid will be considered as part of the same multi-finger gesture for recognition purposes.
+on the screen the touch was received.
+> ⚠️ All touch events with the same uid will be considered as part of the same multi-finger gesture for recognition
+> purposes.
 
 ### Gestures
 
@@ -161,7 +181,113 @@ additional processing on strokes and other composite gestures.
 
 #### Stroke
 
-This section to be filled in later.
+Stroke is a simple gesture with a simple state machine:
+<p align="center">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/stroke-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/stroke-sm-white.svg#gh-dark-mode-only">
+</p>
+
+The state updates are less important than the data that stroke collects. Stroke collects data on:
+
+* Initial down event position and time
+* Current move/up event position and time
+* Move event speed (as a moving average with configurable window size)
+* Touch group and user
+
+When creating more complicated gestures, having access to this data can be incredibly useful.
+
+#### Multistroke
+
+Multistroke is a multi-finger counterpart to stroke. All strokes with the same user id get grouped into the same
+multistroke. The first down event starts a multistroke, and the last up event for the user id ends the gesture. In
+addition to the information contained in each stroke, a multistroke also tracks:
+
+* Current centroid position
+* Centroid instantaneous displacement
+* Least-squares estimated rotation and zoom information
+
+#### Tap
+
+To perform a tap, press down and release within a short time and without moving too much.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/tap-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/tap-sm-white.svg#gh-dark-mode-only">
+</p>
+
+Tap is a simple gesture that contains information about where and when the tap was started and released. If the time
+between start and release is too long or the distance too great, the tap will fail.
+
+#### Double-Tap
+
+To perform a double-tap, tap twice in close succession.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/dtap-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/dtap-sm-white.svg#gh-dark-mode-only">
+</p>
+
+Double-tap stores the same information as a tap.
+
+#### Hold
+
+To perform a hold, press down for a longer amount of time before releasing.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/hold-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/hold-sm-white.svg#gh-dark-mode-only">
+</p>
+
+Hold stores the same information as a tap.
+
+#### Drag
+
+To perform a drag, press down and move your finger across the screen.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/drag-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/drag-sm-white.svg#gh-dark-mode-only">
+</p>
+
+Drag tracks starting position, current position, and current velocity. Current velocity is retrieved in the same fashion
+as stroke.
+
+#### Hold and Drag
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/holddrag-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/holddrag-sm-white.svg#gh-dark-mode-only">
+</p>
+
+#### Multidrag
+
+Like multistroke, multidrag is a multi-finger counterpart to drag. The same logic that applies to multistroke applies
+to multidrag. It stores the same information as multistroke, but has a slightly different state machine and property
+calculations.
+
+Multidrag is used for processing zooms and rotates.
+
+#### Zoom
+
+To perform a zoom, press down with at least two fingers and move them closer together or farther apart.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/zoom-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/zoom-sm-white.svg#gh-dark-mode-only">
+</p>
+
+Zoom tracks how many fingers are involved in the gesture and an estimated zoom factor.
+
+#### Rotate
+
+To perform a rotation, press down with a least two fingers and revolve them around a common center point.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/rotate-sm-black.svg#gh-light-mode-only">
+<img src="https://raw.githubusercontent.com/Russell-Newton/MultiTouch/main/images/rotate-sm-white.svg#gh-dark-mode-only">
+</p>
+
+Rotate tracks how many fingers are involved in the gesture and an estimated rotation amount.
 
 ---
 

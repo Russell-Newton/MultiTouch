@@ -32,7 +32,7 @@
     X(repeat_tap, REPEAT_TAP)
 
 typedef union out_data_structs {
-#define X(type, ...) CAT(type, _t) type;
+#define X(type, ...) const CAT(type, _t) * type;
     X_RECOGNIZERS
 #undef X
 } out_data_t;

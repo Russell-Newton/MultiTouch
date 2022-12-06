@@ -10,7 +10,7 @@ typedef struct double_tap {
     float x;
     float y;
     float t;
-} double_tap_t;
+} double_tap_t;  // single finger double tap data
 
 /// @brief initializes the data array by setting all field to 0/NULL
 void init_double_tap(void);
@@ -20,8 +20,8 @@ void init_double_tap(void);
 void recognize_double_tap(const touch_event_t* event);
 
 /// @brief returns an array of the ongoing double_touch data for each finger
-/// @return
-const double_tap_t* get_double_tap(void);
+/// @return array of size MAX_TOUCHES of double_touch data
+const double_tap_t* get_double_tap();
 
 /// @brief Listen to double_tap events
 /// @param listener accepts a const double_tap_t*
